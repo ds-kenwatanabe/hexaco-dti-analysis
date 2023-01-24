@@ -154,7 +154,7 @@ hexaco_dict_reverse = {'Discordo fortemente': 5,
 
 # df['hexaco_1'] = df['hexaco_1'].apply(lambda x: hexaco_dict_reverse[x])
 
-# Reverse and regular coded HEXACO values
+# Reversed and regular coded HEXACO values
 reverse = ['hexaco_1', 'hexaco_19', 'hexaco_31', 'hexaco_49', 'hexaco_55',
            'hexaco_14', 'hexaco_20', 'hexaco_26', 'hexaco_32', 'hexaco_44',
            'hexaco_56', 'hexaco_9', 'hexaco_15', 'hexaco_21', 'hexaco_57',
@@ -233,10 +233,28 @@ pers.map(sns.histplot)
 # plt.show()
 """
 
-sns.boxplot(df, x='sex', y='H', hue='course')
+# sns.residplot(df, x='dti_all', y='H')
+
+variables = ['H', 'E', 'X', 'A', 'C', 'O']
+
+def correlatios():
+    for n in variables:
+        return f"Correlations are: {pearsonr(x=df['dti_all'], y=variables)}"
+
+print(pearsonr(x=df['dti_all'], y=df['H']))
+print(pearsonr(x=df['dti_all'], y=df['E']))
+print(pearsonr(x=df['dti_all'], y=df['X']))
+print(pearsonr(x=df['dti_all'], y=df['A']))
+print(pearsonr(x=df['dti_all'], y=df['C']))
+print(pearsonr(x=df['dti_all'], y=df['O']))
+
+df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti_all']]
+
+correlation_matrix = df2.corr(method='pearson').round(2)
+
+sns.set(rc={'figure.figsize':(11.7, 8.27)})
+sns.heatmap(data=correlation_matrix, annot=True)
 plt.show()
 
-# sns.residplot(df, x='dti_all', y='H')
-print(pearsonr(x=df['dti_all'], y=df['O']))
 sns.regplot(df, x='dti_all', y='O')
-plt.show()
+# plt.show()
