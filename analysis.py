@@ -252,9 +252,16 @@ df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti_all']]
 
 correlation_matrix = df2.corr(method='pearson').round(2)
 
-sns.set(rc={'figure.figsize':(11.7, 8.27)})
-sns.heatmap(data=correlation_matrix, annot=True)
-plt.show()
-
-sns.regplot(df, x='dti_all', y='O')
+# sns.set(rc={'figure.figsize':(11.7, 8.27)})
+# sns.heatmap(data=correlation_matrix, annot=True)
 # plt.show()
+def regplot_dti():
+    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
+    sns.regplot(df, x='dti_all', y='H', ax=axes[0, 0])
+    sns.regplot(df, x='dti_all', y='E', ax=axes[0, 1])
+    sns.regplot(df, x='dti_all', y='X', ax=axes[0, 2])
+    sns.regplot(df, x='dti_all', y='A', ax=axes[1, 0])
+    sns.regplot(df, x='dti_all', y='C', ax=axes[1, 1])
+    sns.regplot(df, x='dti_all', y='O', ax=axes[1, 2])
+    plt.show()
+    return 'Regression plots between HEXACO and DTI values'
