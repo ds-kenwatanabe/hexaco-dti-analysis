@@ -27,6 +27,9 @@ course_names = df['course'].value_counts().index.tolist()
 df = df.drop(['course2'], axis=1)
 df = df.dropna()
 
+# Typecasting age
+df['age'] = df['age'].astype('int')
+
 # Replacing course names for areas of knowledge
 cols = ["course"]
 replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológicas',
@@ -241,23 +244,47 @@ def normality(*args):
 
 # print(normality("H", "E", "X", "A", "C", "O", "dti_all"))
 
+# Histograms
+def hist():
+    """Returns histogram for HEXACO"""
+    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
+    sns.histplot(df, x='H', hue='course', ax=axes[0, 0])
+    sns.histplot(df, x='E', hue='course', ax=axes[0, 1])
+    sns.histplot(df, x='X', hue='course', ax=axes[0, 2])
+    sns.histplot(df, x='A', hue='course', ax=axes[1, 0])
+    sns.histplot(df, x='C', hue='course', ax=axes[1, 1])
+    sns.histplot(df, x='O', hue='course', ax=axes[1, 2])
+    plt.show()
+
+# print(hist())
+
 # Q-Q plot
 def qqhexaco():
-    figure, axes = plt.subplots(2, 3, figsize=(9, 4))
-    pg.qqplot(df['H'], dist='norm', ax=axes[0, 0], confidence=0.95)
-    pg.qqplot(df['E'], dist='norm', ax=axes[0, 1], confidence=0.95)
-    pg.qqplot(df['X'], dist='norm', ax=axes[0, 2], confidence=0.95)
-    pg.qqplot(df['A'], dist='norm', ax=axes[1, 0], confidence=0.95)
-    pg.qqplot(df['C'], dist='norm', ax=axes[1, 1], confidence=0.95)
-    pg.qqplot(df['O'], dist='norm', ax=axes[1, 2], confidence=0.95)
+    """Shows the quantile-quantile plot for HEXACO"""
+    fig, axes = plt.subplots(2, 3, figsize=(9, 4))
+    fig.tight_layout(h_pad=1)
+    pg.qqplot(df['H'], dist='norm', ax=axes[0, 0],
+              confidence=0.95).set_title('H', size=10)
+    pg.qqplot(df['E'], dist='norm', ax=axes[0, 1],
+              confidence=0.95).set_title('E', size=10)
+    pg.qqplot(df['X'], dist='norm', ax=axes[0, 2],
+              confidence=0.95).set_title('X', size=10)
+    pg.qqplot(df['A'], dist='norm', ax=axes[1, 0],
+              confidence=0.95).set_title('A', size=10)
+    pg.qqplot(df['C'], dist='norm', ax=axes[1, 1],
+              confidence=0.95).set_title('C', size=10)
+    pg.qqplot(df['O'], dist='norm', ax=axes[1, 2],
+              confidence=0.95).set_title('O', size=10)
     plt.show()
     return '\n'
 
 
 def qqdti():
-    figure, axes = plt.subplots(2, 2, figsize=(4, 4))
-    figure.tight_layout(h_pad=2)
-    pg.qqplot(df['dti_all'], dist='norm', ax=axes[0, 0], confidence=0.95).set_title('DTI', size=10)
+    """Show the quantile-quantile plot for DTI"""
+    fig, axes = plt.subplots(2, 2, figsize=(4, 4))
+    fig.tight_layout(h_pad=2)
+    pg.qqplot(df['dti_all'], dist='norm', ax=axes[0, 0],
+              confidence=0.95).set_title('DTI', size=10)
     pg.qqplot(df['preference_for_dichotomy'], dist='norm', ax=axes[0, 1],
               confidence=0.95).set_title('Preference for Dichotomy', size=10)
     pg.qqplot(df['dichotomous_belief'], dist='norm', ax=axes[1, 0],
@@ -267,12 +294,12 @@ def qqdti():
     plt.show()
     return '\n'
 
-print(qqdti())
 
 # Reliability
 
 
 def reliability():
+    """Prints the reliability values for HEXACO and DTI"""
     print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
     print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
     print(f"Cronbach's alpha for X: {pg.cronbach_alpha(data=df[X])}")
@@ -293,6 +320,7 @@ def reliability():
 print(reliability())
 
 def residplot_dti():
+    """"Shows the residual plots between HEXACO and DTI"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
     sns.residplot(df, x='dti_all', y='H', ax=axes[0, 0])
     sns.residplot(df, x='dti_all', y='E', ax=axes[0, 1])
@@ -303,7 +331,12 @@ def residplot_dti():
     plt.show()
     return 'Residual plots between HEXACO and DTI values\n'
 
+
 def pearsonr_all():
+    """
+    Prints the correlation between HEXACO and DTI,
+    shows a correlation matrix
+    """
     print(pearsonr(x=df['dti_all'], y=df['H']))
     print(pearsonr(x=df['dti_all'], y=df['E']))
     print(pearsonr(x=df['dti_all'], y=df['X']))
@@ -321,6 +354,7 @@ def pearsonr_all():
     return "Pearson's r shown above"
 
 def regplot_dti():
+    """Show regression plots between HEXACO and DTI"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
     sns.regplot(df, x='dti_all', y='H', ax=axes[0, 0])
     sns.regplot(df, x='dti_all', y='E', ax=axes[0, 1])
