@@ -1,6 +1,7 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pingouin as pg
 from scipy.stats import pearsonr
 
 """
@@ -232,37 +233,26 @@ pers = sns.PairGrid(da, vars=variables, hue='sex')
 pers.map(sns.histplot)
 # plt.show()
 """
+# Testing for normality
+# def histograms(h, e, x, a, c, o)
 
-variables = ['H', 'E', 'X', 'A', 'C', 'O']
+# Reliability
+print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
+print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
+print(f"Cronbach's alpha for X: {pg.cronbach_alpha(data=df[X])}")
+print(f"Cronbach's alpha for A: {pg.cronbach_alpha(data=df[A])}")
+print(f"Cronbach's alpha for C: {pg.cronbach_alpha(data=df[C])}")
+print(f"Cronbach's alpha for O: {pg.cronbach_alpha(data=df[O])}\n")
 
-def correlatios():
-    for n in variables:
-        return f"Correlations are: {pearsonr(x=df['dti_all'], y=variables)}"
+print(f"Cronbach's alpha for Preference for Dichotomy:"
+      f" {pg.cronbach_alpha(data=df[preference_for_dichotomy])}")
+print(f"Cronbach's alpha for Dichotomous Belief: "
+      f"{pg.cronbach_alpha(data=df[dichotomous_belief])}")
+print(f"Cronbach's alpha for Profiand and Loss Thinking: "
+      f"{pg.cronbach_alpha(data=df[profit_loss_thinking])}")
+print(f"Cronbach's alpha for total DTI: "
+      f"{pg.cronbach_alpha(data=df[dti_all])}")
 
-print(pearsonr(x=df['dti_all'], y=df['H']))
-print(pearsonr(x=df['dti_all'], y=df['E']))
-print(pearsonr(x=df['dti_all'], y=df['X']))
-print(pearsonr(x=df['dti_all'], y=df['A']))
-print(pearsonr(x=df['dti_all'], y=df['C']))
-print(pearsonr(x=df['dti_all'], y=df['O']))
-
-df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti_all']]
-
-correlation_matrix = df2.corr(method='pearson').round(2)
-
-sns.set(rc={'figure.figsize':(11.7, 8.27)})
-sns.heatmap(data=correlation_matrix, annot=True)
-plt.show()
-def regplot_dti():
-    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
-    sns.regplot(df, x='dti_all', y='H', ax=axes[0, 0])
-    sns.regplot(df, x='dti_all', y='E', ax=axes[0, 1])
-    sns.regplot(df, x='dti_all', y='X', ax=axes[0, 2])
-    sns.regplot(df, x='dti_all', y='A', ax=axes[1, 0])
-    sns.regplot(df, x='dti_all', y='C', ax=axes[1, 1])
-    sns.regplot(df, x='dti_all', y='O', ax=axes[1, 2])
-    plt.show()
-    return 'Regression plots between HEXACO and DTI values'
 
 def residplot_dti():
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
@@ -275,5 +265,35 @@ def residplot_dti():
     plt.show()
     return 'Residual plots between HEXACO and DTI values'
 
-print(regplot_dti())
-print(residplot_dti())
+def pearsonr_all():
+    print(pearsonr(x=df['dti_all'], y=df['H']))
+    print(pearsonr(x=df['dti_all'], y=df['E']))
+    print(pearsonr(x=df['dti_all'], y=df['X']))
+    print(pearsonr(x=df['dti_all'], y=df['A']))
+    print(pearsonr(x=df['dti_all'], y=df['C']))
+    print(pearsonr(x=df['dti_all'], y=df['O']))
+
+    df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti_all']]
+
+    correlation_matrix = df2.corr(method='pearson').round(2)
+
+    sns.set(rc={'figure.figsize':(11.7, 8.27)})
+    sns.heatmap(data=correlation_matrix, annot=True)
+    plt.show()
+    return "Pearson's r shown above"
+
+def regplot_dti():
+    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
+    sns.regplot(df, x='dti_all', y='H', ax=axes[0, 0])
+    sns.regplot(df, x='dti_all', y='E', ax=axes[0, 1])
+    sns.regplot(df, x='dti_all', y='X', ax=axes[0, 2])
+    sns.regplot(df, x='dti_all', y='A', ax=axes[1, 0])
+    sns.regplot(df, x='dti_all', y='C', ax=axes[1, 1])
+    sns.regplot(df, x='dti_all', y='O', ax=axes[1, 2])
+    plt.show()
+    return 'Regression plots between HEXACO and DTI values'
+
+# print(regplot_dti())
+
+# sns.lmplot(df, x='dti_all', y='H', hue='course', col='kinsey', row='sex')
+# plt.show()
