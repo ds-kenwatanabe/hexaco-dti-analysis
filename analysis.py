@@ -26,6 +26,7 @@ course_names = df['course'].value_counts().index.tolist()
 # Dropping course2 column and NaN values
 df = df.drop(['course2'], axis=1)
 df = df.dropna()
+
 # Replacing course names for areas of knowledge
 cols = ["course"]
 replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológicas',
@@ -104,8 +105,6 @@ replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológ
 for col in cols:
     df[col] = df[col].replace(replace_dict)
 
-print(df['course'].describe())
-
 # Changing course semester to numerical values
 df['semester'] = df.semester.replace({'1º': 1, '2º': 2, '3º': 3, '4º': 4, '5º': 5,
                                       '6º': 6, '7º': 7, '8º': 8, '9º': 9,
@@ -120,8 +119,7 @@ df['sexo'] = df.sex.replace({'Masculino': 1, 'Feminino': 2})
 df['course_num'] = df.course.replace({'Ciências Humanas': 1,
                                   'Ciências Biológicas': 2,
                                   'Ciências Exatas': 3})
-print(df['course'].describe())
-print(df['sex'].describe())
+
 # Total DTI
 # Changing DTI values to numerical values
 dti_dict = {'1 - Discordo Totalmente': 1, '2 - Discordo': 2,
@@ -233,26 +231,38 @@ pers = sns.PairGrid(da, vars=variables, hue='sex')
 pers.map(sns.histplot)
 # plt.show()
 """
-# Testing for normality
-# def histograms(h, e, x, a, c, o)
+# Testing for normality *Checar*
+
+
+def normality(*args):
+    for arg in args:
+        print(pg.normality(data=df[arg], method='normaltest', alpha=0.05))
+    return '\n'
+
+# print(normality("H", "E", "X", "A", "C", "O", "dti_all"))
 
 # Reliability
-print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
-print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
-print(f"Cronbach's alpha for X: {pg.cronbach_alpha(data=df[X])}")
-print(f"Cronbach's alpha for A: {pg.cronbach_alpha(data=df[A])}")
-print(f"Cronbach's alpha for C: {pg.cronbach_alpha(data=df[C])}")
-print(f"Cronbach's alpha for O: {pg.cronbach_alpha(data=df[O])}\n")
 
-print(f"Cronbach's alpha for Preference for Dichotomy:"
-      f" {pg.cronbach_alpha(data=df[preference_for_dichotomy])}")
-print(f"Cronbach's alpha for Dichotomous Belief: "
-      f"{pg.cronbach_alpha(data=df[dichotomous_belief])}")
-print(f"Cronbach's alpha for Profiand and Loss Thinking: "
-      f"{pg.cronbach_alpha(data=df[profit_loss_thinking])}")
-print(f"Cronbach's alpha for total DTI: "
-      f"{pg.cronbach_alpha(data=df[dti_all])}")
 
+def reliability():
+    print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
+    print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
+    print(f"Cronbach's alpha for X: {pg.cronbach_alpha(data=df[X])}")
+    print(f"Cronbach's alpha for A: {pg.cronbach_alpha(data=df[A])}")
+    print(f"Cronbach's alpha for C: {pg.cronbach_alpha(data=df[C])}")
+    print(f"Cronbach's alpha for O: {pg.cronbach_alpha(data=df[O])}\n")
+
+    print(f"Cronbach's alpha for Preference for Dichotomy:"
+          f" {pg.cronbach_alpha(data=df[preference_for_dichotomy])}")
+    print(f"Cronbach's alpha for Dichotomous Belief: "
+          f"{pg.cronbach_alpha(data=df[dichotomous_belief])}")
+    print(f"Cronbach's alpha for Profiand and Loss Thinking: "
+          f"{pg.cronbach_alpha(data=df[profit_loss_thinking])}")
+    print(f"Cronbach's alpha for total DTI: "
+          f"{pg.cronbach_alpha(data=df[dti_all])}")
+    return "\n"
+
+print(reliability())
 
 def residplot_dti():
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
@@ -263,7 +273,7 @@ def residplot_dti():
     sns.residplot(df, x='dti_all', y='C', ax=axes[1, 1])
     sns.residplot(df, x='dti_all', y='O', ax=axes[1, 2])
     plt.show()
-    return 'Residual plots between HEXACO and DTI values'
+    return 'Residual plots between HEXACO and DTI values\n'
 
 def pearsonr_all():
     print(pearsonr(x=df['dti_all'], y=df['H']))
@@ -291,7 +301,7 @@ def regplot_dti():
     sns.regplot(df, x='dti_all', y='C', ax=axes[1, 1])
     sns.regplot(df, x='dti_all', y='O', ax=axes[1, 2])
     plt.show()
-    return 'Regression plots between HEXACO and DTI values'
+    return 'Regression plots between HEXACO and DTI values\n'
 
 # print(regplot_dti())
 
