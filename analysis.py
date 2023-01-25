@@ -241,6 +241,34 @@ def normality(*args):
 
 # print(normality("H", "E", "X", "A", "C", "O", "dti_all"))
 
+# Q-Q plot
+def qqhexaco():
+    figure, axes = plt.subplots(2, 3, figsize=(9, 4))
+    pg.qqplot(df['H'], dist='norm', ax=axes[0, 0], confidence=0.95)
+    pg.qqplot(df['E'], dist='norm', ax=axes[0, 1], confidence=0.95)
+    pg.qqplot(df['X'], dist='norm', ax=axes[0, 2], confidence=0.95)
+    pg.qqplot(df['A'], dist='norm', ax=axes[1, 0], confidence=0.95)
+    pg.qqplot(df['C'], dist='norm', ax=axes[1, 1], confidence=0.95)
+    pg.qqplot(df['O'], dist='norm', ax=axes[1, 2], confidence=0.95)
+    plt.show()
+    return '\n'
+
+
+def qqdti():
+    figure, axes = plt.subplots(2, 2, figsize=(4, 4))
+    figure.tight_layout(h_pad=2)
+    pg.qqplot(df['dti_all'], dist='norm', ax=axes[0, 0], confidence=0.95).set_title('DTI', size=10)
+    pg.qqplot(df['preference_for_dichotomy'], dist='norm', ax=axes[0, 1],
+              confidence=0.95).set_title('Preference for Dichotomy', size=10)
+    pg.qqplot(df['dichotomous_belief'], dist='norm', ax=axes[1, 0],
+              confidence=0.95).set_title('Dichotomous Belief', size=10)
+    pg.qqplot(df['profit_loss_thinking'], dist='norm', ax=axes[1, 1],
+              confidence=0.95).set_title('Profit and Loss Thinking', size=10)
+    plt.show()
+    return '\n'
+
+print(qqdti())
+
 # Reliability
 
 
