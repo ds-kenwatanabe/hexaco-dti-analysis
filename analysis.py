@@ -3,6 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pingouin as pg
 from scipy.stats import pearsonr
+import statsmodels.api as sm
 
 """
 # Exemplo checha
@@ -118,10 +119,25 @@ df = df[df['sex'] != 'Outro (especifique)']
 # Excluding asexuals
 df = df[df['kinsey'] != 'Não tenho atração por nenhum gênero']
 
-df['sexo'] = df.sex.replace({'Masculino': 1, 'Feminino': 2})
+# Changig Kinsey scale to heterosexual, bi and homo
+df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Heterosexual',
+                                     '1 - Predominantemente heterossexual, '
+                                     'mas incidentalmente homossexual': 'Heterosexual',
+                                     '2 - Predominantemente heterossexual, entretanto, '
+                                     'mais que incidentalmente homossexual': 'Bisexual',
+                                     '3 - Igualmente heterossexual e homossexual': 'Bisexual',
+                                     '4 - Predominantemente homossexual, entretanto, '
+                                     'mais que incidentalmente heterossexual': 'Bisexual',
+                                     '5 - Predominantemente homossexual, '
+                                     'mas incidentalmente heterossexual': 'Homosexual',
+                                    '6 - Exclusivamente homossexual': 'Homosexual'})
+
+# Indicator/Dummy coded variables
+df['sex_num'] = df.sex.replace({'Masculino': 1, 'Feminino': 2})
 df['course_num'] = df.course.replace({'Ciências Humanas': 1,
                                   'Ciências Biológicas': 2,
                                   'Ciências Exatas': 3})
+df['kinsey_num'] = df.kinsey.replace({'Heterosexual': 1, 'Bisexual': 2, 'Homosexual': 3})
 
 # Total DTI
 # Changing DTI values to numerical values
@@ -200,20 +216,6 @@ df['C'] = df[C].mean(axis=1)
 O = ['hexaco_1', 'hexaco_7', 'hexaco_13', 'hexaco_19', 'hexaco_25',
      'hexaco_31', 'hexaco_37', 'hexaco_43', 'hexaco_49', 'hexaco_55']
 df['O'] = df[O].mean(axis=1)
-
-# Changig Kinsey scale to heterosexual, bi and homo
-df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Heterosexual',
-                                     '1 - Predominantemente heterossexual, '
-                                     'mas incidentalmente homossexual': 'Heterosexual',
-                                     '2 - Predominantemente heterossexual, entretanto, '
-                                     'mais que incidentalmente homossexual': 'Bisexual',
-                                     '3 - Igualmente heterossexual e homossexual': 'Bisexual',
-                                     '4 - Predominantemente homossexual, entretanto, '
-                                     'mais que incidentalmente heterossexual': 'Bisexual',
-                                     '5 - Predominantemente homossexual, '
-                                     'mas incidentalmente heterossexual': 'Homosexual',
-                                    '6 - Exclusivamente homossexual': 'Homosexual'})
-
 
 """
 fig, ax = plt.subplots(2, 3)
@@ -367,5 +369,13 @@ def regplot_dti():
 
 # print(regplot_dti())
 
-# sns.lmplot(df, x='dti_all', y='H', hue='course', col='kinsey', row='sex')
-# plt.show()
+# General Linear Model (GLM)
+model = sm.GLM.from_formula("sex_num ~ H + E + X + A + C + O + course + kinsey + dti_all",
+                            data=df)
+result = model.fit()
+print(result.summary())
+
+model2 = sm.MANOVA.from_formula("course ~ H + E + X + A + C + O + sex + kinsey + dti_all",
+                            data=df)
+result2 = model2.summary()
+print(result2)
