@@ -134,8 +134,8 @@ df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Hetero
 
 # Indicator/Dummy coded variables
 df['sex_num'] = df.sex.replace({'Masculino': 1, 'Feminino': 2})
-df['course_num'] = df.course.replace({'Ciências Humanas': 1,
-                                  'Ciências Biológicas': 2,
+df['course_num'] = df.course.replace({'Ciências Humanas': 2,
+                                  'Ciências Biológicas': 1,
                                   'Ciências Exatas': 3})
 df['kinsey_num'] = df.kinsey.replace({'Heterosexual': 1, 'Bisexual': 2, 'Homosexual': 3})
 
@@ -388,3 +388,4 @@ model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kin
 
 result3 = model3.fit()
 print(result3.summary())
+print(df['course'].count)
