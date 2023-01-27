@@ -370,12 +370,20 @@ def regplot_dti():
 # print(regplot_dti())
 
 # General Linear Model (GLM)
-model = sm.GLM.from_formula("sex_num ~ H + E + X + A + C + O + course + kinsey + dti_all",
+model = sm.GLM.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + dti_all",
                             data=df)
 result = model.fit()
-print(result.summary())
+# print(result.summary(alpha=0.05))
 
+# MANOVA
 model2 = sm.MANOVA.from_formula("course ~ H + E + X + A + C + O + sex + kinsey + dti_all",
                             data=df)
-result2 = model2.summary()
-print(result2)
+result2 = model2.mv_test()
+# print(result2)
+
+# Multinomial Logistic Regression
+model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + dti_all",
+                            data=df)
+
+result3 = model3.fit()
+print(result3.summary())
