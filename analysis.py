@@ -244,7 +244,7 @@ def normality(*args):
         print(pg.normality(data=df[arg], method='normaltest', alpha=0.05))
     return '\n'
 
-# print(normality("H", "E", "X", "A", "C", "O", "dti_all"))
+print(normality("H", "E", "X", "A", "C", "O", "dti_all"))
 
 # Histograms
 def hist():
@@ -296,7 +296,6 @@ def qqdti():
     plt.show()
     return '\n'
 
-
 # Reliability
 
 
@@ -313,7 +312,7 @@ def reliability():
           f" {pg.cronbach_alpha(data=df[preference_for_dichotomy])}")
     print(f"Cronbach's alpha for Dichotomous Belief: "
           f"{pg.cronbach_alpha(data=df[dichotomous_belief])}")
-    print(f"Cronbach's alpha for Profiand and Loss Thinking: "
+    print(f"Cronbach's alpha for Profit and and Loss Thinking: "
           f"{pg.cronbach_alpha(data=df[profit_loss_thinking])}")
     print(f"Cronbach's alpha for total DTI: "
           f"{pg.cronbach_alpha(data=df[dti_all])}")
@@ -384,8 +383,9 @@ result2 = model2.mv_test()
 
 # Multinomial Logistic Regression
 model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
-                                 " + dti_all + age", data=df)
+                                 " + dti_all + age + region", data=df)
 
 result3 = model3.fit()
 print(result3.summary())
-print(df['course'].count)
+
+# df.to_csv('analysis.csv')
