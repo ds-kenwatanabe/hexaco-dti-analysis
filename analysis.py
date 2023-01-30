@@ -383,9 +383,9 @@ result2 = model2.mv_test()
 
 # Multinomial Logistic Regression
 model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
-                                 " + dti_all + age + region", data=df)
+                                 " + dti_all + age", data=df)
 
 result3 = model3.fit()
-print(result3.summary())
+# print(result3.summary())
 
 # df.to_csv('analysis.csv')
