@@ -2,7 +2,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pingouin as pg
-from scipy.stats import pearsonr
+import scipy.stats as stats
 import statsmodels.api as sm
 
 """
@@ -217,26 +217,7 @@ O = ['hexaco_1', 'hexaco_7', 'hexaco_13', 'hexaco_19', 'hexaco_25',
      'hexaco_31', 'hexaco_37', 'hexaco_43', 'hexaco_49', 'hexaco_55']
 df['O'] = df[O].mean(axis=1)
 
-"""
-fig, ax = plt.subplots(2, 3)
-sns.histplot(df, x='H', hue='sex', kde=True, ax=ax[0, 0])
-sns.histplot(df, x='E', hue='sex', kde=True, ax=ax[0, 1])
-sns.histplot(df, x='X', hue='sex', kde=True, ax=ax[0, 2])
-sns.histplot(df, x='A', hue='sex', kde=True, ax=ax[1, 0])
-sns.histplot(df, x='C', hue='sex', kde=True, ax=ax[1, 1])
-sns.histplot(df, x='O', hue='sex', kde=True, ax=ax[1, 2])
-plt.show()
-"""
-
-"""
-# Não ficou bom
-da = df[['H', 'E', 'X', 'A', 'C', 'O', 'sex', 'kinsey']]
-variables = ['H', 'E', 'X', 'A', 'C', 'O']
-pers = sns.PairGrid(da, vars=variables, hue='sex')
-pers.map(sns.histplot)
-# plt.show()
-"""
-# Testing for normality *Checar*
+# Testing for normality
 
 
 def normality(*args):
@@ -246,21 +227,91 @@ def normality(*args):
 
 print(normality("H", "E", "X", "A", "C", "O", "dti_all"))
 
+
+def test_normality(*data_list):
+    """Tests the normality of multiple datasets using the Anderson-Darling test.
+    data_list: list of arrays, each array represents a dataset to test
+    alpha: significance level (default 0.05)
+    Returns: list of tuples, each tuple contains the result of the normality test and the corresponding critical value
+    """
+    results = []
+    for data in data_list:
+        result_data = stats.anderson(data)
+        critical_value = result_data.critical_values[2]  # significance level = 0.05
+        if result_data.statistic < critical_value:
+            normality_data = True
+        else:
+            normality_data = False
+        results.append((normality_data, critical_value))
+    return results
+
+
+print(test_normality(df['H'], df['E'], df['X'], df['A'], df['C'], df['O']))
 # Histograms
 def hist():
     """Returns histogram for HEXACO"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
-    sns.histplot(df, x='H', hue='course', ax=axes[0, 0])
-    sns.histplot(df, x='E', hue='course', ax=axes[0, 1])
-    sns.histplot(df, x='X', hue='course', ax=axes[0, 2])
-    sns.histplot(df, x='A', hue='course', ax=axes[1, 0])
-    sns.histplot(df, x='C', hue='course', ax=axes[1, 1])
-    sns.histplot(df, x='O', hue='course', ax=axes[1, 2])
+    sns.histplot(df, x='H', hue='course', kde=True, ax=axes[0, 0])
+    sns.histplot(df, x='E', hue='course', kde=True, ax=axes[0, 1])
+    sns.histplot(df, x='X', hue='course', kde=True, ax=axes[0, 2])
+    sns.histplot(df, x='A', hue='course', kde=True, ax=axes[1, 0])
+    sns.histplot(df, x='C', hue='course', kde=True, ax=axes[1, 1])
+    sns.histplot(df, x='O', hue='course', kde=True, ax=axes[1, 2])
     plt.show()
 
 # print(hist())
 
+
+def histogram_multiple_df(num_cols, num_rows, *dataframes):
+    """
+    :param num_cols: number (integers) of columns for the plot
+    :param num_rows: number (integers) of rows for the plot
+    :param dataframes: dataframes or sepcific rows (ex. df['sex]
+    :return: Histogram(s) plot(s)
+    """
+    fig, ax = plt.subplots(num_rows, num_cols)
+    ax = ax.flatten()
+    for i, axi in enumerate(ax):
+        if i < len(dataframes):
+            sns.histplot(dataframes[i], kde=True, ax=axi)
+            axi.set_title("Histogram of {}".format(dataframes[i].name))
+        else:
+            fig.delaxes(axi)
+    plt.tight_layout(h_pad=2)
+    plt.subplots_adjust(wspace=2)
+    return plt.show()
+
+"""print(histogram_multiple_df(5, 2, df['H'], df['E'], df['X'],
+                            df['A'], df['C'], df['O'], df['dti_all'],
+                            df['profit_loss_thinking'],df['preference_for_dichotomy'],
+                            df['dichotomous_belief']))"""
+
+
 # Q-Q plot
+
+
+def qq_multiple_df(num_cols, num_rows, *dataframes):
+    """
+    :param num_cols: number (integers) of columns for the plot
+    :param num_rows: number (integers) of rows for the plot
+    :param dataframes: dataframes or sepcific rows (ex. df['sex]
+    :return: Quantile-Quantile plot(s)
+    """
+    fig, ax = plt.subplots(num_rows, num_cols)
+    ax = ax.flatten()
+    for i, axi in enumerate(ax):
+        if i < len(dataframes):
+            pg.qqplot(dataframes[i], ax=axi)
+            axi.set_title("Q-Q plot of {}".format(dataframes[i].name))
+        else:
+            fig.delaxes(axi)
+    plt.tight_layout(h_pad=100)
+    return plt.show()
+
+"""print(qq_multiple_df(5, 2, df['H'], df['E'], df['X'],
+                            df['A'], df['C'], df['O'], df['dti_all'],
+                            df['profit_loss_thinking'],df['preference_for_dichotomy'],
+                            df['dichotomous_belief']))"""
 def qqhexaco():
     """Shows the quantile-quantile plot for HEXACO"""
     fig, axes = plt.subplots(2, 3, figsize=(9, 4))
@@ -318,8 +369,14 @@ def reliability():
           f"{pg.cronbach_alpha(data=df[dti_all])}")
     return "\n"
 
-print(reliability())
+def reliability2(*args):
+    """Prints the reliability values for HEXACO and DTI"""
+    for arg in args:
+        list_ca = []
+        list_ca.append(pg.cronbach_alpha(data=df[arg]))
+        return list_ca
 
+print(reliability2('H', 'E'))
 def residplot_dti():
     """"Shows the residual plots between HEXACO and DTI"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
@@ -329,8 +386,7 @@ def residplot_dti():
     sns.residplot(df, x='dti_all', y='A', ax=axes[1, 0])
     sns.residplot(df, x='dti_all', y='C', ax=axes[1, 1])
     sns.residplot(df, x='dti_all', y='O', ax=axes[1, 2])
-    plt.show()
-    return 'Residual plots between HEXACO and DTI values\n'
+    return plt.show()
 
 
 def pearsonr_all():
@@ -338,12 +394,12 @@ def pearsonr_all():
     Prints the correlation between HEXACO and DTI,
     shows a correlation matrix
     """
-    print(pearsonr(x=df['dti_all'], y=df['H']))
-    print(pearsonr(x=df['dti_all'], y=df['E']))
-    print(pearsonr(x=df['dti_all'], y=df['X']))
-    print(pearsonr(x=df['dti_all'], y=df['A']))
-    print(pearsonr(x=df['dti_all'], y=df['C']))
-    print(pearsonr(x=df['dti_all'], y=df['O']))
+    print(stats.pearsonr(x=df['dti_all'], y=df['H']))
+    print(stats.pearsonr(x=df['dti_all'], y=df['E']))
+    print(stats.pearsonr(x=df['dti_all'], y=df['X']))
+    print(stats.pearsonr(x=df['dti_all'], y=df['A']))
+    print(stats.pearsonr(x=df['dti_all'], y=df['C']))
+    print(stats.pearsonr(x=df['dti_all'], y=df['O']))
 
     df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti_all']]
 
@@ -351,8 +407,7 @@ def pearsonr_all():
 
     sns.set(rc={'figure.figsize':(11.7, 8.27)})
     sns.heatmap(data=correlation_matrix, annot=True)
-    plt.show()
-    return "Pearson's r shown above"
+    return plt.show()
 
 def regplot_dti():
     """Show regression plots between HEXACO and DTI"""
@@ -387,5 +442,10 @@ model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kin
 
 result3 = model3.fit()
 # print(result3.summary())
+
+model4 = sm.GEE.from_formula("dti_all ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
+                                 " + age", groups='course', family=sm.families.Gaussian(), data=df)
+result4 = model4.fit()
+# print(result4.summary())
 
 # df.to_csv('analysis.csv')
