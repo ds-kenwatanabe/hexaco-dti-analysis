@@ -347,6 +347,25 @@ def qqdti():
     plt.show()
     return '\n'
 
+# Box plots
+
+
+def box(num_rows, num_cols, group, dataframe, *x):
+    fig, ax = plt.subplots(num_rows, num_cols)
+    ax = ax.flatten()
+    for i, axi in enumerate(ax):
+        if i < len(x):
+            sns.boxplot(x=x[i], hue=group, data=dataframe, ax=axi)
+            axi.set_title("Box plot plot of {}".format(x[i]))
+        else:
+            fig.delaxes(axi)
+    plt.tight_layout(h_pad=80)
+    return plt.show()
+
+
+# print(box(2, 3, 'sex', df, 'H', 'E', 'X', 'A', 'C', 'O'))
+
+
 # Reliability
 
 
@@ -369,14 +388,28 @@ def reliability():
           f"{pg.cronbach_alpha(data=df[dti_all])}")
     return "\n"
 
-def reliability2(*args):
-    """Prints the reliability values for HEXACO and DTI"""
-    for arg in args:
-        list_ca = []
-        list_ca.append(pg.cronbach_alpha(data=df[arg]))
-        return list_ca
 
-print(reliability2('H', 'E'))
+
+def reliability2(dataframe, *variables):
+    """
+    Calculates and prints the reliability values for HEXACO and DTI
+
+    Parameters:
+    -----------
+    df: pandas DataFrame, containing the variables of interest
+
+    Returns:
+    --------
+    None
+    """
+    for var in variables:
+        print(f"Cronbach's alpha for {var}: {pg.cronbach_alpha(data=dataframe[var])}")
+    print("\n")
+
+    return
+
+# print(reliability2(df,'H', 'E', 'X', 'A', 'C', 'O'))
+
 def residplot_dti():
     """"Shows the residual plots between HEXACO and DTI"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
@@ -392,7 +425,7 @@ def residplot_dti():
 def pearsonr_all():
     """
     Prints the correlation between HEXACO and DTI,
-    shows a correlation matrix
+    Returns a correlation matrix
     """
     print(stats.pearsonr(x=df['dti_all'], y=df['H']))
     print(stats.pearsonr(x=df['dti_all'], y=df['E']))
@@ -438,10 +471,10 @@ result2 = model2.mv_test()
 
 # Multinomial Logistic Regression
 model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
-                                 " + dti_all + age", data=df)
+                                 " + dti_all + age + region", data=df)
 
 result3 = model3.fit()
-# print(result3.summary())
+print(result3.summary())
 
 model4 = sm.GEE.from_formula("dti_all ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
                                  " + age", groups='course', family=sm.families.Gaussian(), data=df)
@@ -449,3 +482,4 @@ result4 = model4.fit()
 # print(result4.summary())
 
 # df.to_csv('analysis.csv')
+
