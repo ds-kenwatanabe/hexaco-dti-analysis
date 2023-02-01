@@ -13,7 +13,7 @@ df = df.replace(hexaco_dict)
 df[hexaco_cols_reverse] = 5 - df[hexaco_cols_reverse]
 """
 
-df = pd.read_csv('pesquisa-mestrado-chris_January+23,+2023_10.23.csv')
+df = pd.read_csv('pesquisa-mestrado-chris_February+1,+2023_16.29.csv')
 
 # Dropping first two rows (import id)
 df = df.drop(df.index[[0, 1]])
@@ -478,4 +478,4 @@ result4 = model4.fit()
 # print(result4.summary())
 
 # df.to_csv('analysis.csv')
-
+# df.to_excel('analysis.xlsx')
