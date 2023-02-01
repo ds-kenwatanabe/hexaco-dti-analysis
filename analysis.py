@@ -220,46 +220,36 @@ df['O'] = df[O].mean(axis=1)
 # Testing for normality
 
 
-def normality(*args):
-    for arg in args:
-        print(pg.normality(data=df[arg], method='normaltest', alpha=0.05))
+def normality(method, *variables):
+    for arg in variables:
+        print(pg.normality(data=df[arg], method=method, alpha=0.05))
     return '\n'
 
-print(normality("H", "E", "X", "A", "C", "O", "dti_all"))
+print(normality('normaltest', "H", "E", "X", "A", "C", "O", "dti_all"))
+
+# Shapiro-Wilk Can be used above by changinf 'method'
 
 
-def test_normality(*data_list):
-    """Tests the normality of multiple datasets using the Anderson-Darling test.
-    data_list: list of arrays, each array represents a dataset to test
-    alpha: significance level (default 0.05)
-    Returns: list of tuples, each tuple contains the result of the normality test and the corresponding critical value
+def shapiro_wilk_test(*data):
+    """Performs the Shapiro-Wilk test on multiple inputs.
+    data: one or more arrays representing the data to test
+    Returns: None
     """
-    results = []
-    for data in data_list:
-        result_data = stats.anderson(data)
-        critical_value = result_data.critical_values[2]  # significance level = 0.05
-        if result_data.statistic < critical_value:
-            normality_data = True
+    for i in data:
+        stat, p = stats.shapiro(df[i])
+        print('Statistic: {:.3f}'.format(stat))
+        print('p-value: {:.3f}'.format(p))
+        if p > 0.05:
+            print('Data probably follows a Gaussian distribution. '
+                  'For variable {}\n'.format(i))
         else:
-            normality_data = False
-        results.append((normality_data, critical_value))
-    return results
+            print('Data probably does not follow a Gaussian distribution. '
+                  'For variable {}\n'.format(i))
 
 
-print(test_normality(df['H'], df['E'], df['X'], df['A'], df['C'], df['O']))
+# print(shapiro_wilk_test('H', 'E', 'X', 'A', 'C', 'O', 'dti_all', 'sex_num'))
+
 # Histograms
-def hist():
-    """Returns histogram for HEXACO"""
-    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
-    sns.histplot(df, x='H', hue='course', kde=True, ax=axes[0, 0])
-    sns.histplot(df, x='E', hue='course', kde=True, ax=axes[0, 1])
-    sns.histplot(df, x='X', hue='course', kde=True, ax=axes[0, 2])
-    sns.histplot(df, x='A', hue='course', kde=True, ax=axes[1, 0])
-    sns.histplot(df, x='C', hue='course', kde=True, ax=axes[1, 1])
-    sns.histplot(df, x='O', hue='course', kde=True, ax=axes[1, 2])
-    plt.show()
-
-# print(hist())
 
 
 def histogram_multiple_df(num_cols, num_rows, *dataframes):
@@ -312,24 +302,6 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
                             df['A'], df['C'], df['O'], df['dti_all'],
                             df['profit_loss_thinking'],df['preference_for_dichotomy'],
                             df['dichotomous_belief']))"""
-def qqhexaco():
-    """Shows the quantile-quantile plot for HEXACO"""
-    fig, axes = plt.subplots(2, 3, figsize=(9, 4))
-    fig.tight_layout(h_pad=1)
-    pg.qqplot(df['H'], dist='norm', ax=axes[0, 0],
-              confidence=0.95).set_title('H', size=10)
-    pg.qqplot(df['E'], dist='norm', ax=axes[0, 1],
-              confidence=0.95).set_title('E', size=10)
-    pg.qqplot(df['X'], dist='norm', ax=axes[0, 2],
-              confidence=0.95).set_title('X', size=10)
-    pg.qqplot(df['A'], dist='norm', ax=axes[1, 0],
-              confidence=0.95).set_title('A', size=10)
-    pg.qqplot(df['C'], dist='norm', ax=axes[1, 1],
-              confidence=0.95).set_title('C', size=10)
-    pg.qqplot(df['O'], dist='norm', ax=axes[1, 2],
-              confidence=0.95).set_title('O', size=10)
-    plt.show()
-    return '\n'
 
 
 def qqdti():
@@ -369,7 +341,7 @@ def box(num_rows, num_cols, group, dataframe, *x):
 # Reliability
 
 
-def reliability():
+def reliability1():
     """Prints the reliability values for HEXACO and DTI"""
     print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
     print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
@@ -390,7 +362,7 @@ def reliability():
 
 
 
-def reliability2(dataframe, *variables):
+def reliability(*variables):
     """
     Calculates and prints the reliability values for HEXACO and DTI
 
@@ -403,12 +375,36 @@ def reliability2(dataframe, *variables):
     None
     """
     for var in variables:
-        print(f"Cronbach's alpha for {var}: {pg.cronbach_alpha(data=dataframe[var])}")
-    print("\n")
+        print(f"Cronbach's alpha: {pg.cronbach_alpha(data=df[var])} for\n" + "{}".format(var))
 
     return
 
-# print(reliability2(df,'H', 'E', 'X', 'A', 'C', 'O'))
+# print(reliability(H, E, X, A, C, O))
+
+
+def reliability_test(*variables):
+    """
+    Calculates and prints the reliability values for multiple variables.
+
+    Parameters:
+    -----------
+    variables: one or more arrays representing the variables to test
+
+    Returns:
+    --------
+    None
+    """
+    for var in variables:
+        alpha = pg.cronbach_alpha(data=df[var])
+        print("Cronbach's alpha for {}: {:.3f}".format(var.name, alpha))
+
+    return None
+
+# print(reliability_test(H, E, X, A, C, O))
+
+
+# Residiual plots
+
 
 def residplot_dti():
     """"Shows the residual plots between HEXACO and DTI"""
