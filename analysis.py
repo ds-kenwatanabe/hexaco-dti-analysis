@@ -217,6 +217,85 @@ O = ['hexaco_1', 'hexaco_7', 'hexaco_13', 'hexaco_19', 'hexaco_25',
      'hexaco_31', 'hexaco_37', 'hexaco_43', 'hexaco_49', 'hexaco_55']
 df['O'] = df[O].mean(axis=1)
 
+# HEXACO facets
+# H
+sincerity = ['hexaco_6', 'hexaco_30', 'hexaco_54']
+df['H_sincerity'] = df[sincerity].mean(axis=1)
+
+fairness = ['hexaco_12', 'hexaco_36', 'hexaco_60']
+df['H_fairness'] = df[fairness].mean(axis=1)
+
+greed_avoidance = ['hexaco_18', 'hexaco_42']
+df['H_greed_avoidance'] = df[greed_avoidance].mean(axis=1)
+
+modesty = ['hexaco_24', 'hexaco_48']
+df['H_modesty'] = df[modesty].mean(axis=1)
+
+# E
+fearfulness = ['hexaco_5', 'hexaco_29', 'hexaco_53']
+df['E_fearfulness'] = df[fearfulness].mean(axis=1)
+
+anxiety = ['hexaco_11', 'hexaco_35']
+df['E_anxiety'] = df[anxiety].mean(axis=1)
+
+dependence = ['hexaco_17', 'hexaco_41']
+df['E_dependence'] = df[dependence].mean(axis=1)
+
+sentimentality = ['hexaco_23', 'hexaco_47', 'hexaco_59']
+df['E_sentimentality'] = df[sentimentality].mean(axis=1)
+
+# X
+social_self_esteem = ['hexaco_4', 'hexaco_28', 'hexaco_52']
+df['X_social_self_esteem'] = df[social_self_esteem].mean(axis=1)
+
+social_boldness = ['hexaco_10', 'hexaco_34', 'hexaco_58']
+df['X_social_boldness'] = df[social_boldness].mean(axis=1)
+
+sociability = ['hexaco_16', 'hexaco_40']
+df['X_sociability'] = df[sociability].mean(axis=1)
+
+liveliness = ['hexaco_22', 'hexaco_46']
+df['X_liveliness'] = df[liveliness].mean(axis=1)
+
+# A
+forgiveness = ['hexaco_3', 'hexaco_27']
+df['A_forgiveness'] = df[forgiveness].mean(axis=1)
+
+gentleness = ['hexaco_9', 'hexaco_33', 'hexaco_51']
+df['A_gentleness'] = df[gentleness].mean(axis=1)
+
+flexibility = ['hexaco_15', 'hexaco_39', 'hexaco_57']
+df['A_flexibility'] = df[flexibility].mean(axis=1)
+
+patience = ['hexaco_21', 'hexaco_45']
+df['A_patience'] = df[patience].mean(axis=1)
+
+# C
+organization = ['hexaco_2', 'hexaco_26']
+df['C_organization'] = df[organization].mean(axis=1)
+
+diligence = ['hexaco_8', 'hexaco_33']
+df['C_diligence'] = df[diligence].mean(axis=1)
+
+perfectionism = ['hexaco_14', 'hexaco_38', 'hexaco_52']
+df['C_perfectionism'] = df[perfectionism].mean(axis=1)
+
+prudence = ['hexaco_20', 'hexaco_44', 'hexaco_56']
+df['C_prudence'] = df[prudence].mean(axis=1)
+
+# O
+aesthetic_appreciation = ['hexaco_1', 'hexaco_25']
+df['O_aesthetic_apreciation'] = df[aesthetic_appreciation].mean(axis=1)
+
+inquisitiveness = ['hexaco_7', 'hexaco_31']
+df['O_inquisitiveness'] = df[inquisitiveness].mean(axis=1)
+
+creativity = ['hexaco_13', 'hexaco_37', 'hexaco_49']
+df['O_creativity'] = df[creativity].mean(axis=1)
+
+unconventionality = ['hexaco_19', 'hexaco_43', 'hexaco_55']
+df['O_unconventionality'] = df[unconventionality].mean(axis=1)
+
 # Testing for normality
 
 
@@ -225,7 +304,7 @@ def normality(method, *variables):
         print(pg.normality(data=df[arg], method=method, alpha=0.05))
     return '\n'
 
-print(normality('normaltest', "H", "E", "X", "A", "C", "O", "dti_all"))
+# print(normality('normaltest', "H", "E", "X", "A", "C", "O", "dti_all"))
 
 # Shapiro-Wilk Can be used above by changinf 'method'
 
@@ -295,7 +374,7 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
             axi.set_title("Q-Q plot of {}".format(dataframes[i].name))
         else:
             fig.delaxes(axi)
-    plt.tight_layout(h_pad=100)
+    plt.tight_layout()
     return plt.show()
 
 """print(qq_multiple_df(5, 2, df['H'], df['E'], df['X'],
@@ -303,7 +382,17 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
                             df['profit_loss_thinking'],df['preference_for_dichotomy'],
                             df['dichotomous_belief']))"""
 
+"""
+print(qq_multiple_df(4, 3, df['H_sincerity'], df['H_fairness'], df['H_greed_avoidance'], df['H_modesty'],
+                     df['E_fearfulness'], df['E_anxiety'], df['E_dependence'], df['E_sentimentality']))
 
+print(qq_multiple_df(4, 3, df['X_social_self_esteem'], df['X_social_boldness'], df['X_sociability'], df['X_liveliness'],
+                     df['A_forgiveness'], df['A_gentleness'], df['A_flexibility'], df['A_patience']))
+
+print(qq_multiple_df(4, 3, df['C_organization'], df['C_diligence'], df['C_perfectionism'], df['C_prudence'],
+                     df['O_aesthetic_apreciation'], df['O_inquisitiveness'], df['O_creativity'],
+                     df['O_unconventionality']))
+"""
 def qqdti():
     """Show the quantile-quantile plot for DTI"""
     fig, axes = plt.subplots(2, 2, figsize=(4, 4))
@@ -319,24 +408,24 @@ def qqdti():
     plt.show()
     return '\n'
 
+
 # Box plots
 
 
-def box(num_rows, num_cols, group, dataframe, *x):
+def box(dataframe, num_rows, num_cols, group, x, *y):
     fig, ax = plt.subplots(num_rows, num_cols)
     ax = ax.flatten()
     for i, axi in enumerate(ax):
-        if i < len(x):
-            sns.boxplot(x=x[i], hue=group, data=dataframe, ax=axi)
-            axi.set_title("Box plot plot of {}".format(x[i]))
+        if i < len(y):
+            sns.boxplot(x=x, y=y[i], hue=group, data=dataframe, ax=axi)
+            axi.set_title("Box plot plot of {}".format(y[i]))
         else:
             fig.delaxes(axi)
-    plt.tight_layout(h_pad=80)
+    plt.tight_layout()
     return plt.show()
 
 
-# print(box(2, 3, 'sex', df, 'H', 'E', 'X', 'A', 'C', 'O'))
-
+# print(box(df, 2, 3, 'kinsey', None, 'H', 'E', 'X', 'A', 'C', 'O'))
 
 # Reliability
 
@@ -453,29 +542,59 @@ def regplot_dti():
 # print(regplot_dti())
 
 # Generalized Linear Model (GLM)
-model = sm.GLM.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + dti_all",
+model_glm = sm.GLM.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + dti_all",
                             data=df)
-result = model.fit()
+result_glm = model_glm.fit()
 # Maybe add family=sm.families.Gaussian()
-# print(result.summary())
+# print(resultg.summary())
 
 # MANOVA
-model2 = sm.MANOVA.from_formula("course ~ H + E + X + A + C + O + sex + kinsey + dti_all",
+model_manova = sm.MANOVA.from_formula("course ~ H + E + X + A + C + O + sex + kinsey + dti_all",
                             data=df)
-result2 = model2.mv_test()
+result_manova = model_manova.mv_test()
 # print(result2)
 
-# Multinomial Logistic Regression
-model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
-                                 " + dti_all + age + region", data=df)
 
-result3 = model3.fit()
-print(result3.summary())
-
-model4 = sm.GEE.from_formula("dti_all ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
+model_gee = sm.GEE.from_formula("dti_all ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
                                  " + age", groups='course', family=sm.families.Gaussian(), data=df)
-result4 = model4.fit()
+result_gee = model_gee.fit()
 # print(result4.summary())
 
+da = df[['age','semester', 'course_num', 'sex_num', 'kinsey_num', 'dti_all', 'H', 'E', 'X', 'A', 'C', 'O']]
+model5 = sm.PCA(data=da)
+# print(model5)
+
+# Multinomial Logistic Regression
+model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O ", data=df)
+result = model.fit()
+
+
+model1 = sm.MNLogit.from_formula("course_num ~ sex + kinsey + sex:kinsey", data=df)
+result1 = model1.fit()
+
+model2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey", data=df)
+result2 = model2.fit()
+
+model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti_all + "
+                                 "sex + kinsey + sex:kinsey", data=df)
+result3 = model3.fit()
+
+model4 = sm.MNLogit.from_formula("course_num ~ + O + X + + sex+ kinsey + dti_all + "
+                                 "dichotomous_belief", data=df)
+result4 = model4.fit()
+
+
+
+print(result.summary())
+print('Model 1\n')
+print(result1.summary())
+print('Model 2\n')
+print(result2.summary())
+print('Model 3\n')
+print(result3.summary())
+print('Model 4\n')
+print(result4.summary())
+
+# Saving dfs
 # df.to_csv('analysis.csv')
 # df.to_excel('analysis.xlsx')
