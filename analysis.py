@@ -196,7 +196,6 @@ H = ['hexaco_6', 'hexaco_12', 'hexaco_18', 'hexaco_24', 'hexaco_30',
      'hexaco_36', 'hexaco_42', 'hexaco_48', 'hexaco_54', 'hexaco_60']
 df['H'] = df[H].mean(axis=1)
 
-
 E = ['hexaco_5', 'hexaco_11', 'hexaco_17', 'hexaco_23', 'hexaco_29',
      'hexaco_35', 'hexaco_41', 'hexaco_47', 'hexaco_53', 'hexaco_59']
 df['E'] = df[E].mean(axis=1)
@@ -219,82 +218,82 @@ df['O'] = df[O].mean(axis=1)
 
 # HEXACO facets
 # H
-sincerity = ['hexaco_6', 'hexaco_30', 'hexaco_54']
-df['H_sincerity'] = df[sincerity].mean(axis=1)
+H_sincerity = ['hexaco_6', 'hexaco_30', 'hexaco_54']
+df['H_sincerity'] = df[H_sincerity].mean(axis=1)
 
-fairness = ['hexaco_12', 'hexaco_36', 'hexaco_60']
-df['H_fairness'] = df[fairness].mean(axis=1)
+H_fairness = ['hexaco_12', 'hexaco_36', 'hexaco_60']
+df['H_fairness'] = df[H_fairness].mean(axis=1)
 
-greed_avoidance = ['hexaco_18', 'hexaco_42']
-df['H_greed_avoidance'] = df[greed_avoidance].mean(axis=1)
+H_greed_avoidance = ['hexaco_18', 'hexaco_42']
+df['H_greed_avoidance'] = df[H_greed_avoidance].mean(axis=1)
 
-modesty = ['hexaco_24', 'hexaco_48']
-df['H_modesty'] = df[modesty].mean(axis=1)
+H_modesty = ['hexaco_24', 'hexaco_48']
+df['H_modesty'] = df[H_modesty].mean(axis=1)
 
 # E
-fearfulness = ['hexaco_5', 'hexaco_29', 'hexaco_53']
-df['E_fearfulness'] = df[fearfulness].mean(axis=1)
+E_fearfulness = ['hexaco_5', 'hexaco_29', 'hexaco_53']
+df['E_fearfulness'] = df[E_fearfulness].mean(axis=1)
 
-anxiety = ['hexaco_11', 'hexaco_35']
-df['E_anxiety'] = df[anxiety].mean(axis=1)
+E_anxiety = ['hexaco_11', 'hexaco_35']
+df['E_anxiety'] = df[E_anxiety].mean(axis=1)
 
-dependence = ['hexaco_17', 'hexaco_41']
-df['E_dependence'] = df[dependence].mean(axis=1)
+E_dependence = ['hexaco_17', 'hexaco_41']
+df['E_dependence'] = df[E_dependence].mean(axis=1)
 
-sentimentality = ['hexaco_23', 'hexaco_47', 'hexaco_59']
-df['E_sentimentality'] = df[sentimentality].mean(axis=1)
+E_sentimentality = ['hexaco_23', 'hexaco_47', 'hexaco_59']
+df['E_sentimentality'] = df[E_sentimentality].mean(axis=1)
 
 # X
-social_self_esteem = ['hexaco_4', 'hexaco_28', 'hexaco_52']
-df['X_social_self_esteem'] = df[social_self_esteem].mean(axis=1)
+X_social_self_esteem = ['hexaco_4', 'hexaco_28', 'hexaco_52']
+df['X_social_self_esteem'] = df[X_social_self_esteem].mean(axis=1)
 
-social_boldness = ['hexaco_10', 'hexaco_34', 'hexaco_58']
-df['X_social_boldness'] = df[social_boldness].mean(axis=1)
+X_social_boldness = ['hexaco_10', 'hexaco_34', 'hexaco_58']
+df['X_social_boldness'] = df[X_social_boldness].mean(axis=1)
 
-sociability = ['hexaco_16', 'hexaco_40']
-df['X_sociability'] = df[sociability].mean(axis=1)
+X_sociability = ['hexaco_16', 'hexaco_40']
+df['X_sociability'] = df[X_sociability].mean(axis=1)
 
-liveliness = ['hexaco_22', 'hexaco_46']
-df['X_liveliness'] = df[liveliness].mean(axis=1)
+X_liveliness = ['hexaco_22', 'hexaco_46']
+df['X_liveliness'] = df[X_liveliness].mean(axis=1)
 
 # A
-forgiveness = ['hexaco_3', 'hexaco_27']
-df['A_forgiveness'] = df[forgiveness].mean(axis=1)
+A_forgiveness = ['hexaco_3', 'hexaco_27']
+df['A_forgiveness'] = df[A_forgiveness].mean(axis=1)
 
-gentleness = ['hexaco_9', 'hexaco_33', 'hexaco_51']
-df['A_gentleness'] = df[gentleness].mean(axis=1)
+A_gentleness = ['hexaco_9', 'hexaco_33', 'hexaco_51']
+df['A_gentleness'] = df[A_gentleness].mean(axis=1)
 
-flexibility = ['hexaco_15', 'hexaco_39', 'hexaco_57']
-df['A_flexibility'] = df[flexibility].mean(axis=1)
+A_flexibility = ['hexaco_15', 'hexaco_39', 'hexaco_57']
+df['A_flexibility'] = df[A_flexibility].mean(axis=1)
 
-patience = ['hexaco_21', 'hexaco_45']
-df['A_patience'] = df[patience].mean(axis=1)
+A_patience = ['hexaco_21', 'hexaco_45']
+df['A_patience'] = df[A_patience].mean(axis=1)
 
 # C
-organization = ['hexaco_2', 'hexaco_26']
-df['C_organization'] = df[organization].mean(axis=1)
+C_organization = ['hexaco_2', 'hexaco_26']
+df['C_organization'] = df[C_organization].mean(axis=1)
 
-diligence = ['hexaco_8', 'hexaco_33']
-df['C_diligence'] = df[diligence].mean(axis=1)
+C_diligence = ['hexaco_8', 'hexaco_33']
+df['C_diligence'] = df[C_diligence].mean(axis=1)
 
-perfectionism = ['hexaco_14', 'hexaco_38', 'hexaco_52']
-df['C_perfectionism'] = df[perfectionism].mean(axis=1)
+C_perfectionism = ['hexaco_14', 'hexaco_38', 'hexaco_52']
+df['C_perfectionism'] = df[C_perfectionism].mean(axis=1)
 
-prudence = ['hexaco_20', 'hexaco_44', 'hexaco_56']
-df['C_prudence'] = df[prudence].mean(axis=1)
+C_prudence = ['hexaco_20', 'hexaco_44', 'hexaco_56']
+df['C_prudence'] = df[C_prudence].mean(axis=1)
 
 # O
-aesthetic_appreciation = ['hexaco_1', 'hexaco_25']
-df['O_aesthetic_apreciation'] = df[aesthetic_appreciation].mean(axis=1)
+O_aesthetic_appreciation = ['hexaco_1', 'hexaco_25']
+df['O_aesthetic_apreciation'] = df[O_aesthetic_appreciation].mean(axis=1)
 
-inquisitiveness = ['hexaco_7', 'hexaco_31']
-df['O_inquisitiveness'] = df[inquisitiveness].mean(axis=1)
+O_inquisitiveness = ['hexaco_7', 'hexaco_31']
+df['O_inquisitiveness'] = df[O_inquisitiveness].mean(axis=1)
 
-creativity = ['hexaco_13', 'hexaco_37', 'hexaco_49']
-df['O_creativity'] = df[creativity].mean(axis=1)
+O_creativity = ['hexaco_13', 'hexaco_37', 'hexaco_49']
+df['O_creativity'] = df[O_creativity].mean(axis=1)
 
-unconventionality = ['hexaco_19', 'hexaco_43', 'hexaco_55']
-df['O_unconventionality'] = df[unconventionality].mean(axis=1)
+O_unconventionality = ['hexaco_19', 'hexaco_43', 'hexaco_55']
+df['O_unconventionality'] = df[O_unconventionality].mean(axis=1)
 
 # Testing for normality
 
@@ -451,6 +450,7 @@ def reliability1():
 
 
 
+
 def reliability(*variables):
     """
     Calculates and prints the reliability values for HEXACO and DTI
@@ -585,7 +585,7 @@ result4 = model4.fit()
 
 
 
-print(result.summary())
+"""print(result.summary())
 print('Model 1\n')
 print(result1.summary())
 print('Model 2\n')
@@ -593,7 +593,7 @@ print(result2.summary())
 print('Model 3\n')
 print(result3.summary())
 print('Model 4\n')
-print(result4.summary())
+print(result4.summary())"""
 
 # Saving dfs
 # df.to_csv('analysis.csv')
