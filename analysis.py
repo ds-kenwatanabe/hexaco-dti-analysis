@@ -376,10 +376,12 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
     plt.tight_layout()
     return plt.show()
 
-"""print(qq_multiple_df(5, 2, df['H'], df['E'], df['X'],
+"""
+print(qq_multiple_df(5, 2, df['H'], df['E'], df['X'],
                             df['A'], df['C'], df['O'], df['dti_all'],
                             df['profit_loss_thinking'],df['preference_for_dichotomy'],
-                            df['dichotomous_belief']))"""
+                            df['dichotomous_belief']))
+"""
 
 """
 print(qq_multiple_df(4, 3, df['H_sincerity'], df['H_fairness'], df['H_greed_avoidance'], df['H_modesty'],
@@ -449,8 +451,6 @@ def reliability1():
     return "\n"
 
 
-
-
 def reliability(*variables):
     """
     Calculates and prints the reliability values for HEXACO and DTI
@@ -464,8 +464,8 @@ def reliability(*variables):
     None
     """
     for var in variables:
-        print(f"Cronbach's alpha: {pg.cronbach_alpha(data=df[var])} for\n" + "{}".format(var))
-
+        alpha = pg.cronbach_alpha(data=df[var])
+        print("Reliability for variable {}: {:.3f}".format(var.name, alpha))
     return
 
 # print(reliability(H, E, X, A, C, O))
@@ -541,59 +541,25 @@ def regplot_dti():
 
 # print(regplot_dti())
 
-# Generalized Linear Model (GLM)
-model_glm = sm.GLM.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + dti_all",
-                            data=df)
-result_glm = model_glm.fit()
-# Maybe add family=sm.families.Gaussian()
-# print(resultg.summary())
 
-# MANOVA
-model_manova = sm.MANOVA.from_formula("course ~ H + E + X + A + C + O + sex + kinsey + dti_all",
-                            data=df)
-result_manova = model_manova.mv_test()
-# print(result2)
-
-
-model_gee = sm.GEE.from_formula("dti_all ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey"
-                                 " + age", groups='course', family=sm.families.Gaussian(), data=df)
-result_gee = model_gee.fit()
-# print(result4.summary())
-
-da = df[['age','semester', 'course_num', 'sex_num', 'kinsey_num', 'dti_all', 'H', 'E', 'X', 'A', 'C', 'O']]
-model5 = sm.PCA(data=da)
-# print(model5)
 
 # Multinomial Logistic Regression
-model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O ", data=df)
-result = model.fit()
+model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti_all + "
+                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
+result = model.summary()
+print(result)
 
+model_ols = sm.OLS.from_formula("dti_all ~ H + E + X + A + C + O + course + "
+                                "sex + kinsey + sex:kinsey + age", data=df).fit()
 
-model1 = sm.MNLogit.from_formula("course_num ~ sex + kinsey + sex:kinsey", data=df)
-result1 = model1.fit()
+# fig = result.plot_partregress_grid(fig=plt.figure(figsize=(10,10)))
+# fig = sm.graphics.plot_fit(model_ols, "age")
+#fig = sm.graphics.plot_partregress_grid(model)
+# fig = sm.graphics.influence_plot(result)
+fig = sm.graphics.plot_partregress_grid(model_ols)
+plt.subplots_adjust()
+plt.show()
 
-model2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + sex + kinsey + sex:kinsey", data=df)
-result2 = model2.fit()
-
-model3 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti_all + "
-                                 "sex + kinsey + sex:kinsey", data=df)
-result3 = model3.fit()
-
-model4 = sm.MNLogit.from_formula("course_num ~ + O + X + + sex+ kinsey + dti_all + "
-                                 "dichotomous_belief", data=df)
-result4 = model4.fit()
-
-
-
-"""print(result.summary())
-print('Model 1\n')
-print(result1.summary())
-print('Model 2\n')
-print(result2.summary())
-print('Model 3\n')
-print(result3.summary())
-print('Model 4\n')
-print(result4.summary())"""
 
 # Saving dfs
 # df.to_csv('analysis.csv')
