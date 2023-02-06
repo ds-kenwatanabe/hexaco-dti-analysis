@@ -5,6 +5,7 @@ import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
 
+
 """
 # Exemplo checha
 hexaco_cols_reverse = ['sessE', 'oãs', 'solpmexe', 'od', 'esrever']
@@ -510,14 +511,14 @@ def residplot_dti():
 def pearsonr_all():
     """
     Prints the correlation between HEXACO and DTI,
-    Returns a correlation matrix
+    Returns a correlation matrix.
     """
-    print(stats.pearsonr(x=df['dti_all'], y=df['H']))
-    print(stats.pearsonr(x=df['dti_all'], y=df['E']))
-    print(stats.pearsonr(x=df['dti_all'], y=df['X']))
-    print(stats.pearsonr(x=df['dti_all'], y=df['A']))
-    print(stats.pearsonr(x=df['dti_all'], y=df['C']))
-    print(stats.pearsonr(x=df['dti_all'], y=df['O']))
+    print(f"{stats.pearsonr(x=df['dti_all'], y=df['H'])} for H")
+    print(f"{stats.pearsonr(x=df['dti_all'], y=df['E'])} for E")
+    print(f"{stats.pearsonr(x=df['dti_all'], y=df['X'])} for X")
+    print(f"{stats.pearsonr(x=df['dti_all'], y=df['A'])} for A")
+    print(f"{stats.pearsonr(x=df['dti_all'], y=df['C'])} for C")
+    print(f"{stats.pearsonr(x=df['dti_all'], y=df['O'])} for O")
 
     df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti_all']]
 
@@ -527,15 +528,24 @@ def pearsonr_all():
     sns.heatmap(data=correlation_matrix, annot=True)
     return plt.show()
 
+# print(pearsonr_all())
+
+
 def regplot_dti():
     """Show regression plots between HEXACO and DTI"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
-    sns.regplot(df, x='dti_all', y='H', ax=axes[0, 0])
-    sns.regplot(df, x='dti_all', y='E', ax=axes[0, 1])
-    sns.regplot(df, x='dti_all', y='X', ax=axes[0, 2])
-    sns.regplot(df, x='dti_all', y='A', ax=axes[1, 0])
-    sns.regplot(df, x='dti_all', y='C', ax=axes[1, 1])
-    sns.regplot(df, x='dti_all', y='O', ax=axes[1, 2])
+    sns.regplot(df, x='dti_all', y='H', scatter_kws={'color': 'blue'},
+                line_kws={'color': 'red'}, ax=axes[0, 0])
+    sns.regplot(df, x='dti_all', y='E', scatter_kws={'color': 'blue'},
+                line_kws={'color': 'red'}, ax=axes[0, 1])
+    sns.regplot(df, x='dti_all', y='X', scatter_kws={'color': 'blue'},
+                line_kws={'color': 'red'}, ax=axes[0, 2])
+    sns.regplot(df, x='dti_all', y='A', scatter_kws={'color': 'blue'},
+                line_kws={'color': 'red'}, ax=axes[1, 0])
+    sns.regplot(df, x='dti_all', y='C', scatter_kws={'color': 'blue'},
+                line_kws={'color': 'red'}, ax=axes[1, 1])
+    sns.regplot(df, x='dti_all', y='O', scatter_kws={'color': 'blue'},
+                line_kws={'color': 'red'}, ax=axes[1, 2])
     plt.show()
     return 'Regression plots between HEXACO and DTI values\n'
 
@@ -556,11 +566,12 @@ model_ols = sm.OLS.from_formula("dti_all ~ H + E + X + A + C + O + course + "
 # fig = sm.graphics.plot_fit(model_ols, "age")
 #fig = sm.graphics.plot_partregress_grid(model)
 # fig = sm.graphics.influence_plot(result)
-fig = sm.graphics.plot_partregress_grid(model_ols)
-plt.subplots_adjust()
-plt.show()
+# fig = sm.graphics.plot_partregress_grid(model_ols)
+# plt.subplots_adjust()
+# plt.show()
 
 
 # Saving dfs
 # df.to_csv('analysis.csv')
 # df.to_excel('analysis.xlsx')
+
