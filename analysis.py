@@ -297,12 +297,13 @@ def normality(method, *variables):
 
 # print(normality('normaltest', "H", "E", "X", "A", "C", "O", "dti_all"))
 
-# Shapiro-Wilk Can be used above by changinf 'method'
+# Shapiro-Wilk Can be used above by changing 'method'
 
 
 def shapiro_wilk_test(*data):
-    """Performs the Shapiro-Wilk test on multiple inputs.
-    data: one or more arrays representing the data to test
+    """
+    Performs the Shapiro-Wilk test on multiple inputs.
+    :param data: one or more arrays representing the data to test
     Returns: None
     """
     for i in data:
