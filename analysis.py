@@ -525,7 +525,7 @@ def pearsonr_all():
 
 
 def regplot_dti():
-    """Show regression plots between HEXACO and DTI"""
+    """:return: regression plots between HEXACO and DTI"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
     sns.regplot(df, x='dti_all', y='H', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[0, 0])
@@ -539,8 +539,7 @@ def regplot_dti():
                 line_kws={'color': 'red'}, ax=axes[1, 1])
     sns.regplot(df, x='dti_all', y='O', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[1, 2])
-    plt.show()
-    return 'Regression plots between HEXACO and DTI values\n'
+    return plt.show()
 
 # print(regplot_dti())
 
