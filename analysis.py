@@ -5,15 +5,6 @@ import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
 
-
-"""
-# Exemplo checha
-hexaco_cols_reverse = ['sessE', 'oãs', 'solpmexe', 'od', 'esrever']
-
-df = df.replace(hexaco_dict)
-df[hexaco_cols_reverse] = 5 - df[hexaco_cols_reverse]
-"""
-
 df = pd.read_csv('pesquisa-mestrado-chris_February+1,+2023_16.29.csv')
 
 # Dropping first two rows (import id)
@@ -550,7 +541,6 @@ def regplot_dti():
     return 'Regression plots between HEXACO and DTI values\n'
 
 # print(regplot_dti())
-
 
 
 # Multinomial Logistic Regression
