@@ -460,9 +460,9 @@ def reliability(*variables):
     for var in variables:
         alpha = pg.cronbach_alpha(data=df[var])
         print("Reliability for variable {}: {:.3f}".format(var.name, alpha))
-    return
+    return None
 
-# print(reliability(H, E, X, A, C, O))
+print(reliability(H, E, X, A, C, O))
 
 
 def reliability_test(*variables):
@@ -483,7 +483,7 @@ def reliability_test(*variables):
 
     return None
 
-# print(reliability_test(H, E, X, A, C, O))
+print(reliability_test(H, E, X, A, C, O))
 
 
 # Residiual plots
