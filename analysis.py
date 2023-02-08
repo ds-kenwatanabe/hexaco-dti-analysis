@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
+from statsmodels.iolib.summary2 import summary_col
 
 df = pd.read_csv('pesquisa-mestrado-chris_February+1,+2023_16.29.csv')
 
@@ -23,7 +24,7 @@ df = df.dropna()
 # Typecasting age
 df['age'] = df['age'].astype('int')
 
-# Replacing course names for areas of knowledge
+# Replacing course names for areas of knowledgeresult.to_csv
 cols = ["course"]
 replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológicas',
                 'Medicina': 'Ciências Biológicas',
@@ -566,3 +567,7 @@ model_ols = sm.OLS.from_formula("dti_all ~ H + E + X + A + C + O + course + "
 # df.to_csv('analysis.csv')
 # df.to_excel('analysis.xlsx')
 
+# Saving model summary
+# results_as_html = result.tables[1].as_html()
+# res = pd.read_html(results_as_html, header=0, index_col=0)[0]
+# res.to_html('summary.html')
