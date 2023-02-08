@@ -425,7 +425,7 @@ def box(dataframe, num_rows, num_cols, group, x, *y):
 # Reliability
 
 
-def reliability1():
+def reliability():
     """Prints the reliability values for HEXACO and DTI"""
     print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
     print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
@@ -444,8 +444,9 @@ def reliability1():
           f"{pg.cronbach_alpha(data=df[dti_all])}")
     return "\n"
 
+print(reliability())
 
-def reliability(*variables):
+def reliability1(*variables):
     """
     Calculates and prints the reliability values for HEXACO and DTI
 
@@ -462,7 +463,7 @@ def reliability(*variables):
         print("Reliability for variable {}: {:.3f}".format(var.name, alpha))
     return None
 
-print(reliability(H, E, X, A, C, O))
+# print(reliability(H, E, X, A, C, O))
 
 
 def reliability_test(*variables):
@@ -483,7 +484,7 @@ def reliability_test(*variables):
 
     return None
 
-print(reliability_test(H, E, X, A, C, O))
+# print(reliability_test(H, E, X, A, C, O))
 
 
 # Residiual plots
