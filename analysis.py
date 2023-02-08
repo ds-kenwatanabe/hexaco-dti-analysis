@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
-from statsmodels.iolib.summary2 import summary_col
 
 df = pd.read_csv('pesquisa-mestrado-chris_February+1,+2023_16.29.csv')
 
