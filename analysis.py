@@ -137,12 +137,12 @@ dti_dict = {'1 - Discordo Totalmente': 1, '2 - Discordo': 2,
             '3 - Discordo um Pouco': 3, '4 - Concordo um Pouco': 4,
             '5 - Concordo': 5, '6 - Concordo Totalmente': 6}
 
-dti_all = ['dti_1', 'dti_4', 'dti_7', 'dti_10', 'dti_13',
+dti = ['dti_1', 'dti_4', 'dti_7', 'dti_10', 'dti_13',
              'dti_2', 'dti_5', 'dti_8', 'dti_11', 'dti_14',
              'dti_3', 'dti_6', 'dti_9', 'dti_12', 'dti_15']
 
-df[dti_all] = df[dti_all].replace(dti_dict)
-df['dti_all'] = df[dti_all].sum(axis=1)
+df[dti] = df[dti].replace(dti_dict)
+df['dti'] = df[dti].sum(axis=1)
 
 # Dividing into subscales scores
 preference_for_dichotomy = ['dti_1', 'dti_4', 'dti_7', 'dti_10', 'dti_13']
@@ -343,7 +343,7 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
     return plt.show()
 
 """print(histogram_multiple_df(5, 2, df['H'], df['E'], df['X'],
-                            df['A'], df['C'], df['O'], df['dti_all'],
+                            df['A'], df['C'], df['O'], df['dti'],
                             df['profit_loss_thinking'],df['preference_for_dichotomy'],
                             df['dichotomous_belief']))"""
 
@@ -371,7 +371,7 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
 
 """
 print(qq_multiple_df(5, 2, df['H'], df['E'], df['X'],
-                            df['A'], df['C'], df['O'], df['dti_all'],
+                            df['A'], df['C'], df['O'], df['dti'],
                             df['profit_loss_thinking'],df['preference_for_dichotomy'],
                             df['dichotomous_belief']))
 """
@@ -391,7 +391,7 @@ def qqdti():
     """Show the quantile-quantile plot for DTI"""
     fig, axes = plt.subplots(2, 2, figsize=(4, 4))
     fig.tight_layout(h_pad=2)
-    pg.qqplot(df['dti_all'], dist='norm', ax=axes[0, 0],
+    pg.qqplot(df['dti'], dist='norm', ax=axes[0, 0],
               confidence=0.95).set_title('DTI', size=10)
     pg.qqplot(df['preference_for_dichotomy'], dist='norm', ax=axes[0, 1],
               confidence=0.95).set_title('Preference for Dichotomy', size=10)
@@ -440,7 +440,7 @@ def reliability():
     print(f"Cronbach's alpha for Profit and and Loss Thinking: "
           f"{pg.cronbach_alpha(data=df[profit_loss_thinking])}")
     print(f"Cronbach's alpha for total DTI: "
-          f"{pg.cronbach_alpha(data=df[dti_all])}")
+          f"{pg.cronbach_alpha(data=df[dti])}")
     return "\n"
 
 # print(reliability())
@@ -468,12 +468,12 @@ def residplot_dti():
     :return: residual plot
     """
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
-    sns.residplot(df, x='dti_all', y='H', ax=axes[0, 0])
-    sns.residplot(df, x='dti_all', y='E', ax=axes[0, 1])
-    sns.residplot(df, x='dti_all', y='X', ax=axes[0, 2])
-    sns.residplot(df, x='dti_all', y='A', ax=axes[1, 0])
-    sns.residplot(df, x='dti_all', y='C', ax=axes[1, 1])
-    sns.residplot(df, x='dti_all', y='O', ax=axes[1, 2])
+    sns.residplot(df, x='dti', y='H', ax=axes[0, 0])
+    sns.residplot(df, x='dti', y='E', ax=axes[0, 1])
+    sns.residplot(df, x='dti', y='X', ax=axes[0, 2])
+    sns.residplot(df, x='dti', y='A', ax=axes[1, 0])
+    sns.residplot(df, x='dti', y='C', ax=axes[1, 1])
+    sns.residplot(df, x='dti', y='O', ax=axes[1, 2])
     return plt.show()
 
 print(residplot_dti())
@@ -484,14 +484,14 @@ def pearsonr_all():
     Prints the correlation between HEXACO and DTI,
     Returns a correlation matrix.
     """
-    print(f"{stats.pearsonr(x=df['dti_all'], y=df['H'])} for H")
-    print(f"{stats.pearsonr(x=df['dti_all'], y=df['E'])} for E")
-    print(f"{stats.pearsonr(x=df['dti_all'], y=df['X'])} for X")
-    print(f"{stats.pearsonr(x=df['dti_all'], y=df['A'])} for A")
-    print(f"{stats.pearsonr(x=df['dti_all'], y=df['C'])} for C")
-    print(f"{stats.pearsonr(x=df['dti_all'], y=df['O'])} for O")
+    print(f"{stats.pearsonr(x=df['dti'], y=df['H'])} for H")
+    print(f"{stats.pearsonr(x=df['dti'], y=df['E'])} for E")
+    print(f"{stats.pearsonr(x=df['dti'], y=df['X'])} for X")
+    print(f"{stats.pearsonr(x=df['dti'], y=df['A'])} for A")
+    print(f"{stats.pearsonr(x=df['dti'], y=df['C'])} for C")
+    print(f"{stats.pearsonr(x=df['dti'], y=df['O'])} for O")
 
-    df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti_all']]
+    df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti']]
 
     correlation_matrix = df2.corr(method='pearson').round(2)
 
@@ -505,17 +505,17 @@ def pearsonr_all():
 def regplot_dti():
     """:return: regression plots between HEXACO and DTI"""
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
-    sns.regplot(df, x='dti_all', y='H', scatter_kws={'color': 'blue'},
+    sns.regplot(df, x='dti', y='H', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[0, 0])
-    sns.regplot(df, x='dti_all', y='E', scatter_kws={'color': 'blue'},
+    sns.regplot(df, x='dti', y='E', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[0, 1])
-    sns.regplot(df, x='dti_all', y='X', scatter_kws={'color': 'blue'},
+    sns.regplot(df, x='dti', y='X', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[0, 2])
-    sns.regplot(df, x='dti_all', y='A', scatter_kws={'color': 'blue'},
+    sns.regplot(df, x='dti', y='A', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[1, 0])
-    sns.regplot(df, x='dti_all', y='C', scatter_kws={'color': 'blue'},
+    sns.regplot(df, x='dti', y='C', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[1, 1])
-    sns.regplot(df, x='dti_all', y='O', scatter_kws={'color': 'blue'},
+    sns.regplot(df, x='dti', y='O', scatter_kws={'color': 'blue'},
                 line_kws={'color': 'red'}, ax=axes[1, 2])
     return plt.show()
 
@@ -523,12 +523,12 @@ def regplot_dti():
 
 
 # Multinomial Logistic Regression
-model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti_all + "
+model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                  "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
 print(result)
 
-model_ols = sm.OLS.from_formula("dti_all ~ H + E + X + A + C + O + course + "
+model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O + course + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
 
 # fig = result.plot_partregress_grid(fig=plt.figure(figsize=(10,10)))
