@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -476,13 +477,13 @@ def residplot_dti():
     sns.residplot(df, x='dti', y='O', ax=axes[1, 2])
     return plt.show()
 
-print(residplot_dti())
+# print(residplot_dti())
 
 
 def pearsonr_all():
     """
     Prints the correlation between HEXACO and DTI,
-    Returns a correlation matrix.
+    :return: a correlation matrix.
     """
     print(f"{stats.pearsonr(x=df['dti'], y=df['H'])} for H")
     print(f"{stats.pearsonr(x=df['dti'], y=df['E'])} for E")
@@ -494,12 +495,12 @@ def pearsonr_all():
     df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti']]
 
     correlation_matrix = df2.corr(method='pearson').round(2)
-
-    sns.set(rc={'figure.figsize':(11.7, 8.27)})
-    sns.heatmap(data=correlation_matrix, annot=True)
+    matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+    sns.set(rc={'figure.figsize':(13, 10)})
+    sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
     return plt.show()
 
-# print(pearsonr_all())
+print(pearsonr_all())
 
 
 def regplot_dti():
