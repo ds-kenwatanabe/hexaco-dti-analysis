@@ -422,6 +422,24 @@ def box(dataframe, num_rows, num_cols, group, x, *y):
 
 # print(box(df, 2, 3, 'kinsey', None, 'H', 'E', 'X', 'A', 'C', 'O'))
 
+# Violin Plot
+
+
+def violin(dataframe, num_rows, num_cols, group, x, *y):
+    fig, ax = plt.subplots(num_rows, num_cols)
+    ax = ax.flatten()
+    for i, axi in enumerate(ax):
+        if i < len(y):
+            sns.violinplot(x=x, y=y[i], hue=group, data=dataframe, ax=axi)
+            axi.set_title("Violin plot plot of {}".format(y[i]))
+        else:
+            fig.delaxes(axi)
+    plt.tight_layout()
+    return plt.show()
+
+
+# print(violin(df, 2, 3, 'kinsey', 'sex', 'H', 'E', 'X', 'A', 'C', 'O'))
+
 # Reliability
 
 
@@ -500,7 +518,7 @@ def pearsonr_all():
     sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
     return plt.show()
 
-print(pearsonr_all())
+# print(pearsonr_all())
 
 
 def regplot_dti():
