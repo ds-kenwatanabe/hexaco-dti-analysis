@@ -447,15 +447,9 @@ def reliability():
 
 def reliability_test(*variables):
     """
-    Calculates and prints the reliability values for HEXACO and DTI
-
-    Parameters:
-    -----------
-    df: pandas DataFrame, containing the variables of interest
-
-    Returns:
-    --------
-    None
+    Calculates the reliability for the variables of interest.
+    :param variables: variables of interest in the Pandas dataframe
+    :return: None
     """
     for var in variables:
         var = df[var]
