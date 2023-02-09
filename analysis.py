@@ -24,7 +24,7 @@ df = df.dropna()
 # Typecasting age
 df['age'] = df['age'].astype('int')
 
-# Replacing course names for areas of knowledgeresult.to_csv
+# Replacing course names for areas of knowledge
 cols = ["course"]
 replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológicas',
                 'Medicina': 'Ciências Biológicas',
@@ -101,6 +101,15 @@ replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológ
 
 for col in cols:
     df[col] = df[col].replace(replace_dict)
+
+# Replacing name in english
+cols2 = ['course']
+course_dict = {'Ciências Biológicas': 'Biological Sciences',
+               'Ciências Exatas': 'Exact Sciences',
+               'Ciências Humanas': 'Humanities'}
+for column in cols2:
+    df[column] = df[column].replace(course_dict)
+
 
 # Changing course semester to numerical values
 df['semester'] = df.semester.replace({'1º': 1, '2º': 2, '3º': 3, '4º': 4, '5º': 5,
