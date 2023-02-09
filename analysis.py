@@ -443,9 +443,9 @@ def reliability():
           f"{pg.cronbach_alpha(data=df[dti_all])}")
     return "\n"
 
-print(reliability())
+# print(reliability())
 
-def reliability1(*variables):
+def reliability_test(*variables):
     """
     Calculates and prints the reliability values for HEXACO and DTI
 
@@ -458,33 +458,12 @@ def reliability1(*variables):
     None
     """
     for var in variables:
-        alpha = pg.cronbach_alpha(data=df[var])
-        print("Reliability for variable {}: {:.3f}".format(var.name, alpha))
+        var = df[var]
+        alpha = pg.cronbach_alpha(data=var)
+        print(f"Reliability for variable {alpha}")
     return None
 
-# print(reliability(H, E, X, A, C, O))
-
-
-def reliability_test(*variables):
-    """
-    Calculates and prints the reliability values for multiple variables.
-
-    Parameters:
-    -----------
-    variables: one or more arrays representing the variables to test
-
-    Returns:
-    --------
-    None
-    """
-    for var in variables:
-        alpha = pg.cronbach_alpha(data=df[var])
-        print("Cronbach's alpha for {}: {:.3f}".format(var.name, alpha))
-
-    return None
-
-# print(reliability_test(H, E, X, A, C, O))
-
+print(reliability_test(H, E, X, A, C, O))
 
 # Residiual plots
 
