@@ -457,13 +457,16 @@ def reliability_test(*variables):
         print(f"Reliability for variable {alpha}")
     return None
 
-print(reliability_test(H, E, X, A, C, O))
+# print(reliability_test(H, E, X, A, C, O))
 
 # Residiual plots
 
 
 def residplot_dti():
-    """"Shows the residual plots between HEXACO and DTI"""
+    """
+    Returns a figure of HEXACO and DTI residual plots
+    :return: residual plot
+    """
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
     sns.residplot(df, x='dti_all', y='H', ax=axes[0, 0])
     sns.residplot(df, x='dti_all', y='E', ax=axes[0, 1])
@@ -472,6 +475,8 @@ def residplot_dti():
     sns.residplot(df, x='dti_all', y='C', ax=axes[1, 1])
     sns.residplot(df, x='dti_all', y='O', ax=axes[1, 2])
     return plt.show()
+
+print(residplot_dti())
 
 
 def pearsonr_all():
