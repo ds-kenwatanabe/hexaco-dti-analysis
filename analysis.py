@@ -110,7 +110,6 @@ course_dict = {'Ciências Biológicas': 'Biological Sciences',
 for column in cols2:
     df[column] = df[column].replace(course_dict)
 
-
 # Changing course semester to numerical values
 df['semester'] = df.semester.replace({'1º': 1, '2º': 2, '3º': 3, '4º': 4, '5º': 5,
                                       '6º': 6, '7º': 7, '8º': 8, '9º': 9,
@@ -118,6 +117,14 @@ df['semester'] = df.semester.replace({'1º': 1, '2º': 2, '3º': 3, '4º': 4, '5
 
 # Excluding sex other than male/female
 df = df[df['sex'] != 'Outro (especifique)']
+
+# Replacing sex categories to english
+cols3 = ['sex']
+sex_dict = {'Masculino': 'Male', 'Feminino': 'Female'}
+for column in cols3:
+    df[column] = df[column].replace(sex_dict)
+print(df['sex'].describe())
+
 # Excluding asexuals
 df = df[df['kinsey'] != 'Não tenho atração por nenhum gênero']
 
@@ -554,7 +561,7 @@ def regplot_dti():
 model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                  "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
-print(result)
+# print(result)
 
 model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O + course + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
