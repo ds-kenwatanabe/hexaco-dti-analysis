@@ -300,7 +300,62 @@ df['O_creativity'] = df[O_creativity].mean(axis=1)
 O_unconventionality = ['hexaco_19', 'hexaco_43', 'hexaco_55']
 df['O_unconventionality'] = df[O_unconventionality].mean(axis=1)
 
+# Box plots
 
+
+def box(dataframe, num_rows, num_cols, group, x, *y):
+    """
+    Box plot of the quantitative data, hued by group
+    :param dataframe: Pandas dataframe
+    :param num_rows: number of rows
+    :param num_cols: number of columns
+    :param group: group to be hued by
+    :param x: variable x
+    :param y: variable y (can be multiple)
+    :return: return all box plots in one image
+    """
+    fig, ax = plt.subplots(num_rows, num_cols)
+    ax = ax.flatten()
+    for i, axi in enumerate(ax):
+        if i < len(y):
+            sns.boxplot(x=x, y=y[i], hue=group, data=dataframe, ax=axi)
+            axi.set_title("Box plot plot of {}".format(y[i]))
+        else:
+            fig.delaxes(axi)
+    plt.tight_layout()
+    return plt.show()
+
+
+print(box(df, 2, 3, None, None, 'H', 'E', 'X', 'A', 'C', 'O'))
+
+
+# Histograms
+
+
+def histogram_multiple_df(num_cols, num_rows, *dataframes):
+    """
+    :param num_cols: number (integers) of columns for the plot
+    :param num_rows: number (integers) of rows for the plot
+    :param dataframes: dataframes or sepcific rows (ex. df['sex]
+    :return: Histogram(s) plot(s)
+    """
+    fig, ax = plt.subplots(num_rows, num_cols)
+    ax = ax.flatten()
+    for i, axi in enumerate(ax):
+        if i < len(dataframes):
+            sns.histplot(dataframes[i], kde=True, ax=axi)
+            axi.set_title("Histogram of {}".format(dataframes[i].name))
+        else:
+            fig.delaxes(axi)
+    plt.tight_layout(h_pad=2)
+    plt.subplots_adjust(wspace=2)
+    return plt.show()
+
+
+"""print(histogram_multiple_df(5, 2, df['H'], df['E'], df['X'],
+                            df['A'], df['C'], df['O'], df['dti'],
+                            df['profit_loss_thinking'],df['preference_for_dichotomy'],
+                            df['dichotomous_belief']))"""
 # Testing for normality
 
 
@@ -334,34 +389,6 @@ def shapiro_wilk_test(*data):
 
 
 # print(shapiro_wilk_test('H', 'E', 'X', 'A', 'C', 'O', 'dti_all', 'sex_num'))
-
-# Histograms
-
-
-def histogram_multiple_df(num_cols, num_rows, *dataframes):
-    """
-    :param num_cols: number (integers) of columns for the plot
-    :param num_rows: number (integers) of rows for the plot
-    :param dataframes: dataframes or sepcific rows (ex. df['sex]
-    :return: Histogram(s) plot(s)
-    """
-    fig, ax = plt.subplots(num_rows, num_cols)
-    ax = ax.flatten()
-    for i, axi in enumerate(ax):
-        if i < len(dataframes):
-            sns.histplot(dataframes[i], kde=True, ax=axi)
-            axi.set_title("Histogram of {}".format(dataframes[i].name))
-        else:
-            fig.delaxes(axi)
-    plt.tight_layout(h_pad=2)
-    plt.subplots_adjust(wspace=2)
-    return plt.show()
-
-
-"""print(histogram_multiple_df(5, 2, df['H'], df['E'], df['X'],
-                            df['A'], df['C'], df['O'], df['dti'],
-                            df['profit_loss_thinking'],df['preference_for_dichotomy'],
-                            df['dichotomous_belief']))"""
 
 # Q-Q plot
 
@@ -422,34 +449,6 @@ def qqdti():
               confidence=0.95).set_title('Profit and Loss Thinking', size=10)
     return plt.show()
 
-
-# Box plots
-
-
-def box(dataframe, num_rows, num_cols, group, x, *y):
-    """
-    Box plot of the quantitative data, hued by group
-    :param dataframe: Pandas dataframe
-    :param num_rows: number of rows
-    :param num_cols: number of columns
-    :param group: group to be hued by
-    :param x: variable x
-    :param y: variable y (can be multiple)
-    :return: return all box plots in one image
-    """
-    fig, ax = plt.subplots(num_rows, num_cols)
-    ax = ax.flatten()
-    for i, axi in enumerate(ax):
-        if i < len(y):
-            sns.boxplot(x=x, y=y[i], hue=group, data=dataframe, ax=axi)
-            axi.set_title("Box plot plot of {}".format(y[i]))
-        else:
-            fig.delaxes(axi)
-    plt.tight_layout()
-    return plt.show()
-
-
-# print(box(df, 2, 3, 'kinsey', 'sex', 'H', 'E', 'X', 'A', 'C', 'O'))
 
 # Violin Plot
 
