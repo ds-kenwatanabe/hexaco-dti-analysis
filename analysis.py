@@ -353,7 +353,7 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
     ax = ax.flatten()
     for i, axi in enumerate(ax):
         if i < len(dataframes):
-            sns.histplot(dataframes[i], kde=True, ax=axi)
+            sns.histplot(dataframes[i], ax=axi, kde=True, color='crimson')
             axi.set_title("Histogram of {}".format(dataframes[i].name))
         else:
             fig.delaxes(axi)
@@ -362,10 +362,8 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
     return plt.show()
 
 
-"""print(histogram_multiple_df(5, 2, df['H'], df['E'], df['X'],
-                            df['A'], df['C'], df['O'], df['dti'],
-                            df['profit_loss_thinking'],df['preference_for_dichotomy'],
-                            df['dichotomous_belief']))"""
+# print(histogram_multiple_df(4, 2, df['H'], df['E'], df['X'],
+                            df['A'], df['C'], df['O'], df['dti'], df['age']))
 # Testing for normality
 
 
