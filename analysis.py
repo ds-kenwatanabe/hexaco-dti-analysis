@@ -138,10 +138,10 @@ df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Hetero
                                     '6 - Exclusivamente homossexual': 'Homosexual'})
 
 # Indicator/Dummy coded variables
-df['sex_num'] = df.sex.replace({'Masculino': 1, 'Feminino': 2})
-df['course_num'] = df.course.replace({'Ciências Humanas': 2,
-                                  'Ciências Biológicas': 1,
-                                  'Ciências Exatas': 3})
+df['sex_num'] = df.sex.replace({'Male': 1, 'Female': 2})
+df['course_num'] = df.course.replace({'Social Sciences': 2,
+                                  'Biological Sciences': 1,
+                                  'Exact Sciences': 3})
 df['kinsey_num'] = df.kinsey.replace({'Heterosexual': 1, 'Bisexual': 2, 'Homosexual': 3})
 
 # Total DTI
