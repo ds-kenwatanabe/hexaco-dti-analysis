@@ -326,8 +326,16 @@ def box(dataframe, num_rows, num_cols, group, x, *y):
     return plt.show()
 
 
-print(box(df, 2, 3, None, None, 'H', 'E', 'X', 'A', 'C', 'O'))
+# print(box(df, 2, 3, None, None, 'H', 'E', 'X', 'A', 'C', 'O'))
 
+# Removing outliers
+df = df[df.H > 1.5]
+df = df[df.E > 1.5]
+df = df[df.A > 1.2]
+df = df[df.A < 4.9]
+df = df[df.C > 2]
+df = df[df.O > 2.1]
+# print(box(df, 2, 3, None, None, 'H', 'E', 'X', 'A', 'C', 'O'))
 
 # Histograms
 
@@ -594,7 +602,7 @@ def regplot_dti():
 model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
-print(result)
+# print(result)
 
 model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O + course + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
