@@ -119,11 +119,7 @@ df['semester'] = df.semester.replace({'1º': 1, '2º': 2, '3º': 3, '4º': 4, '5
 df = df[df['sex'] != 'Outro (especifique)']
 
 # Replacing sex categories to english
-cols3 = ['sex']
-sex_dict = {'Masculino': 'Male', 'Feminino': 'Female'}
-for column in cols3:
-    df[column] = df[column].replace(sex_dict)
-print(df['sex'].describe())
+df['sex'] = df['sex'].replace({'Masculino': 'Male', 'Feminino': 'Female'})
 
 # Excluding asexuals
 df = df[df['kinsey'] != 'Não tenho atração por nenhum gênero']
