@@ -575,7 +575,7 @@ def pearsonr_all():
 def regplot_dti():
     """
     Regression plots of the HEXACO and DTI values
-    :return: Regression plots in one image
+    :return: Regression plot(s)
     """
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
     sns.regplot(df, x='dti', y='H', scatter_kws={'color': 'blue'},
@@ -597,12 +597,10 @@ def regplot_dti():
 
 
 # Multinomial Logistic Regression
-model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
+model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
 print(result)
-
-
 
 # Saving dfs
 # df.to_csv('analysis.csv')
