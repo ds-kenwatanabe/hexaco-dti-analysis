@@ -362,8 +362,8 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
     return plt.show()
 
 
-# print(histogram_multiple_df(4, 2, df['H'], df['E'], df['X'],
-                            df['A'], df['C'], df['O'], df['dti'], df['age']))
+"""print(histogram_multiple_df(4, 2, df['H'], df['E'], df['X'],
+                            df['A'], df['C'], df['O'], df['dti'], df['age']))"""
 # Testing for normality
 
 
@@ -420,12 +420,11 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
     return plt.show()
 
 
-"""
-print(qq_multiple_df(5, 2, df['H'], df['E'], df['X'],
-                            df['A'], df['C'], df['O'], df['dti'],
-                            df['profit_loss_thinking'],df['preference_for_dichotomy'],
-                            df['dichotomous_belief']))
-"""
+
+"""print(qq_multiple_df(3, 2, df['H'], df['E'], df['X'], df['A'], df['C'], df['O']))
+print(qq_multiple_df(2, 2, df['dti'], df['profit_loss_thinking'],
+                     df['dichotomous_belief'], df['preference_for_dichotomy']))"""
+
 
 """
 print(qq_multiple_df(4, 3, df['H_sincerity'], df['H_fairness'], df['H_greed_avoidance'], df['H_modesty'],
@@ -527,7 +526,7 @@ def reliability_test(*variables):
     return None
 
 
-# print(reliability_test(H, E, X, A, C, O))
+# print(reliability_test(H, E, X, A, C, O, dti))
 
 # Residiual plots
 
