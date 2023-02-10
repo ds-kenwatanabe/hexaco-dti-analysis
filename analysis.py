@@ -597,7 +597,7 @@ def regplot_dti():
 
 
 # Multinomial Logistic Regression
-model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti "
+model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
 print(result)
