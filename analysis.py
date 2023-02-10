@@ -363,7 +363,6 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
                             df['profit_loss_thinking'],df['preference_for_dichotomy'],
                             df['dichotomous_belief']))"""
 
-
 # Q-Q plot
 
 
@@ -407,7 +406,10 @@ print(qq_multiple_df(4, 3, df['C_organization'], df['C_diligence'], df['C_perfec
 
 
 def qqdti():
-    """Show the quantile-quantile plot for DTI"""
+    """
+    Quantile-quantile plot for DTI and
+    :return: QQ-plot of DTI
+    """
     fig, axes = plt.subplots(2, 2, figsize=(4, 4))
     fig.tight_layout(h_pad=2)
     pg.qqplot(df['dti'], dist='norm', ax=axes[0, 0],
@@ -418,8 +420,7 @@ def qqdti():
               confidence=0.95).set_title('Dichotomous Belief', size=10)
     pg.qqplot(df['profit_loss_thinking'], dist='norm', ax=axes[1, 1],
               confidence=0.95).set_title('Profit and Loss Thinking', size=10)
-    plt.show()
-    return '\n'
+    return plt.show()
 
 
 # Box plots
@@ -594,7 +595,7 @@ def regplot_dti():
 model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
-# print(result)
+print(result)
 
 model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O + course + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
