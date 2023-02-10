@@ -420,7 +420,6 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
     return plt.show()
 
 
-
 """print(qq_multiple_df(3, 2, df['H'], df['E'], df['X'], df['A'], df['C'], df['O']))
 print(qq_multiple_df(2, 2, df['dti'], df['profit_loss_thinking'],
                      df['dichotomous_belief'], df['preference_for_dichotomy']))"""
@@ -601,18 +600,8 @@ def regplot_dti():
 model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
-# print(result)
+print(result)
 
-model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O + course + "
-                                "sex + kinsey + sex:kinsey + age", data=df).fit()
-
-# fig = result.plot_partregress_grid(fig=plt.figure(figsize=(10,10)))
-# fig = sm.graphics.plot_fit(model_ols, "age")
-# fig = sm.graphics.plot_partregress_grid(model)
-# fig = sm.graphics.influence_plot(result)
-# fig = sm.graphics.plot_partregress_grid(model_ols)
-# plt.subplots_adjust()
-# plt.show()
 
 
 # Saving dfs
