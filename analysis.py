@@ -124,7 +124,7 @@ df['sex'] = df['sex'].replace({'Masculino': 'Male', 'Feminino': 'Female'})
 # Excluding asexuals
 df = df[df['kinsey'] != 'Não tenho atração por nenhum gênero']
 
-# Changig Kinsey scale to heterosexual, bi and homo
+# Changing Kinsey scale to heterosexual, bi and homo
 df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Heterosexual',
                                      '1 - Predominantemente heterossexual, '
                                      'mas incidentalmente homossexual': 'Heterosexual',
@@ -140,8 +140,8 @@ df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Hetero
 # Indicator/Dummy coded variables
 df['sex_num'] = df.sex.replace({'Male': 1, 'Female': 2})
 df['course_num'] = df.course.replace({'Social Sciences': 2,
-                                  'Biological Sciences': 1,
-                                  'Exact Sciences': 3})
+                                     'Biological Sciences': 1,
+                                     'Exact Sciences': 3})
 df['kinsey_num'] = df.kinsey.replace({'Heterosexual': 1, 'Bisexual': 2, 'Homosexual': 3})
 
 # Total DTI
@@ -151,8 +151,8 @@ dti_dict = {'1 - Discordo Totalmente': 1, '2 - Discordo': 2,
             '5 - Concordo': 5, '6 - Concordo Totalmente': 6}
 
 dti = ['dti_1', 'dti_4', 'dti_7', 'dti_10', 'dti_13',
-             'dti_2', 'dti_5', 'dti_8', 'dti_11', 'dti_14',
-             'dti_3', 'dti_6', 'dti_9', 'dti_12', 'dti_15']
+       'dti_2', 'dti_5', 'dti_8', 'dti_11', 'dti_14',
+        'dti_3', 'dti_6', 'dti_9', 'dti_12', 'dti_15']
 
 df[dti] = df[dti].replace(dti_dict)
 df['dti'] = df[dti].sum(axis=1)
