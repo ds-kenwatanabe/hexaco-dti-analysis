@@ -426,6 +426,16 @@ def qqdti():
 
 
 def box(dataframe, num_rows, num_cols, group, x, *y):
+    """
+    Box plot of the quantitative data, hued by group
+    :param dataframe: Pandas dataframe
+    :param num_rows: number of rows
+    :param num_cols: number of columns
+    :param group: group to be hued by
+    :param x: variable x
+    :param y: variable y (can be multiple)
+    :return: return all box plots in one image
+    """
     fig, ax = plt.subplots(num_rows, num_cols)
     ax = ax.flatten()
     for i, axi in enumerate(ax):
@@ -438,7 +448,7 @@ def box(dataframe, num_rows, num_cols, group, x, *y):
     return plt.show()
 
 
-# print(box(df, 2, 3, 'kinsey', None, 'H', 'E', 'X', 'A', 'C', 'O'))
+# print(box(df, 2, 3, 'kinsey', 'sex', 'H', 'E', 'X', 'A', 'C', 'O'))
 
 # Violin Plot
 
