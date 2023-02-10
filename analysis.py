@@ -135,13 +135,13 @@ df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Hetero
                                      'mais que incidentalmente heterossexual': 'Bisexual',
                                      '5 - Predominantemente homossexual, '
                                      'mas incidentalmente heterossexual': 'Homosexual',
-                                    '6 - Exclusivamente homossexual': 'Homosexual'})
+                                     '6 - Exclusivamente homossexual': 'Homosexual'})
 
 # Indicator/Dummy coded variables
 df['sex_num'] = df.sex.replace({'Male': 1, 'Female': 2})
 df['course_num'] = df.course.replace({'Social Sciences': 2,
-                                     'Biological Sciences': 1,
-                                     'Exact Sciences': 3})
+                                      'Biological Sciences': 1,
+                                      'Exact Sciences': 3})
 df['kinsey_num'] = df.kinsey.replace({'Heterosexual': 1, 'Bisexual': 2, 'Homosexual': 3})
 
 # Total DTI
@@ -152,7 +152,7 @@ dti_dict = {'1 - Discordo Totalmente': 1, '2 - Discordo': 2,
 
 dti = ['dti_1', 'dti_4', 'dti_7', 'dti_10', 'dti_13',
        'dti_2', 'dti_5', 'dti_8', 'dti_11', 'dti_14',
-        'dti_3', 'dti_6', 'dti_9', 'dti_12', 'dti_15']
+       'dti_3', 'dti_6', 'dti_9', 'dti_12', 'dti_15']
 
 df[dti] = df[dti].replace(dti_dict)
 df['dti'] = df[dti].sum(axis=1)
@@ -300,6 +300,7 @@ df['O_creativity'] = df[O_creativity].mean(axis=1)
 O_unconventionality = ['hexaco_19', 'hexaco_43', 'hexaco_55']
 df['O_unconventionality'] = df[O_unconventionality].mean(axis=1)
 
+
 # Testing for normality
 
 
@@ -307,6 +308,7 @@ def normality(method, *variables):
     for arg in variables:
         print(pg.normality(data=df[arg], method=method, alpha=0.05))
     return '\n'
+
 
 # print(normality('normaltest', "H", "E", "X", "A", "C", "O", "dti_all"))
 
@@ -355,6 +357,7 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
     plt.subplots_adjust(wspace=2)
     return plt.show()
 
+
 """print(histogram_multiple_df(5, 2, df['H'], df['E'], df['X'],
                             df['A'], df['C'], df['O'], df['dti'],
                             df['profit_loss_thinking'],df['preference_for_dichotomy'],
@@ -382,6 +385,7 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
     plt.tight_layout()
     return plt.show()
 
+
 """
 print(qq_multiple_df(5, 2, df['H'], df['E'], df['X'],
                             df['A'], df['C'], df['O'], df['dti'],
@@ -400,6 +404,8 @@ print(qq_multiple_df(4, 3, df['C_organization'], df['C_diligence'], df['C_perfec
                      df['O_aesthetic_apreciation'], df['O_inquisitiveness'], df['O_creativity'],
                      df['O_unconventionality']))
 """
+
+
 def qqdti():
     """Show the quantile-quantile plot for DTI"""
     fig, axes = plt.subplots(2, 2, figsize=(4, 4))
@@ -474,6 +480,7 @@ def reliability():
           f"{pg.cronbach_alpha(data=df[dti])}")
     return "\n"
 
+
 # print(reliability())
 
 def reliability_test(*variables):
@@ -487,6 +494,7 @@ def reliability_test(*variables):
         alpha = pg.cronbach_alpha(data=var)
         print(f"Reliability for variable {alpha}")
     return None
+
 
 # print(reliability_test(H, E, X, A, C, O))
 
@@ -507,6 +515,7 @@ def residplot_dti():
     sns.residplot(df, x='dti', y='O', ax=axes[1, 2])
     return plt.show()
 
+
 # print(residplot_dti())
 
 
@@ -526,9 +535,10 @@ def pearsonr_all():
 
     correlation_matrix = df2.corr(method='pearson').round(2)
     matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-    sns.set(rc={'figure.figsize':(13, 10)})
+    sns.set(rc={'figure.figsize': (13, 10)})
     sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
     return plt.show()
+
 
 # print(pearsonr_all())
 
@@ -550,12 +560,13 @@ def regplot_dti():
                 line_kws={'color': 'red'}, ax=axes[1, 2])
     return plt.show()
 
+
 # print(regplot_dti())
 
 
 # Multinomial Logistic Regression
 model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
-                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
+                                "sex + kinsey + sex:kinsey + age", data=df).fit()
 result = model.summary()
 # print(result)
 
@@ -564,7 +575,7 @@ model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O + course + "
 
 # fig = result.plot_partregress_grid(fig=plt.figure(figsize=(10,10)))
 # fig = sm.graphics.plot_fit(model_ols, "age")
-#fig = sm.graphics.plot_partregress_grid(model)
+# fig = sm.graphics.plot_partregress_grid(model)
 # fig = sm.graphics.influence_plot(result)
 # fig = sm.graphics.plot_partregress_grid(model_ols)
 # plt.subplots_adjust()
