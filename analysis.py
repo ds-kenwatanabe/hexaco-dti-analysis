@@ -102,11 +102,11 @@ replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológ
 for col in cols:
     df[col] = df[col].replace(replace_dict)
 
-# Replacing name in english
+# Replacing the three branches of sciences names to english
 cols2 = ['course']
 course_dict = {'Ciências Biológicas': 'Biological Sciences',
                'Ciências Exatas': 'Exact Sciences',
-               'Ciências Humanas': 'Humanities'}
+               'Ciências Humanas': 'Social Sciences'}
 for column in cols2:
     df[column] = df[column].replace(course_dict)
 
