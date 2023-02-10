@@ -327,7 +327,7 @@ def box(dataframe, num_rows, num_cols, group, x, *y):
 
 
 # print(box(df, 2, 3, None, None, 'H', 'E', 'X', 'A', 'C', 'O'))
-
+# print(box(df, 1, 2, None, None, 'dti'))
 # Removing outliers
 df = df[df.H > 1.5]
 df = df[df.E > 1.5]
@@ -335,6 +335,8 @@ df = df[df.A > 1.2]
 df = df[df.A < 4.9]
 df = df[df.C > 2]
 df = df[df.O > 2.1]
+df = df[df.dti > 28]
+df = df[df.dti < 86]
 # print(box(df, 2, 3, None, None, 'H', 'E', 'X', 'A', 'C', 'O'))
 
 # Histograms
