@@ -482,7 +482,10 @@ def violin(dataframe, num_rows, num_cols, group, x, *y):
 
 
 def reliability():
-    """Prints the reliability values for HEXACO and DTI"""
+    """
+    Prints the reliability values for HEXACO and DTI
+    :return: None
+    """
     print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
     print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
     print(f"Cronbach's alpha for X: {pg.cronbach_alpha(data=df[X])}")
