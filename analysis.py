@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
+from statsmodels.compat import lzip
 
 df = pd.read_csv('pesquisa-mestrado-chris_February+1,+2023_16.29.csv')
 
@@ -604,6 +605,11 @@ def residplot_dti():
 # GLM
 model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
 result_gls = model_gls.summary()
+bp = sm.stats.het_breuschpagan(model_gls.resid, model_gls.model.exog)
+names = ['Lagrange multiplier statistic', 'p-value',
+         'f-value', 'f p-value']
+
+print(lzip(names, bp))
 print(result_gls)
 
 
