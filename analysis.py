@@ -7,7 +7,7 @@ import scipy.stats as stats
 import statsmodels.api as sm
 from statsmodels.compat import lzip
 
-df = pd.read_csv('pesquisa-mestrado-chris_February+1,+2023_16.29.csv')
+df = pd.read_csv('february2023.csv')
 
 # Dropping first two rows (import id)
 df = df.drop(df.index[[0, 1]])
