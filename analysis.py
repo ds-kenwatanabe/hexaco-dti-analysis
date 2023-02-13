@@ -6,6 +6,7 @@ import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
 from statsmodels.compat import lzip
+from scipy.linalg import toeplitz
 
 df = pd.read_csv('february2023.csv')
 
@@ -602,7 +603,17 @@ def residplot_dti():
 
 # print(residplot_dti())
 
-# GLM
+# OLS
+model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
+res = model_ols.resid
+res_fit = sm.OLS(res[1:], res[:-1]).fit()
+rho = res_fit.params
+print(rho)
+
+order = toeplitz(np.arange(679))
+
+
+# GLS
 model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
 result_gls = model_gls.summary()
 bp = sm.stats.het_breuschpagan(model_gls.resid, model_gls.model.exog)
