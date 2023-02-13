@@ -16,7 +16,6 @@ df.loc[df["course"] == "Outro", "course"] = df[df["course"] == "Outro"]["course2
 
 course_names = df['course'].value_counts().index.tolist()
 # print(course_names)
-
 # Dropping course2 column and NaN values
 df = df.drop(['course2'], axis=1)
 df = df.dropna()
@@ -344,6 +343,8 @@ df = df[df.dti < 86]
 
 def histogram_multiple_df(num_cols, num_rows, *dataframes):
     """
+    Computes histograms according do the dataframes or
+    columns inputed.
     :param num_cols: number (integers) of columns for the plot
     :param num_rows: number (integers) of rows for the plot
     :param dataframes: dataframes or sepcific rows (ex. df['sex]
@@ -382,7 +383,7 @@ def shapiro_wilk_test(*data):
     """
     Performs the Shapiro-Wilk test on multiple inputs.
     :param data: one or more arrays representing the data to test
-    Returns: None
+    :returns: None
     """
     for i in data:
         stat, p = stats.shapiro(df[i])
@@ -403,9 +404,11 @@ def shapiro_wilk_test(*data):
 
 def qq_multiple_df(num_cols, num_rows, *dataframes):
     """
+    Computes a quantile-quantile plot for multiple dataframes
+    or sepecified columns.
     :param num_cols: number (integers) of columns for the plot
     :param num_rows: number (integers) of rows for the plot
-    :param dataframes: dataframes or sepcific rows (ex. df['sex]
+    :param dataframes: dataframes or sepcific rows
     :return: Quantile-Quantile plot(s)
     """
     fig, ax = plt.subplots(num_rows, num_cols)
@@ -440,7 +443,7 @@ print(qq_multiple_df(4, 3, df['C_organization'], df['C_diligence'], df['C_perfec
 
 def qqdti():
     """
-    Quantile-quantile plot for DTI and
+    Shows a Quantile-quantile plot for DTI.
     :return: QQ-plot of DTI
     """
     fig, axes = plt.subplots(2, 2, figsize=(4, 4))
@@ -461,7 +464,7 @@ def qqdti():
 
 def violin(dataframe, num_rows, num_cols, group, x, *y):
     """
-    Violin plot of the quantitative data, hued by group
+    Violin plot of the quantitative data, hued by specified group.
     :param dataframe: Pandas dataframe
     :param num_rows: number of rows
     :param num_cols: number of columns
@@ -489,7 +492,7 @@ def violin(dataframe, num_rows, num_cols, group, x, *y):
 
 def reliability():
     """
-    Prints the reliability values for HEXACO and DTI
+    Prints the reliability values for HEXACO and DTI.
     :return: None
     """
     print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
@@ -532,7 +535,7 @@ def reliability_test(*variables):
 
 def residplot_dti():
     """
-    Returns a figure of HEXACO and DTI residual plots
+    Computes a figure of HEXACO and DTI residual plots.
     :return: residual plot
     """
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
@@ -550,8 +553,9 @@ def residplot_dti():
 
 def pearsonr_all():
     """
-    Prints the correlation between HEXACO and DTI,
-    :return: a correlation matrix.
+    Prints the correlation between HEXACO and DTI
+    and a correlation matrix.
+    :return: Correlation matrix.
     """
     print(f"{stats.pearsonr(x=df['dti'], y=df['H'])} for H")
     print(f"{stats.pearsonr(x=df['dti'], y=df['E'])} for E")
@@ -574,7 +578,7 @@ def pearsonr_all():
 
 def regplot_dti():
     """
-    Regression plots of the HEXACO and DTI values
+    Computes regression plots of the HEXACO and DTI values.
     :return: Regression plot(s)
     """
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
