@@ -601,8 +601,11 @@ def residplot_dti():
 
 # print(residplot_dti())
 
-
-
+# GLM
+model_glm = sm.GLM.from_formula("dti ~ H + E + X + A + C + O + "
+                                "sex + kinsey + sex:kinsey + course", data=df).fit()
+result_glm = model_glm.summary()
+print(result_glm)
 
 
 # Multinomial Logistic Regression
