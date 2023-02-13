@@ -530,27 +530,7 @@ def reliability_test(*variables):
 
 # print(reliability_test(H, E, X, A, C, O, dti))
 
-# Residiual plots
-
-
-def residplot_dti():
-    """
-    Computes a figure of HEXACO and DTI residual plots.
-    :return: residual plot
-    """
-    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
-    sns.residplot(df, x='dti', y='H', ax=axes[0, 0])
-    sns.residplot(df, x='dti', y='E', ax=axes[0, 1])
-    sns.residplot(df, x='dti', y='X', ax=axes[0, 2])
-    sns.residplot(df, x='dti', y='A', ax=axes[1, 0])
-    sns.residplot(df, x='dti', y='C', ax=axes[1, 1])
-    sns.residplot(df, x='dti', y='O', ax=axes[1, 2])
-    return plt.show()
-
-
-# print(residplot_dti())
-
-
+# Pearson correlations
 def pearsonr_all():
     """
     Prints the correlation between HEXACO and DTI
@@ -575,6 +555,8 @@ def pearsonr_all():
 
 # print(pearsonr_all())
 
+# Regression plot
+
 
 def regplot_dti():
     """
@@ -598,6 +580,29 @@ def regplot_dti():
 
 
 # print(regplot_dti())
+
+# Residiual plots
+
+
+def residplot_dti():
+    """
+    Computes a figure of HEXACO and DTI residual plots.
+    :return: residual plot
+    """
+    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 9))
+    sns.residplot(df, x='dti', y='H', ax=axes[0, 0])
+    sns.residplot(df, x='dti', y='E', ax=axes[0, 1])
+    sns.residplot(df, x='dti', y='X', ax=axes[0, 2])
+    sns.residplot(df, x='dti', y='A', ax=axes[1, 0])
+    sns.residplot(df, x='dti', y='C', ax=axes[1, 1])
+    sns.residplot(df, x='dti', y='O', ax=axes[1, 2])
+    return plt.show()
+
+
+# print(residplot_dti())
+
+
+
 
 
 # Multinomial Logistic Regression
