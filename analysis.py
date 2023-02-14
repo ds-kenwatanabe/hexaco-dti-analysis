@@ -558,7 +558,6 @@ def pearsonr_all():
 
 # Pairwise correlations table
 pairwise = pg.pairwise_corr(df, columns=['dti', 'H', 'E', 'X', 'A', 'C', 'O'], method='pearson')
-print(pairwise)
 # pairwise.to_csv('pairwise.csv')
 
 # Regression plot
@@ -645,7 +644,12 @@ print(result_mnl)
 # df.to_csv('analysis.csv')
 # df.to_excel('analysis.xlsx')
 
-# Saving model summary
+# Saving model(s) summary
 # results_as_html = result_mnl.tables[1].as_html()
 # res = pd.read_html(results_as_html, header=0, index_col=0)[0]
-# res.to_html('summary.html')
+# res.to_html('summary_mnl.html')
+
+# model_gls.summary2().tables[1].to_excel('gls_summary.xlsx')
+# model_mnl.summary2().tables[1].to_excel('mnl_summary.xlsx')
+# model_gls.summary2().tables[0].to_excel('gls_summary2.xlsx')
+# model_mnl.summary2().tables[0].to_excel('mnl_summary2.xlsx')
