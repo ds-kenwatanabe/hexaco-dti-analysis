@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
+from scipy.linalg import toeplitz
 
 df = pd.read_csv('february2023.csv')
 
@@ -616,6 +617,18 @@ plt.ylabel('Studentized Residuals')
 
 result_ols = model_ols.summary()
 print(result_ols)
+
+# Calculating sigma (autocorrelation matrix) for GLS
+ols_resid = model_ols.resid
+res_fit = sm.OLS(list(ols_resid[1:]), list(ols_resid[:-1])).fit()
+rho = res_fit.params
+order = toeplitz(np.arange(679))
+sigma = rho**order
+
+# GLS
+model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df, sigma=sigma).fit()
+print(model_gls.summary())
+
 
 
 # Multinomial Logistic Regression
