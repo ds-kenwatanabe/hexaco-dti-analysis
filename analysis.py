@@ -556,6 +556,11 @@ def pearsonr_all():
 
 # print(pearsonr_all())
 
+# Pairwise correlations table
+pairwise = pg.pairwise_corr(df, columns=['dti', 'H', 'E', 'X', 'A', 'C', 'O'], method='pearson')
+print(pairwise)
+# pairwise.to_csv('pairwise.csv')
+
 # Regression plot
 
 
@@ -616,7 +621,7 @@ plt.ylabel('Studentized Residuals')
 # plt.show()
 
 result_ols = model_ols.summary()
-print(result_ols)
+# print(result_ols)
 
 # Calculating sigma (covariance matrix) for GLS
 ols_resid = model_ols.resid
@@ -629,8 +634,6 @@ sigma = rho**order
 model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df, sigma=sigma).fit()
 result_gls = model_gls.summary()
 print(result_gls)
-
-
 
 # Multinomial Logistic Regression
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
