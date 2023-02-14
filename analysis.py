@@ -605,13 +605,18 @@ def residplot_dti():
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
-res = model_ols.resid
-res_fit = sm.OLS(res[1:], res[:-1]).fit()
-rho = res_fit.params
-print(rho)
+result_ols = model_ols.summary()
+print(result_ols)
 
-order = toeplitz(np.arange(679))
-
+# Testing for outliers (Studentized Residuals)
+stud_res = model_ols.outlier_test()
+x = df['dti']
+y = stud_res['student_resid']
+plt.scatter(x, y)
+plt.axhline(y=0, color='red', linestyle='--')
+plt.xlabel('DTI')
+plt.ylabel('Studentized Residuals')
+# plt.show()
 
 # GLS
 model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
