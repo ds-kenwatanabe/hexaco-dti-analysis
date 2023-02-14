@@ -618,7 +618,7 @@ plt.ylabel('Studentized Residuals')
 result_ols = model_ols.summary()
 print(result_ols)
 
-# Calculating sigma (autocorrelation matrix) for GLS
+# Calculating sigma (covariance matrix) for GLS
 ols_resid = model_ols.resid
 res_fit = sm.OLS(list(ols_resid[1:]), list(ols_resid[:-1])).fit()
 rho = res_fit.params
@@ -627,21 +627,22 @@ sigma = rho**order
 
 # GLS
 model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df, sigma=sigma).fit()
-print(model_gls.summary())
+result_gls = model_gls.summary()
+print(result_gls)
 
 
 
 # Multinomial Logistic Regression
-model = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
+model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                 "sex + kinsey + sex:kinsey + age", data=df).fit()
-result = model.summary()
-print(result)
+result_mnl = model_mnl.summary()
+print(result_mnl)
 
 # Saving dfs
 # df.to_csv('analysis.csv')
 # df.to_excel('analysis.xlsx')
 
 # Saving model summary
-# results_as_html = result.tables[1].as_html()
+# results_as_html = result_mnl.tables[1].as_html()
 # res = pd.read_html(results_as_html, header=0, index_col=0)[0]
 # res.to_html('summary.html')
