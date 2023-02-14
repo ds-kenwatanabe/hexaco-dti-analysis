@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
-from statsmodels.compat import lzip
-from scipy.linalg import toeplitz
 
 df = pd.read_csv('february2023.csv')
 
