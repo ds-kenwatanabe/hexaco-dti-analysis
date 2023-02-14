@@ -605,8 +605,6 @@ def residplot_dti():
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
-result_ols = model_ols.summary()
-print(result_ols)
 
 # Testing for outliers (Studentized Residuals)
 stud_res = model_ols.outlier_test()
@@ -618,15 +616,8 @@ plt.xlabel('DTI')
 plt.ylabel('Studentized Residuals')
 # plt.show()
 
-# GLS
-model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
-result_gls = model_gls.summary()
-bp = sm.stats.het_breuschpagan(model_gls.resid, model_gls.model.exog)
-names = ['Lagrange multiplier statistic', 'p-value',
-         'f-value', 'f p-value']
-
-print(lzip(names, bp))
-print(result_gls)
+result_ols = model_ols.summary()
+print(result_ols)
 
 
 # Multinomial Logistic Regression
