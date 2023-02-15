@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
+import statsmodels.iolib
 from scipy.linalg import toeplitz
 from statsmodels.iolib import summary
 
@@ -652,7 +653,8 @@ print(result_mnl)
 # res = pd.read_html(results_as_html, header=0, index_col=0)[0]
 # res.to_html('summary_mnl.html')
 
-# model_gls.summary2().tables[1].to_excel('gls_summary.xlsx')
-# model_mnl.summary2().tables[1].to_excel('mnl_summary.xlsx')
-# model_gls.summary2().tables[0].to_excel('gls_summary2.xlsx')
-# model_mnl.summary2().tables[0].to_excel('mnl_summary2.xlsx')
+#model_gls.summary2().tables[0].to_excel('gls_summary.xlsx')
+# model_gls.summary2().tables[1].to_excel('gls_summary2.xlsx')
+# model_mnl.summary2().tables[0].to_excel('mnl_summary1.xlsx')
+# model_mnl.summary2().tables[1].to_excel('mnl_summary2.xlsx')
+# model_mnl.summary2().tables[2].to_excel('mnl_summary3.xlsx')
