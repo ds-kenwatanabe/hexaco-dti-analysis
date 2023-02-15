@@ -6,6 +6,7 @@ import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
 from scipy.linalg import toeplitz
+from statsmodels.iolib import summary
 
 df = pd.read_csv('february2023.csv')
 
@@ -607,7 +608,8 @@ def residplot_dti():
 # print(residplot_dti())
 
 # OLS
-model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
+model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
+                                "H + E + X + A + C + O", data=df).fit()
 
 # Testing for outliers (Studentized Residuals)
 stud_res = model_ols.outlier_test()
