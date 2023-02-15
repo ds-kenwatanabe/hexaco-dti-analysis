@@ -623,20 +623,7 @@ plt.ylabel('Studentized Residuals')
 # plt.show()
 
 result_ols = model_ols.summary()
-# print(result_ols)
-
-# Calculating sigma (covariance matrix) for GLS
-ols_resid = model_ols.resid
-res_fit = sm.OLS(list(ols_resid[1:]), list(ols_resid[:-1])).fit()
-rho = res_fit.params
-order = toeplitz(np.arange(679))
-sigma = rho**order
-
-# GLS
-model_gls = sm.GLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
-                                 "H + E + X + A + C + O", data=df, sigma=sigma).fit()
-result_gls = model_gls.summary()
-print(result_gls)
+print(result_ols)
 
 # Multinomial Logistic Regression
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
