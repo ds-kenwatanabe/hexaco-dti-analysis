@@ -630,13 +630,14 @@ order = toeplitz(np.arange(679))
 sigma = rho**order
 
 # GLS
-model_gls = sm.GLS.from_formula("dti ~ H + E + X + A + C + O", data=df, sigma=sigma).fit()
+model_gls = sm.GLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
+                                 "H + E + X + A + C + O", data=df, sigma=sigma).fit()
 result_gls = model_gls.summary()
 print(result_gls)
 
 # Multinomial Logistic Regression
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
-                                "sex + kinsey + sex:kinsey + age", data=df).fit()
+                                "sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
 print(result_mnl)
 
