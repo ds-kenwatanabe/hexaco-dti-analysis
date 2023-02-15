@@ -622,6 +622,11 @@ plt.xlabel('DTI')
 plt.ylabel('Studentized Residuals')
 # plt.show()
 
+# Alternatively
+# fig = plt.figure(figsize=(12, 8))
+# fig = sm.graphics.plot_regress_exog(model_ols, 'X', fig=fig)
+# plt.show()
+
 result_ols = model_ols.summary()
 print(result_ols)
 
@@ -642,7 +647,7 @@ print(result_mnl)
 
 # model_ols.summary2().tables[0].to_excel('ols_summary.xlsx')
 # model_ols.summary2().tables[1].to_excel('ols_summary2.xlsx')
-# model_ols.summary2().tables[2].to_excel('ols_summary2.xlsx')
+# model_ols.summary2().tables[2].to_excel('ols_summary3.xlsx')
 # model_mnl.summary2().tables[0].to_excel('mnl_summary1.xlsx')
 # model_mnl.summary2().tables[1].to_excel('mnl_summary2.xlsx')
 # model_mnl.summary2().tables[2].to_excel('mnl_summary3.xlsx')
