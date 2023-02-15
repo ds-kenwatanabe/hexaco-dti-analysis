@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
-import statsmodels.iolib
-from scipy.linalg import toeplitz
-from statsmodels.iolib import summary
 
 df = pd.read_csv('february2023.csv')
 
