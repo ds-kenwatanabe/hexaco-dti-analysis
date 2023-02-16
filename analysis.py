@@ -9,8 +9,8 @@ from statsmodels.compat import lzip
 from factor_analyzer import FactorAnalyzer
 from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity
 from factor_analyzer.factor_analyzer import calculate_kmo
-# from factor_analyzer import ConfirmatoryFactorAnalyzer
-# from factor_analyzer import ModelSpecificationParser
+from factor_analyzer import ConfirmatoryFactorAnalyzer
+from factor_analyzer import ModelSpecificationParser
 
 df = pd.read_csv('february2023.csv')
 
@@ -658,11 +658,20 @@ print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
 print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 
 # Correlation matrix
-correlation_matrix = df2.corr(method='pearson').round(2)
-matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-sns.set(rc={'figure.figsize': (13, 10)})
-sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-plt.show()
+# correlation_matrix = df2.corr(method='pearson').round(2)
+# matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+# sns.set(rc={'figure.figsize': (13, 10)})
+# sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
+# plt.show()
+
+# Confirmatory Factor analysis
+model_dict = {"preference_for_dichotomy": ['dti_1', 'dti_4', 'dti_7', 'dti_10', 'dti_13'],
+              "dichotomous_belief": ['dti_2', 'dti_5', 'dti_8', 'dti_11', 'dti_14'],
+              "profit_loss_thinking": ['dti_3', 'dti_6', 'dti_9', 'dti_12', 'dti_15']}
+model_spec = ModelSpecificationParser.parse_model_specification_from_dict(df2, model_dict)
+cfa = ConfirmatoryFactorAnalyzer(model_spec, disp=False)
+cfa.fit(df2.values)
+print(cfa.loadings_)
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
