@@ -615,8 +615,6 @@ def residplot_dti():
 
 # Confirmatory factor analysis
 df2 = df[['preference_for_dichotomy', 'dichotomous_belief', 'profit_loss_thinking', 'dti']]
-model_dict = {'F1': ['preference_for_dichotomy'], 'F2': ['dichotomous_belief'],
-              'F3': ['profit_loss_thinking'], 'F4': ['dti']}
 fa = FactorAnalyzer(method='minres', rotation='oblimin')
 fa.fit(df2)
 print(f"Factor loadings matrix \n{fa.loadings_}\n")
