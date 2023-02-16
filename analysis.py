@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
+from factor_analyzer import FactorAnalyzer
 
 df = pd.read_csv('february2023.csv')
 
@@ -604,6 +605,21 @@ def residplot_dti():
 
 
 # print(residplot_dti())
+
+# Confirmatory factor analysis
+df2 = df[['preference_for_dichotomy', 'dichotomous_belief', 'profit_loss_thinking', 'dti']]
+model_dict = {'F1': ['preference_for_dichotomy'], 'F2': ['dichotomous_belief'],
+              'F3': ['profit_loss_thinking'], 'F4': ['dti']}
+fa = FactorAnalyzer(method='minres', rotation='oblimin')
+fa.fit(df2)
+print(f"Factor loadings matrix \n{fa.loadings_}\n")
+print(f"Communalities \n{fa.get_communalities()}\n")
+print(f"Correlation matrix \n{fa.corr_}\n")
+print(f"Eigenvalues \n{fa.get_eigenvalues()}\n")
+print(f"Factor variance \n{fa.get_factor_variance()}\n")
+print(f"Rotation matrix \n{fa.rotation_matrix_}\n")
+print(f"Factor loadings matrix \n{fa.loadings_}\n")
+print(f"Uniqueness \n{fa.get_uniquenesses()}\n")
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
