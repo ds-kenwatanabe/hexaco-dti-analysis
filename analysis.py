@@ -5,7 +5,12 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
+from statsmodels.compat import lzip
 from factor_analyzer import FactorAnalyzer
+from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity
+from factor_analyzer.factor_analyzer import calculate_kmo
+# from factor_analyzer import ConfirmatoryFactorAnalyzer
+# from factor_analyzer import ModelSpecificationParser
 
 df = pd.read_csv('february2023.csv')
 
@@ -613,18 +618,51 @@ def residplot_dti():
 
 # print(residplot_dti())
 
-# Confirmatory factor analysis
-df2 = df[['preference_for_dichotomy', 'dichotomous_belief', 'profit_loss_thinking', 'dti']]
-fa = FactorAnalyzer(method='minres', rotation='oblimin')
+# Prepping for Factor Analysis
+df2 = df[['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
+       'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10',
+       'dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']]
+# Adequecay tests - Bartlett test
+bartlett = calculate_bartlett_sphericity(df2)
+bart_names = ['chi-square', 'p-value']
+print(f"Bartlett's test {lzip(bart_names, bartlett)}")
+
+# Adequecay tests - Kaiser-Meyer-Olkin (KMO) Test
+kmo_all, kmo_model = calculate_kmo(df2)
+print(f"KMO test {kmo_model}\n")
+
+# Eploratory factor analysis
+fa = FactorAnalyzer(n_factors=5, method='ml', rotation=None)
 fa.fit(df2)
-print(f"Factor loadings matrix \n{fa.loadings_}\n")
-print(f"Communalities \n{fa.get_communalities()}\n")
-print(f"Correlation matrix \n{fa.corr_}\n")
-print(f"Eigenvalues \n{fa.get_eigenvalues()}\n")
-print(f"Factor variance \n{fa.get_factor_variance()}\n")
-print(f"Rotation matrix \n{fa.rotation_matrix_}\n")
-print(f"Factor loadings matrix \n{fa.loadings_}\n")
-print(f"Uniqueness \n{fa.get_uniquenesses()}\n")
+ev, v = fa.get_eigenvalues()
+print(f"Eigenvalues \n{ev}\n")
+# Plotting Number of factors
+"""plt.scatter(range(1,df2.shape[1]+1), ev)
+plt.plot(range(1,df2.shape[1]+1), ev)
+plt.title('Scree Plot')
+plt.xlabel('Factors')
+plt.ylabel('Eigenvalue')
+plt.grid()
+plt.show()"""
+
+# FA with 3 factors, promax rotation
+fa2 = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
+fa2.fit(df2)
+print(f"Factor loadings matrix \n{fa2.loadings_}\n")
+print(f"Communalities \n{fa2.get_communalities()}\n")
+print(f"Correlation matrix \n{fa2.corr_}\n")
+fvar = ['F1', 'F2', 'F3']
+print(f"Factor variance \n{lzip(fvar, fa2.get_factor_variance())}")
+print("Factor variance order = Variance, Poportional var, Cumulative var\n")
+print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
+print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
+
+# Correlation matrix
+correlation_matrix = df2.corr(method='pearson').round(2)
+matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+sns.set(rc={'figure.figsize': (13, 10)})
+sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
+plt.show()
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
@@ -646,13 +684,13 @@ plt.ylabel('Studentized Residuals')
 # plt.show()
 
 result_ols = model_ols.summary()
-print(result_ols)
+# print(result_ols)
 
 # Multinomial Logistic Regression
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
                                 "sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
-print(result_mnl)
+# print(result_mnl)
 
 # Saving dfs
 # df.to_csv('analysis.csv')
