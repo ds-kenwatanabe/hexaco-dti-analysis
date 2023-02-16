@@ -370,9 +370,16 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
 
 
 def normality(method, *variables):
+    """
+    Calculates normality of the variables(s), given a method.
+    :param method: 'shapiro' for Shapiro-Wilk test,
+    'normaltest' for Omnibus test, 'jarque_bera' for Jarque-Bera test.
+    :param variables: depedent variables
+    :return: None
+    """
     for arg in variables:
         print(pg.normality(data=df[arg], method=method, alpha=0.05))
-    return '\n'
+    return None
 
 
 # print(normality('normaltest', "H", "E", "X", "A", "C", "O", "dti_all"))
