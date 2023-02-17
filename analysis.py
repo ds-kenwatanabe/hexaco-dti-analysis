@@ -9,8 +9,6 @@ from statsmodels.compat import lzip
 from factor_analyzer import FactorAnalyzer
 from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity
 from factor_analyzer.factor_analyzer import calculate_kmo
-from factor_analyzer import ConfirmatoryFactorAnalyzer
-from factor_analyzer import ModelSpecificationParser
 
 df = pd.read_csv('february2023.csv')
 
@@ -674,6 +672,18 @@ sns.heatmap(factor_loadings, xticklabels=x_labels,
             yticklabels=y_labels, cmap="YlOrBr", annot=True)
 plt.title('Factor loading matrix')
 plt.show()"""
+
+# Saving new factors
+df3 = df2.copy()
+factor_1 = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5']
+df3['factor_1'] = df3[factor_1].sum(axis=1)
+factor_2 = ['dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10']
+df3['factor_2'] = df3[factor_2].sum(axis=1)
+factor_3 = ['dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
+df3['factor_3'] = df3[factor_3].sum(axis=1)
+
+# Testing new reliability for the factors
+print(reliability_test(factor_1, factor_2, factor_3))
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
