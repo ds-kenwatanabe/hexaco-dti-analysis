@@ -708,7 +708,7 @@ df_all = pd.concat([df, df_fact], axis=1, join='inner')
 # OLS
 
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
-                                "H + E + X + A + C + O", data=df).fit()
+                                "H + E + X + A + C + O", data=df_all).fit()
 
 # Testing for outliers (Studentized Residuals)
 """stud_res = model_ols.outlier_test()
