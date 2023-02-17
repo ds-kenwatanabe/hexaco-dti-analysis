@@ -665,14 +665,18 @@ df3['factor_3'] = df3[factor_3].sum(axis=1)
 # Testing new reliability for the factors
 print(reliability_test(factor_1, factor_2, factor_3))
 
-df4 = pd.merge(df, df3)
-print(df4.describe())
-"""correlation_matrix = df2.corr(method='pearson').round(2)
+# Joining HEXACO with new DTI factors
+df_hex = df[['H', 'E', 'X', 'A', 'C', 'O']]
+df_fact = df3[['factor_1', 'factor_2', 'factor_3']]
+
+df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
+
+"""correlation_matrix = df_hex_fact.corr(method='pearson').round(2)
 matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
 sns.set(rc={'figure.figsize': (13, 10)})
 sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-return plt.show()"""
-
+plt.show()
+"""
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
