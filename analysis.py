@@ -649,6 +649,7 @@ plt.show()"""
 fa2 = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
 fa2.fit(df2)
 print(f"Factor loadings matrix \n{fa2.loadings_}\n")
+factor_loadings = fa2.loadings_
 print(f"Communalities \n{fa2.get_communalities()}\n")
 print(f"Correlation matrix \n{fa2.corr_}\n")
 fvar = ['F1', 'F2', 'F3']
@@ -664,20 +665,29 @@ print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 # sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
 # plt.show()
 
+# Factor loadings Heatmap
+"""x_labels = ['Factor 1', 'Factor 2', 'Factor 3']
+y_labels = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
+            'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10',
+            'dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
+sns.heatmap(factor_loadings, xticklabels=x_labels,
+            yticklabels=y_labels, cmap="YlOrBr", annot=True)
+plt.title('Factor loading matrix')
+plt.show()"""
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
                                 "H + E + X + A + C + O", data=df).fit()
 
 # Testing for outliers (Studentized Residuals)
-stud_res = model_ols.outlier_test()
+"""stud_res = model_ols.outlier_test()
 x = df['dti']
 y = stud_res['student_resid']
 plt.scatter(x, y)
 plt.axhline(y=0, color='red', linestyle='--')
 plt.xlabel('DTI')
 plt.ylabel('Studentized Residuals')
-# plt.show()
+plt.show()"""
 
 # Alternatively
 # fig = plt.figure(figsize=(12, 8))
