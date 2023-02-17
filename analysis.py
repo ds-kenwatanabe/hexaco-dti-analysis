@@ -670,14 +670,33 @@ df_hex = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti']]
 df_fact = df3[['factor_1', 'factor_2', 'factor_3']]
 
 df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
+
+spearman = stats.spearmanr(df_hex, df_fact)
+"""
+fig, axes = plt.subplots(2, 2, figsize=(4, 4))
+fig.tight_layout(h_pad=2)
+pg.qqplot(df['dti'], dist='norm', ax=axes[0, 0],
+          confidence=0.95).set_title('DTI', size=10)
+pg.qqplot(df3['factor_1'], dist='norm', ax=axes[0, 1],
+          confidence=0.95).set_title('Factor 1', size=10)
+pg.qqplot(df3['factor_2'], dist='norm', ax=axes[1, 0],
+          confidence=0.95).set_title('Factor 2', size=10)
+pg.qqplot(df3['factor_3'], dist='norm', ax=axes[1, 1],
+          confidence=0.95).set_title('Factor 3', size=10)
+plt.show()"""
+"""correlation_matrix = df2.corr(method='spearman').round(2)
+matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+sns.set(rc={'figure.figsize': (13, 10)})
+sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
+plt.show()"""
 """pairwise_hex_fact = pg.pairwise_corr(df_hex_fact, columns=['factor_1', 'factor_2',
                                                            'factor_3', 'dti',
                                                            'H', 'E',
                                                            'X', 'A',
                                                            'C', 'O'],
-                                                            method='pearson')
+                                                            method='spearman')
 pairwise_hex_fact.to_csv('hex_fact.csv')"""
-"""correlation_matrix = df_hex_fact.corr(method='pearson').round(2)
+"""correlation_matrix = df_hex_fact.corr(method='spearman').round(2)
 matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
 sns.set(rc={'figure.figsize': (13, 10)})
 sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
@@ -685,6 +704,7 @@ plt.show()"""
 
 
 # OLS
+
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
                                 "H + E + X + A + C + O", data=df).fit()
 
