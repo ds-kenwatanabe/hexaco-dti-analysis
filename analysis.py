@@ -685,6 +685,15 @@ df3['factor_3'] = df3[factor_3].sum(axis=1)
 # Testing new reliability for the factors
 print(reliability_test(factor_1, factor_2, factor_3))
 
+df4 = pd.merge(df, df3)
+print(df4.describe())
+"""correlation_matrix = df2.corr(method='pearson').round(2)
+matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+sns.set(rc={'figure.figsize': (13, 10)})
+sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
+return plt.show()"""
+
+
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
                                 "H + E + X + A + C + O", data=df).fit()
