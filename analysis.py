@@ -702,6 +702,8 @@ sns.set(rc={'figure.figsize': (13, 10)})
 sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
 plt.show()"""
 
+# Dataframe with new factors
+df_all = pd.concat([df, df_fact], axis=1, join='inner')
 
 # OLS
 
@@ -727,10 +729,17 @@ result_ols = model_ols.summary()
 # print(result_ols)
 
 # Multinomial Logistic Regression
-model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + dti + "
-                                "sex + kinsey + sex:kinsey", data=df).fit()
+
+model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
+                                    "dti + sex + kinsey + sex:kinsey", data=df_all).fit()
 result_mnl = model_mnl.summary()
-# print(result_mnl)
+print(result_mnl)
+
+model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
+                                    "factor_1 + factor_2 + factor_3 + "
+                                     "sex + kinsey + sex:kinsey", data=df_all).fit()
+result_mnl2 = model_mnl2.summary()
+print(result_mnl2)
 
 # Saving dfs
 # df.to_csv('analysis.csv')
