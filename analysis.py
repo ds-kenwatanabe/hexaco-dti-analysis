@@ -178,8 +178,6 @@ hexaco_dict_reverse = {'Discordo fortemente': 5,
                        'Discordo': 4, 'Neutro': 3,
                        'Concordo': 2, 'Concordo fortemente': 1}
 
-# df['hexaco_1'] = df['hexaco_1'].apply(lambda x: hexaco_dict_reverse[x])
-
 # Reversed and regular coded HEXACO values
 reverse = ['hexaco_1', 'hexaco_19', 'hexaco_31', 'hexaco_49', 'hexaco_55',
            'hexaco_14', 'hexaco_20', 'hexaco_26', 'hexaco_32', 'hexaco_44',
@@ -434,24 +432,6 @@ def qq_multiple_df(num_cols, num_rows, *dataframes):
     return plt.show()
 
 
-"""print(qq_multiple_df(3, 2, df['H'], df['E'], df['X'], df['A'], df['C'], df['O']))
-print(qq_multiple_df(2, 2, df['dti'], df['profit_loss_thinking'],
-                     df['dichotomous_belief'], df['preference_for_dichotomy']))"""
-
-
-"""
-print(qq_multiple_df(4, 3, df['H_sincerity'], df['H_fairness'], df['H_greed_avoidance'], df['H_modesty'],
-                     df['E_fearfulness'], df['E_anxiety'], df['E_dependence'], df['E_sentimentality']))
-
-print(qq_multiple_df(4, 3, df['X_social_self_esteem'], df['X_social_boldness'], df['X_sociability'], df['X_liveliness'],
-                     df['A_forgiveness'], df['A_gentleness'], df['A_flexibility'], df['A_patience']))
-
-print(qq_multiple_df(4, 3, df['C_organization'], df['C_diligence'], df['C_perfectionism'], df['C_prudence'],
-                     df['O_aesthetic_apreciation'], df['O_inquisitiveness'], df['O_creativity'],
-                     df['O_unconventionality']))
-"""
-
-
 def qqdti():
     """
     Shows a Quantile-quantile plot for DTI.
@@ -657,11 +637,11 @@ print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
 print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 
 # Correlation matrix
-# correlation_matrix = df2.corr(method='pearson').round(2)
-# matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-# sns.set(rc={'figure.figsize': (13, 10)})
-# sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-# plt.show()
+"""correlation_matrix = df2.corr(method='pearson').round(2)
+matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+sns.set(rc={'figure.figsize': (13, 10)})
+sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
+plt.show()"""
 
 # Factor loadings Heatmap
 """x_labels = ['Factor 1', 'Factor 2', 'Factor 3']
