@@ -664,14 +664,6 @@ print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 # sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
 # plt.show()
 
-# Confirmatory Factor analysis
-model_dict = {"preference_for_dichotomy": ['dti_1', 'dti_4', 'dti_7', 'dti_10', 'dti_13'],
-              "dichotomous_belief": ['dti_2', 'dti_5', 'dti_8', 'dti_11', 'dti_14'],
-              "profit_loss_thinking": ['dti_3', 'dti_6', 'dti_9', 'dti_12', 'dti_15']}
-model_spec = ModelSpecificationParser.parse_model_specification_from_dict(df2, model_dict)
-cfa = ConfirmatoryFactorAnalyzer(model_spec, disp=False)
-cfa.fit(df2.values)
-print(cfa.loadings_)
 
 # OLS
 model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
