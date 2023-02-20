@@ -713,8 +713,6 @@ plt.show()
 # Dataframe with new factors
 df_all = pd.concat([df, df_fact], axis=1, join='inner')
 
-
-
 # Multiple t-tests
 tests_dti = ttest(df_all['dti'][df_all['sex'] == 'Male'], group1_name='Male',
               group2=df_all['dti'][df_all['sex'] == 'Female'], group2_name='Female')
@@ -731,6 +729,23 @@ tests_f2 = ttest(df_all['factor_1'][df_all['sex'] == 'Male'], group1_name='Male'
 tests_f3 = ttest(df_all['factor_3'][df_all['sex'] == 'Male'], group1_name='Male',
               group2=df_all['factor_3'][df_all['sex'] == 'Female'], group2_name='Female')
 # print(tests_f3)
+
+# Assumptions check
+dti_diff = stats.levene(df_all['dti'][df_all['sex'] == 'Male'],
+           df_all['dti'][df_all['sex'] == 'Female'], center='mean')
+# print(dti_diff)
+
+f1_diff = stats.levene(df_all['factor_1'][df_all['sex'] == 'Male'],
+           df_all['factor_1'][df_all['sex'] == 'Female'], center='mean')
+# print(f1_diff)
+
+f2_diff = stats.levene(df_all['factor_2'][df_all['sex'] == 'Male'],
+           df_all['factor_2'][df_all['sex'] == 'Female'], center='mean')
+# print(f2_diff)
+
+f3_diff = stats.levene(df_all['factor_3'][df_all['sex'] == 'Male'],
+           df_all['factor_3'][df_all['sex'] == 'Female'], center='mean')
+# print(f3_diff)
 
 # OLS
 
