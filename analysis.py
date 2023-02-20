@@ -749,27 +749,40 @@ f3_diff = stats.levene(df_all['factor_3'][df_all['sex'] == 'Male'],
 
 # OLS
 
-model_ols = sm.OLS.from_formula("dti ~ sex + kinsey + sex:kinsey + "
-                                "H + E + X + A + C + O", data=df_all).fit()
+model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df_all).fit()
 
+model_ols_f1 = sm.OLS.from_formula("factor_1 ~ H + E + X + A + C + O", data=df_all).fit()
+
+model_ols_f2 = sm.OLS.from_formula("factor_2 ~ H + E + X + A + C + O", data=df_all).fit()
+
+model_ols_f3 = sm.OLS.from_formula("factor_3 ~ H + E + X + A + C + O", data=df_all).fit()
+
+# OLS results
+result_ols = model_ols.summary()
+# print(result_ols)
+result_ols_f1 = model_ols_f1.summary()
+# print(result_ols_f1)
+result_ols_f2 = model_ols_f2.summary()
+# print(result_ols_f2)
+result_ols_f3 = model_ols_f3.summary()
+# print(result_ols_f3)
 # Testing for outliers (Studentized Residuals)
-"""stud_res = model_ols.outlier_test()
-x = df['dti']
+"""
+stud_res = model_ols.outlier_test()
+x = df_all['dti']
 y = stud_res['student_resid']
 plt.scatter(x, y)
 plt.axhline(y=0, color='red', linestyle='--')
 plt.xlabel('DTI')
 plt.ylabel('Studentized Residuals')
-plt.show()"""
+plt.show()
+"""
 
 # Alternatively
 # fig = plt.figure(figsize=(12, 8))
 # fig = sm.graphics.plot_regress_exog(model_ols, 'X', fig=fig)
 # plt.show()
 
-# OLS results
-result_ols = model_ols.summary()
-# print(result_ols)
 
 # Multinomial Logistic Regression
 
