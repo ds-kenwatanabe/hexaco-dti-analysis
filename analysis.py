@@ -627,15 +627,15 @@ plt.show()"""
 # FA with 3 factors, promax rotation
 fa2 = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
 fa2.fit(df2)
-print(f"Factor loadings matrix \n{fa2.loadings_}\n")
-factor_loadings = fa2.loadings_
-print(f"Communalities \n{fa2.get_communalities()}\n")
-print(f"Correlation matrix \n{fa2.corr_}\n")
-fvar = ['F1', 'F2', 'F3']
-print(f"Factor variance \n{lzip(fvar, fa2.get_factor_variance())}")
-print("Factor variance order = Variance, Poportional var, Cumulative var\n")
-print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
-print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
+# print(f"Factor loadings matrix \n{fa2.loadings_}\n")
+# factor_loadings = fa2.loadings_
+# print(f"Communalities \n{fa2.get_communalities()}\n")
+# print(f"Correlation matrix \n{fa2.corr_}\n")
+# fvar = ['F1', 'F2', 'F3']
+# print(f"Factor variance \n{lzip(fvar, fa2.get_factor_variance())}")
+# print("Factor variance order = Variance, Poportional var, Cumulative var\n")
+# print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
+# print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 
 # Correlation matrix
 """correlation_matrix = df2.corr(method='pearson').round(2)
@@ -767,6 +767,7 @@ plt.show()"""
 # fig = sm.graphics.plot_regress_exog(model_ols, 'X', fig=fig)
 # plt.show()
 
+# OLS results
 result_ols = model_ols.summary()
 # print(result_ols)
 
@@ -775,13 +776,13 @@ result_ols = model_ols.summary()
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "dti + sex + kinsey + sex:kinsey", data=df_all).fit()
 result_mnl = model_mnl.summary()
-print(result_mnl)
+# print(result_mnl)
 
 model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "factor_1 + factor_2 + factor_3 + "
                                      "sex + kinsey + sex:kinsey", data=df_all).fit()
 result_mnl2 = model_mnl2.summary()
-print(result_mnl2)
+# print(result_mnl2)
 
 # Saving dfs
 # df.to_csv('analysis.csv')
