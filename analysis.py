@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
+from researchpy import ttest
 from statsmodels.compat import lzip
 from factor_analyzer import FactorAnalyzer
 from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity
@@ -683,27 +684,53 @@ pg.qqplot(df3['factor_2'], dist='norm', ax=axes[1, 0],
           confidence=0.95).set_title('Factor 2', size=10)
 pg.qqplot(df3['factor_3'], dist='norm', ax=axes[1, 1],
           confidence=0.95).set_title('Factor 3', size=10)
-plt.show()"""
-"""correlation_matrix = df2.corr(method='spearman').round(2)
+plt.show()
+"""
+"""
+correlation_matrix = df2.corr(method='spearman').round(2)
 matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
 sns.set(rc={'figure.figsize': (13, 10)})
 sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-plt.show()"""
-"""pairwise_hex_fact = pg.pairwise_corr(df_hex_fact, columns=['factor_1', 'factor_2',
+plt.show()
+"""
+"""
+pairwise_hex_fact = pg.pairwise_corr(df_hex_fact, columns=['factor_1', 'factor_2',
                                                            'factor_3', 'dti',
                                                            'H', 'E',
                                                            'X', 'A',
                                                            'C', 'O'],
                                                             method='spearman')
-pairwise_hex_fact.to_csv('hex_fact.csv')"""
-"""correlation_matrix = df_hex_fact.corr(method='spearman').round(2)
+pairwise_hex_fact.to_csv('hex_fact.csv')
+"""
+"""
+correlation_matrix = df_hex_fact.corr(method='spearman').round(2)
 matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
 sns.set(rc={'figure.figsize': (13, 10)})
 sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-plt.show()"""
+plt.show()
+"""
 
 # Dataframe with new factors
 df_all = pd.concat([df, df_fact], axis=1, join='inner')
+
+
+
+# Multiple t-tests
+tests_dti = ttest(df_all['dti'][df_all['sex'] == 'Male'], group1_name='Male',
+              group2=df_all['dti'][df_all['sex'] == 'Female'], group2_name='Female')
+# print(tests_dti)
+
+tests_f1 = ttest(df_all['factor_1'][df_all['sex'] == 'Male'], group1_name='Male',
+              group2=df_all['factor_1'][df_all['sex'] == 'Female'], group2_name='Female')
+# print(tests_f1)
+
+tests_f2 = ttest(df_all['factor_1'][df_all['sex'] == 'Male'], group1_name='Male',
+              group2=df_all['factor_2'][df_all['sex'] == 'Female'], group2_name='Female')
+# print(tests_f2)
+
+tests_f3 = ttest(df_all['factor_3'][df_all['sex'] == 'Male'], group1_name='Male',
+              group2=df_all['factor_3'][df_all['sex'] == 'Female'], group2_name='Female')
+# print(tests_f3)
 
 # OLS
 
