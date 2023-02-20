@@ -614,7 +614,8 @@ print(f"KMO test {kmo_model}\n")
 fa = FactorAnalyzer(n_factors=5, method='ml', rotation=None)
 fa.fit(df2)
 ev, v = fa.get_eigenvalues()
-print(f"Eigenvalues \n{ev}\n")
+# print(f"Eigenvalues \n{ev}\n")
+
 # Plotting Number of factors
 """plt.scatter(range(1,df2.shape[1]+1), ev)
 plt.plot(range(1,df2.shape[1]+1), ev)
@@ -686,6 +687,7 @@ pg.qqplot(df3['factor_3'], dist='norm', ax=axes[1, 1],
           confidence=0.95).set_title('Factor 3', size=10)
 plt.show()
 """
+# Correlations matrix for DTI, factors and HEXACO
 """
 correlation_matrix = df2.corr(method='spearman').round(2)
 matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
@@ -789,7 +791,7 @@ plt.show()
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "dti + sex + kinsey + sex:kinsey", data=df_all).fit()
 result_mnl = model_mnl.summary()
-# print(result_mnl)
+print(result_mnl)
 
 model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "factor_1 + factor_2 + factor_3 + "
