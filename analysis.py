@@ -715,21 +715,25 @@ plt.show()
 # Dataframe with new factors
 df_all = pd.concat([df, df_fact], axis=1, join='inner')
 
-# Multiple t-tests
-tests_dti = ttest(df_all['dti'][df_all['sex'] == 'Male'], group1_name='Male',
-              group2=df_all['dti'][df_all['sex'] == 'Female'], group2_name='Female')
+# Multiple t-tests - sex differences
+# random sampling given greater ratio of women
+df_sex_fact = df_all[['sex', 'dti', 'factor_1', 'factor_2', 'factor_3']]
+df_sex_fact = df_sex_fact.groupby('sex', group_keys=False).apply(lambda x: x.sample(272))
+
+tests_dti = ttest(df_sex_fact['dti'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
+              group2=df_sex_fact['dti'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_dti)
 
-tests_f1 = ttest(df_all['factor_1'][df_all['sex'] == 'Male'], group1_name='Male',
-              group2=df_all['factor_1'][df_all['sex'] == 'Female'], group2_name='Female')
+tests_f1 = ttest(df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
+              group2=df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f1)
 
-tests_f2 = ttest(df_all['factor_1'][df_all['sex'] == 'Male'], group1_name='Male',
-              group2=df_all['factor_2'][df_all['sex'] == 'Female'], group2_name='Female')
+tests_f2 = ttest(df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
+              group2=df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f2)
 
-tests_f3 = ttest(df_all['factor_3'][df_all['sex'] == 'Male'], group1_name='Male',
-              group2=df_all['factor_3'][df_all['sex'] == 'Female'], group2_name='Female')
+tests_f3 = ttest(df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
+              group2=df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f3)
 
 # Assumptions check
