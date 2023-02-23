@@ -302,6 +302,7 @@ df['O_creativity'] = df[O_creativity].mean(axis=1)
 O_unconventionality = ['hexaco_19', 'hexaco_43', 'hexaco_55']
 df['O_unconventionality'] = df[O_unconventionality].mean(axis=1)
 
+
 # Box plots
 
 
@@ -339,6 +340,8 @@ df = df[df.C > 2]
 df = df[df.O > 2.1]
 df = df[df.dti > 28]
 df = df[df.dti < 86]
+
+
 # print(box(df, 2, 3, None, None, 'H', 'E', 'X', 'A', 'C', 'O'))
 
 # Histograms
@@ -368,6 +371,8 @@ def histogram_multiple_df(num_cols, num_rows, *dataframes):
 
 """print(histogram_multiple_df(4, 2, df['H'], df['E'], df['X'],
                             df['A'], df['C'], df['O'], df['dti'], df['age']))"""
+
+
 # Testing for normality
 
 
@@ -549,6 +554,8 @@ def pearsonr_all():
 
 # Pairwise correlations table
 pairwise = pg.pairwise_corr(df, columns=['dti', 'H', 'E', 'X', 'A', 'C', 'O'], method='pearson')
+
+
 # pairwise.to_csv('pairwise.csv')
 
 # Regression plot
@@ -599,18 +606,18 @@ def residplot_dti():
 
 # Prepping for Factor Analysis
 df2 = df[['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
-       'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10',
-       'dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']]
-# Adequecay tests - Bartlett test
+          'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10',
+          'dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']]
+# Adequacy tests - Bartlett test
 bartlett = calculate_bartlett_sphericity(df2)
 bart_names = ['chi-square', 'p-value']
 print(f"Bartlett's test {lzip(bart_names, bartlett)}")
 
-# Adequecay tests - Kaiser-Meyer-Olkin (KMO) Test
+# Adequacy tests - Kaiser-Meyer-Olkin (KMO) Test
 kmo_all, kmo_model = calculate_kmo(df2)
 print(f"KMO test {kmo_model}\n")
 
-# Eploratory factor analysis
+# Exploratory factor analysis
 fa = FactorAnalyzer(n_factors=5, method='ml', rotation=None)
 fa.fit(df2)
 ev, v = fa.get_eigenvalues()
@@ -721,36 +728,36 @@ df_sex_fact = df_all[['sex', 'dti', 'factor_1', 'factor_2', 'factor_3']]
 df_sex_fact = df_sex_fact.groupby('sex', group_keys=False).apply(lambda x: x.sample(272))
 
 tests_dti = ttest(df_sex_fact['dti'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-              group2=df_sex_fact['dti'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
+                  group2=df_sex_fact['dti'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_dti)
 
 tests_f1 = ttest(df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-              group2=df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
+                 group2=df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f1)
 
 tests_f2 = ttest(df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-              group2=df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
+                 group2=df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f2)
 
 tests_f3 = ttest(df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-              group2=df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
+                 group2=df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f3)
 
 # Assumptions check
 dti_diff = stats.levene(df_all['dti'][df_all['sex'] == 'Male'],
-           df_all['dti'][df_all['sex'] == 'Female'], center='mean')
+                        df_all['dti'][df_all['sex'] == 'Female'], center='mean')
 # print(dti_diff)
 
 f1_diff = stats.levene(df_all['factor_1'][df_all['sex'] == 'Male'],
-           df_all['factor_1'][df_all['sex'] == 'Female'], center='mean')
+                       df_all['factor_1'][df_all['sex'] == 'Female'], center='mean')
 # print(f1_diff)
 
 f2_diff = stats.levene(df_all['factor_2'][df_all['sex'] == 'Male'],
-           df_all['factor_2'][df_all['sex'] == 'Female'], center='mean')
+                       df_all['factor_2'][df_all['sex'] == 'Female'], center='mean')
 # print(f2_diff)
 
 f3_diff = stats.levene(df_all['factor_3'][df_all['sex'] == 'Male'],
-           df_all['factor_3'][df_all['sex'] == 'Female'], center='mean')
+                       df_all['factor_3'][df_all['sex'] == 'Female'], center='mean')
 # print(f3_diff)
 
 # OLS
@@ -798,7 +805,7 @@ result_mnl = model_mnl.summary()
 print(result_mnl)
 
 model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "factor_1 + factor_2 + factor_3 + "
+                                     "factor_1 + factor_2 + factor_3 + "
                                      "sex + kinsey + sex:kinsey", data=df_all).fit()
 result_mnl2 = model_mnl2.summary()
 # print(result_mnl2)
