@@ -834,7 +834,7 @@ freq_table = freq_table.astype(str).applymap(lambda x: x + '%')
 # print(freq_table)
 
 table_hexaco = pd.pivot_table(df, index=['course'], values=['H',
-                              'E', 'X', 'A', 'C', 'O'],
+                                                            'E', 'X', 'A', 'C', 'O'],
                               aggfunc={'H': [np.mean, np.std],
                                        'E': [np.mean, np.std],
                                        'X': [np.mean, np.std],
@@ -844,3 +844,21 @@ table_hexaco = pd.pivot_table(df, index=['course'], values=['H',
 table_hexaco = table_hexaco.round(2)
 # print(table_hexaco)
 
+tests_H = ttest(df['H'][df['sex'] == 'Female'], group1_name='Female',
+                group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
+tests_E = ttest(df['E'][df['sex'] == 'Female'], group1_name='Female',
+                group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
+tests_X = ttest(df['X'][df['sex'] == 'Female'], group1_name='Female',
+                group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
+tests_A = ttest(df['A'][df['sex'] == 'Female'], group1_name='Female',
+                group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
+tests_C = ttest(df['C'][df['sex'] == 'Female'], group1_name='Female',
+                group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
+tests_O = ttest(df['O'][df['sex'] == 'Female'], group1_name='Female',
+                group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
+print(tests_H)
+print(tests_E)
+print(tests_X)
+print(tests_A)
+print(tests_C)
+print(tests_O)
