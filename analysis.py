@@ -720,11 +720,11 @@ plt.show()
 """
 
 # Dataframe with new factors
-df_all = pd.concat([df, df_fact], axis=1, join='inner')
+df = pd.concat([df, df_fact], axis=1, join='inner')
 
 # Multiple t-tests - sex differences
 # random sampling given greater ratio of women
-df_sex_fact = df_all[['sex', 'dti', 'factor_1', 'factor_2', 'factor_3']]
+df_sex_fact = df[['sex', 'dti', 'factor_1', 'factor_2', 'factor_3']]
 df_sex_fact = df_sex_fact.groupby('sex', group_keys=False).apply(lambda x: x.sample(272))
 
 tests_dti = ttest(df_sex_fact['dti'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
@@ -744,31 +744,31 @@ tests_f3 = ttest(df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Male'], group1_n
 # print(tests_f3)
 
 # Assumptions check
-dti_diff = stats.levene(df_all['dti'][df_all['sex'] == 'Male'],
-                        df_all['dti'][df_all['sex'] == 'Female'], center='mean')
+dti_diff = stats.levene(df['dti'][df['sex'] == 'Male'],
+                        df['dti'][df['sex'] == 'Female'], center='mean')
 # print(dti_diff)
 
-f1_diff = stats.levene(df_all['factor_1'][df_all['sex'] == 'Male'],
-                       df_all['factor_1'][df_all['sex'] == 'Female'], center='mean')
+f1_diff = stats.levene(df['factor_1'][df['sex'] == 'Male'],
+                       df['factor_1'][df['sex'] == 'Female'], center='mean')
 # print(f1_diff)
 
-f2_diff = stats.levene(df_all['factor_2'][df_all['sex'] == 'Male'],
-                       df_all['factor_2'][df_all['sex'] == 'Female'], center='mean')
+f2_diff = stats.levene(df['factor_2'][df['sex'] == 'Male'],
+                       df['factor_2'][df['sex'] == 'Female'], center='mean')
 # print(f2_diff)
 
-f3_diff = stats.levene(df_all['factor_3'][df_all['sex'] == 'Male'],
-                       df_all['factor_3'][df_all['sex'] == 'Female'], center='mean')
+f3_diff = stats.levene(df['factor_3'][df['sex'] == 'Male'],
+                       df['factor_3'][df['sex'] == 'Female'], center='mean')
 # print(f3_diff)
 
 # OLS
 
-model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df_all).fit()
+model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
 
-model_ols_f1 = sm.OLS.from_formula("factor_1 ~ H + E + X + A + C + O", data=df_all).fit()
+model_ols_f1 = sm.OLS.from_formula("factor_1 ~ H + E + X + A + C + O", data=df).fit()
 
-model_ols_f2 = sm.OLS.from_formula("factor_2 ~ H + E + X + A + C + O", data=df_all).fit()
+model_ols_f2 = sm.OLS.from_formula("factor_2 ~ H + E + X + A + C + O", data=df).fit()
 
-model_ols_f3 = sm.OLS.from_formula("factor_3 ~ H + E + X + A + C + O", data=df_all).fit()
+model_ols_f3 = sm.OLS.from_formula("factor_3 ~ H + E + X + A + C + O", data=df).fit()
 
 # OLS results
 result_ols = model_ols.summary()
@@ -782,7 +782,7 @@ result_ols_f3 = model_ols_f3.summary()
 # Testing for outliers (Studentized Residuals)
 """
 stud_res = model_ols.outlier_test()
-x = df_all['dti']
+x = df['dti']
 y = stud_res['student_resid']
 plt.scatter(x, y)
 plt.axhline(y=0, color='red', linestyle='--')
@@ -800,13 +800,13 @@ plt.show()
 # Multinomial Logistic Regression
 
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "dti + sex + kinsey + sex:kinsey", data=df_all).fit()
+                                    "dti + sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
 print(result_mnl)
 
 model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                      "factor_1 + factor_2 + factor_3 + "
-                                     "sex + kinsey + sex:kinsey", data=df_all).fit()
+                                     "sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl2 = model_mnl2.summary()
 # print(result_mnl2)
 
@@ -825,7 +825,7 @@ result_mnl2 = model_mnl2.summary()
 # model_mnl.summary2().tables[0].to_excel('mnl_summary1.xlsx')
 # model_mnl.summary2().tables[1].to_excel('mnl_summary2.xlsx')
 # model_mnl.summary2().tables[2].to_excel('mnl_summary3.xlsx')
-freq_table = pd.crosstab(index=df_all['sex'], columns=[df_all['kinsey'], df_all['course']],
+freq_table = pd.crosstab(index=df['sex'], columns=[df['kinsey'], df['course']],
                          normalize=True, margins=True, margins_name='Total') * 100
 freq_table.astype(str).applymap(lambda x: x + '%')
 
