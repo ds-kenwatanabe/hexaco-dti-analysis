@@ -735,7 +735,7 @@ tests_f1 = ttest(df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Male'], group1_n
                  group2=df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f1)
 
-tests_f2 = ttest(df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
+tests_f2 = ttest(df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
                  group2=df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f2)
 
@@ -825,8 +825,22 @@ result_mnl2 = model_mnl2.summary()
 # model_mnl.summary2().tables[0].to_excel('mnl_summary1.xlsx')
 # model_mnl.summary2().tables[1].to_excel('mnl_summary2.xlsx')
 # model_mnl.summary2().tables[2].to_excel('mnl_summary3.xlsx')
+
+# Other tables
 freq_table = pd.crosstab(index=df['sex'], columns=[df['kinsey'], df['course']],
                          normalize=True, margins=True, margins_name='Total') * 100
-freq_table.astype(str).applymap(lambda x: x + '%')
+freq_table = freq_table.round(1)
+freq_table = freq_table.astype(str).applymap(lambda x: x + '%')
+# print(freq_table)
 
-print(freq_table)
+table_hexaco = pd.pivot_table(df, index=['course'], values=['H',
+                              'E', 'X', 'A', 'C', 'O'],
+                              aggfunc={'H': [np.mean, np.std],
+                                       'E': [np.mean, np.std],
+                                       'X': [np.mean, np.std],
+                                       'A': [np.mean, np.std],
+                                       'C': [np.mean, np.std],
+                                       'O': [np.mean, np.std]})
+table_hexaco = table_hexaco.round(2)
+# print(table_hexaco)
+
