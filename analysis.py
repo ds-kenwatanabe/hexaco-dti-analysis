@@ -143,8 +143,8 @@ df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Hetero
 
 # Indicator/Dummy coded variables
 df['sex_num'] = df.sex.replace({'Male': 1, 'Female': 2})
-df['course_num'] = df.course.replace({'Social Sciences': 2,
-                                      'Biological Sciences': 1,
+df['course_num'] = df.course.replace({'Social Sciences': 1,
+                                      'Biological Sciences': 2,
                                       'Exact Sciences': 3})
 df['kinsey_num'] = df.kinsey.replace({'Heterosexual': 1, 'Bisexual': 2, 'Homosexual': 3})
 
@@ -825,3 +825,8 @@ result_mnl2 = model_mnl2.summary()
 # model_mnl.summary2().tables[0].to_excel('mnl_summary1.xlsx')
 # model_mnl.summary2().tables[1].to_excel('mnl_summary2.xlsx')
 # model_mnl.summary2().tables[2].to_excel('mnl_summary3.xlsx')
+freq_table = pd.crosstab(index=df_all['sex'], columns=[df_all['kinsey'], df_all['course']],
+                         normalize=True, margins=True, margins_name='Total') * 100
+freq_table.astype(str).applymap(lambda x: x + '%')
+
+print(freq_table)
