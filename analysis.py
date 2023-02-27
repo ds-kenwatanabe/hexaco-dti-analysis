@@ -632,6 +632,70 @@ plt.ylabel('Eigenvalue')
 plt.grid()
 plt.show()"""
 
+def horn_parallel_analysis(data, k=10, print_eigenvalues=False):
+    """
+    Computes a Horn Parallel analysis for Factor analysis.
+    :param data: pandas dataframe
+    :param k: range
+    :param print_eigenvalues:
+    :return: None
+    """
+    # Create a random matrix to match the dataset
+    n, m = data.shape
+    # Set the factor analysis parameters
+    fa = FactorAnalyzer(n_factors=3, method='ml', rotation=None, use_smc=True)
+    # Create arrays to store the values
+    sum_component_eigens = np.empty(m)
+    sum_factor_eigens = np.empty(m)
+    # Run the fit 'K' times over a random matrix
+    for runNum in range(0, k):
+        fa.fit(np.random.normal(size=(n, m)))
+        sum_component_eigens = sum_component_eigens + fa.get_eigenvalues()[0]
+        sum_factor_eigens = sum_factor_eigens + fa.get_eigenvalues()[1]
+    # Average over the number of runs
+    avg_component_eigens = sum_component_eigens / k
+    avg_factor_eigens = sum_factor_eigens / k
+
+    # Get the eigenvalues for the fit on supplied data
+    fa.fit(data)
+    data_ev = fa.get_eigenvalues()
+    # Set up a scree plot
+    plt.figure(figsize=(8, 6))
+    # Print results
+    if print_eigenvalues:
+        print('Principal component eigenvalues for random matrix:\n', avg_component_eigens)
+        print('Factor eigenvalues for random matrix:\n', avg_factor_eigens)
+        print('Principal component eigenvalues for data:\n', data_ev[0])
+        print('Factor eigenvalues for data:\n', data_ev[1])
+    # Find the suggested stopping points
+    suggested_factors = sum((data_ev[1] - avg_factor_eigens) > 0)
+    suggested_components = sum((data_ev[0] - avg_component_eigens) > 0)
+    print('Parallel analysis suggests that the number of factors = ',
+          suggested_factors , ' and the number of components = ', suggested_components)
+
+    # Plot the eigenvalues against the number of variables
+    # Line for eigenvalue 1
+    plt.plot([0, m+1], [1, 1], 'k--', alpha=0.3)
+    # For the random data - Components
+    plt.plot(range(1, m+1), avg_component_eigens, 'b', label='PC - random', alpha=0.4)
+    # For the Data - Components
+    plt.scatter(range(1, m+1), data_ev[0], c='b', marker='o')
+    plt.plot(range(1, m+1), data_ev[0], 'b', label='PC - data')
+    # For the random data - Factors
+    plt.plot(range(1, m+1), avg_factor_eigens, 'g', label='FA - random', alpha=0.4)
+    # For the Data - Factors
+    plt.scatter(range(1, m+1), data_ev[1], c='g', marker='o')
+    plt.plot(range(1, m+1), data_ev[1], 'g', label='FA - data')
+    plt.title('Parallel Analysis Scree Plots', {'fontsize': 20})
+    plt.xlabel('Factors/Components', {'fontsize': 15})
+    plt.xticks(ticks=range(1, m+1), labels=range(1, m+1))
+    plt.ylabel('Eigenvalue', {'fontsize': 15})
+    plt.legend()
+    plt.show()
+
+
+# print(horn_parallel_analysis(df2))
+
 # FA with 3 factors, promax rotation
 fa2 = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
 fa2.fit(df2)
@@ -653,14 +717,16 @@ sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
 plt.show()"""
 
 # Factor loadings Heatmap
-"""x_labels = ['Factor 1', 'Factor 2', 'Factor 3']
+"""
+x_labels = ['Factor 1', 'Factor 2', 'Factor 3']
 y_labels = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
             'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10',
             'dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
 sns.heatmap(factor_loadings, xticklabels=x_labels,
             yticklabels=y_labels, cmap="YlOrBr", annot=True)
 plt.title('Factor loading matrix')
-plt.show()"""
+plt.show()
+"""
 
 # Saving new factors
 df3 = df2.copy()
