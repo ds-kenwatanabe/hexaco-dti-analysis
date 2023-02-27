@@ -697,13 +697,13 @@ def horn_parallel_analysis(data, k=10, print_eigenvalues=False):
 # print(horn_parallel_analysis(df2))
 
 # FA with 3 factors, promax rotation
-fa2 = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
+fa2 = FactorAnalyzer(n_factors=4, method='ml', rotation='promax')
 fa2.fit(df2)
 # print(f"Factor loadings matrix \n{fa2.loadings_}\n")
 # factor_loadings = fa2.loadings_
 # print(f"Communalities \n{fa2.get_communalities()}\n")
 # print(f"Correlation matrix \n{fa2.corr_}\n")
-# fvar = ['F1', 'F2', 'F3']
+# fvar = ['F1', 'F2', 'F3', 'F4']
 # print(f"Factor variance \n{lzip(fvar, fa2.get_factor_variance())}")
 # print("Factor variance order = Variance, Poportional var, Cumulative var\n")
 # print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
@@ -718,7 +718,7 @@ plt.show()"""
 
 # Factor loadings Heatmap
 """
-x_labels = ['Factor 1', 'Factor 2', 'Factor 3']
+x_labels = ['Factor 1', 'Factor 2', 'Factor 3', 'Factor 4']
 y_labels = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
             'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10',
             'dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
@@ -734,15 +734,17 @@ factor_1 = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5']
 df3['factor_1'] = df3[factor_1].sum(axis=1)
 factor_2 = ['dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10']
 df3['factor_2'] = df3[factor_2].sum(axis=1)
-factor_3 = ['dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
+factor_3 = ['dti_13', 'dti_14', 'dti_15']
 df3['factor_3'] = df3[factor_3].sum(axis=1)
+factor_4 = ['dti_11', 'dti_12']
+df3['factor_4'] = df3[factor_4].sum(axis=1)
 
 # Testing new reliability for the factors
-print(reliability_test(factor_1, factor_2, factor_3))
+print(reliability_test(factor_1, factor_2, factor_3, factor_4))
 
 # Joining HEXACO with new DTI factors
 df_hex = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti']]
-df_fact = df3[['factor_1', 'factor_2', 'factor_3']]
+df_fact = df3[['factor_1', 'factor_2', 'factor_3', 'factor_4']]
 
 df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
 
@@ -750,14 +752,14 @@ spearman = stats.spearmanr(df_hex, df_fact)
 """
 fig, axes = plt.subplots(2, 2, figsize=(4, 4))
 fig.tight_layout(h_pad=2)
-pg.qqplot(df['dti'], dist='norm', ax=axes[0, 0],
-          confidence=0.95).set_title('DTI', size=10)
-pg.qqplot(df3['factor_1'], dist='norm', ax=axes[0, 1],
+pg.qqplot(df3['factor_1'], dist='norm', ax=axes[0, 0],
           confidence=0.95).set_title('Factor 1', size=10)
-pg.qqplot(df3['factor_2'], dist='norm', ax=axes[1, 0],
+pg.qqplot(df3['factor_2'], dist='norm', ax=axes[0, 1],
           confidence=0.95).set_title('Factor 2', size=10)
-pg.qqplot(df3['factor_3'], dist='norm', ax=axes[1, 1],
+pg.qqplot(df3['factor_3'], dist='norm', ax=axes[1, 0],
           confidence=0.95).set_title('Factor 3', size=10)
+pg.qqplot(df3['factor_4'], dist='norm', ax=axes[1, 1],
+          confidence=0.95).set_title('Factor 4', size=10)
 plt.show()
 """
 # Correlations matrix for DTI, factors and HEXACO
@@ -790,7 +792,7 @@ df = pd.concat([df, df_fact], axis=1, join='inner')
 
 # Multiple t-tests - sex differences
 # random sampling given greater ratio of women
-df_sex_fact = df[['sex', 'dti', 'factor_1', 'factor_2', 'factor_3']]
+df_sex_fact = df[['sex', 'dti', 'factor_1', 'factor_2', 'factor_3', 'factor_4']]
 df_sex_fact = df_sex_fact.groupby('sex', group_keys=False).apply(lambda x: x.sample(272))
 
 tests_dti = ttest(df_sex_fact['dti'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
@@ -809,6 +811,10 @@ tests_f3 = ttest(df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Male'], group1_n
                  group2=df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f3)
 
+tests_f4 = ttest(df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
+                 group2=df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
+# print(tests_f4)
+
 # Assumptions check
 dti_diff = stats.levene(df['dti'][df['sex'] == 'Male'],
                         df['dti'][df['sex'] == 'Female'], center='mean')
@@ -826,6 +832,10 @@ f3_diff = stats.levene(df['factor_3'][df['sex'] == 'Male'],
                        df['factor_3'][df['sex'] == 'Female'], center='mean')
 # print(f3_diff)
 
+f4_diff = stats.levene(df['factor_3'][df['sex'] == 'Male'],
+                       df['factor_3'][df['sex'] == 'Female'], center='mean')
+# print(f4_diff)
+
 # OLS
 
 model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
@@ -836,6 +846,7 @@ model_ols_f2 = sm.OLS.from_formula("factor_2 ~ H + E + X + A + C + O", data=df).
 
 model_ols_f3 = sm.OLS.from_formula("factor_3 ~ H + E + X + A + C + O", data=df).fit()
 
+model_ols_f4 = sm.OLS.from_formula("factor_3 ~ H + E + X + A + C + O", data=df).fit()
 # OLS results
 result_ols = model_ols.summary()
 # print(result_ols)
@@ -845,6 +856,9 @@ result_ols_f2 = model_ols_f2.summary()
 # print(result_ols_f2)
 result_ols_f3 = model_ols_f3.summary()
 # print(result_ols_f3)
+results_ols_f4 = model_ols_f4.summary()
+#print(results_ols_f4)
+
 # Testing for outliers (Studentized Residuals)
 """
 stud_res = model_ols.outlier_test()
