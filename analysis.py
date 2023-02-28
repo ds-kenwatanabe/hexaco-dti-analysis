@@ -487,31 +487,6 @@ def violin(dataframe, num_rows, num_cols, group, x, *y):
 # Reliability
 
 
-def reliability():
-    """
-    Prints the reliability values for HEXACO and DTI.
-    :return: None
-    """
-    print(f"Cronbach's alpha for H: {pg.cronbach_alpha(data=df[H])}")
-    print(f"Cronbach's alpha for E: {pg.cronbach_alpha(data=df[E])}")
-    print(f"Cronbach's alpha for X: {pg.cronbach_alpha(data=df[X])}")
-    print(f"Cronbach's alpha for A: {pg.cronbach_alpha(data=df[A])}")
-    print(f"Cronbach's alpha for C: {pg.cronbach_alpha(data=df[C])}")
-    print(f"Cronbach's alpha for O: {pg.cronbach_alpha(data=df[O])}\n")
-
-    print(f"Cronbach's alpha for Preference for Dichotomy:"
-          f" {pg.cronbach_alpha(data=df[preference_for_dichotomy])}")
-    print(f"Cronbach's alpha for Dichotomous Belief: "
-          f"{pg.cronbach_alpha(data=df[dichotomous_belief])}")
-    print(f"Cronbach's alpha for Profit and and Loss Thinking: "
-          f"{pg.cronbach_alpha(data=df[profit_loss_thinking])}")
-    print(f"Cronbach's alpha for total DTI: "
-          f"{pg.cronbach_alpha(data=df[dti])}")
-    return "\n"
-
-
-# print(reliability())
-
 def reliability_test(*variables):
     """
     Calculates the reliability for the variables of interest.
@@ -631,6 +606,7 @@ plt.xlabel('Factors')
 plt.ylabel('Eigenvalue')
 plt.grid()
 plt.show()"""
+
 
 def horn_parallel_analysis(data, k=10, print_eigenvalues=False):
     """
