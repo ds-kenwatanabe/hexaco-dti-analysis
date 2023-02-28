@@ -738,6 +738,9 @@ pg.qqplot(df3['factor_4'], dist='norm', ax=axes[1, 1],
           confidence=0.95).set_title('Factor 4', size=10)
 plt.show()
 """
+# Dataframe with new factors
+df = pd.concat([df, df_fact], axis=1, join='inner')
+
 # Correlations matrix for DTI, factors and HEXACO
 
 
@@ -752,19 +755,6 @@ def spearman_dti_hexaco():
     sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
     return plt.show()
 
-
-"""
-pairwise_hex_fact = pg.pairwise_corr(df_hex_fact, columns=['factor_1', 'factor_2',
-                                                           'factor_3', 'dti',
-                                                           'H', 'E',
-                                                           'X', 'A',
-                                                           'C', 'O'],
-                                                            method='spearman')
-pairwise_hex_fact.to_csv('hex_fact.csv')
-"""
-
-# Dataframe with new factors
-df = pd.concat([df, df_fact], axis=1, join='inner')
 
 # Multiple t-tests - sex differences
 # random sampling given greater ratio of women
