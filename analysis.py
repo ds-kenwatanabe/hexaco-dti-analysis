@@ -608,18 +608,18 @@ plt.grid()
 plt.show()"""
 
 
-def horn_parallel_analysis(data, k=10, print_eigenvalues=False):
+def horn_parallel_analysis(data, k=1000, print_eigenvalues=False):
     """
     Computes a Horn Parallel analysis for Factor analysis.
     :param data: pandas dataframe
-    :param k: range
+    :param k: K times fit over a random matrix
     :param print_eigenvalues:
     :return: None
     """
     # Create a random matrix to match the dataset
     n, m = data.shape
     # Set the factor analysis parameters
-    fa = FactorAnalyzer(n_factors=3, method='ml', rotation=None, use_smc=True)
+    fa = FactorAnalyzer(n_factors=1, method='ml', rotation=None, use_smc=True)
     # Create arrays to store the values
     sum_component_eigens = np.empty(m)
     sum_factor_eigens = np.empty(m)
@@ -647,7 +647,7 @@ def horn_parallel_analysis(data, k=10, print_eigenvalues=False):
     suggested_factors = sum((data_ev[1] - avg_factor_eigens) > 0)
     suggested_components = sum((data_ev[0] - avg_component_eigens) > 0)
     print('Parallel analysis suggests that the number of factors = ',
-          suggested_factors , ' and the number of components = ', suggested_components)
+          suggested_factors, ' and the number of components = ', suggested_components)
 
     # Plot the eigenvalues against the number of variables
     # Line for eigenvalue 1
