@@ -16,7 +16,7 @@ df = pd.read_csv('february2023.csv')
 # Dropping first two rows (import id)
 df = df.drop(df.index[[0, 1]])
 
-# Changing courses to major areas of knowledge
+# Changing courses to major science branches
 df.loc[df["course"] == "Outro", "course"] = df[df["course"] == "Outro"]["course2"]
 
 course_names = df['course'].value_counts().index.tolist()
@@ -28,7 +28,21 @@ df = df.dropna()
 # Typecasting age
 df['age'] = df['age'].astype('int')
 
-# Replacing course names for areas of knowledge
+# Changing ethnicity to english
+cols_ethnic = ['ethnicity']
+dict_ethnic = {'Branca': 'White', 'Parda': 'Black/White mixed', 'Preta': 'Black',
+               'Amarela': 'Asian', 'Outra (especifique)': 'Other', 'Indígena': 'Native american'}
+for col in cols_ethnic:
+    df[col] = df[col].replace(dict_ethnic)
+
+# Changing region to english
+cols_region = ['region']
+dict_region = {'Nordeste': 'Northeast', 'Sudeste': 'Southeast', 'Sul': 'South',
+               'Centro-Oeste': 'Midwest', 'Norte': 'North'}
+for col in cols_region:
+    df[col] = df[col].replace(dict_region)
+
+# Replacing course names for science branches
 cols = ["course"]
 replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológicas',
                 'Medicina': 'Ciências Biológicas',
@@ -848,7 +862,7 @@ plt.show()
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "dti + sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
-print(result_mnl)
+# print(result_mnl)
 
 model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                      "factor_1 + factor_2 + factor_3 + "
