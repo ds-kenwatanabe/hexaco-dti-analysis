@@ -763,13 +763,20 @@ pg.qqplot(df3['factor_4'], dist='norm', ax=axes[1, 1],
 plt.show()
 """
 # Correlations matrix for DTI, factors and HEXACO
-"""
-correlation_matrix = df2.corr(method='spearman').round(2)
-matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-sns.set(rc={'figure.figsize': (13, 10)})
-sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-plt.show()
-"""
+
+
+def spearman_dti_hexaco():
+    """
+    Computes a spearman correlation matrix between DTI and HEXACO values.
+    :return: Correlation matrix
+    """
+    correlation_matrix = df2.corr(method='spearman').round(2)
+    matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+    sns.set(rc={'figure.figsize': (13, 10)})
+    sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
+    return plt.show()
+
+
 """
 pairwise_hex_fact = pg.pairwise_corr(df_hex_fact, columns=['factor_1', 'factor_2',
                                                            'factor_3', 'dti',
@@ -778,13 +785,6 @@ pairwise_hex_fact = pg.pairwise_corr(df_hex_fact, columns=['factor_1', 'factor_2
                                                            'C', 'O'],
                                                             method='spearman')
 pairwise_hex_fact.to_csv('hex_fact.csv')
-"""
-"""
-correlation_matrix = df_hex_fact.corr(method='spearman').round(2)
-matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-sns.set(rc={'figure.figsize': (13, 10)})
-sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-plt.show()
 """
 
 # Dataframe with new factors
