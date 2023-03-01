@@ -49,7 +49,7 @@ dict_semester = {'1º': 1, '2º': 1, '3º': 1, '4º': 1,
                  '9º': 3, '10º': 3, '11º': 3, '12º': 3}
 for col in cols_semester:
     df[col] = df[col].replace(dict_semester)
-    
+
 # Replacing course names for science branches
 cols = ["course"]
 replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológicas',
@@ -872,11 +872,6 @@ model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
 result_mnl = model_mnl.summary()
 # print(result_mnl)
 
-model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                     "factor_1 + factor_2 + factor_3 + "
-                                     "sex + kinsey + sex:kinsey", data=df).fit()
-result_mnl2 = model_mnl2.summary()
-# print(result_mnl2)
 
 # Saving dfs
 # df.to_csv('analysis.csv')
@@ -887,9 +882,6 @@ result_mnl2 = model_mnl2.summary()
 # res = pd.read_html(results_as_html, header=0, index_col=0)[0]
 # res.to_html('summary_mnl.html')
 
-# model_ols.summary2().tables[0].to_excel('ols_summary.xlsx')
-# model_ols.summary2().tables[1].to_excel('ols_summary2.xlsx')
-# model_ols.summary2().tables[2].to_excel('ols_summary3.xlsx')
 # model_mnl.summary2().tables[0].to_excel('mnl_summary1.xlsx')
 # model_mnl.summary2().tables[1].to_excel('mnl_summary2.xlsx')
 # model_mnl.summary2().tables[2].to_excel('mnl_summary3.xlsx')
