@@ -42,6 +42,14 @@ dict_region = {'Nordeste': 'Northeast', 'Sudeste': 'Southeast', 'Sul': 'South',
 for col in cols_region:
     df[col] = df[col].replace(dict_region)
 
+# Dividing semesters into tertiles
+cols_semester = ['semester']
+dict_semester = {'1º': 1, '2º': 1, '3º': 1, '4º': 1,
+                 '5º': 2, '6º': 2, '7º': 2, '8º': 2,
+                 '9º': 3, '10º': 3, '11º': 3, '12º': 3}
+for col in cols_semester:
+    df[col] = df[col].replace(dict_semester)
+    
 # Replacing course names for science branches
 cols = ["course"]
 replace_dict = {"Direito": "Ciências Humanas", 'Psicologia': 'Ciências Biológicas',
