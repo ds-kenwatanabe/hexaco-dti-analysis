@@ -10,6 +10,7 @@ from statsmodels.compat import lzip
 from factor_analyzer import FactorAnalyzer
 from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity
 from factor_analyzer.factor_analyzer import calculate_kmo
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as lda
 
 df = pd.read_csv('february2023.csv')
 
@@ -44,9 +45,9 @@ for col in cols_region:
 
 # Dividing semesters into tertiles
 cols_semester = ['semester']
-dict_semester = {'1º': 1, '2º': 1, '3º': 1, '4º': 1,
-                 '5º': 2, '6º': 2, '7º': 2, '8º': 2,
-                 '9º': 3, '10º': 3, '11º': 3, '12º': 3}
+dict_semester = {'1º': '1T', '2º': '1T', '3º': '1T', '4º': '1T',
+                 '5º': '2T', '6º': '2T', '7º': '2T', '8º': '2T',
+                 '9º': '3T', '10º': '3T', '11º': '3T', '12º': '3T'}
 for col in cols_semester:
     df[col] = df[col].replace(dict_semester)
 
@@ -872,6 +873,54 @@ model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
 result_mnl = model_mnl.summary()
 # print(result_mnl)
 
+# MANOVA
+# New dataframes by branches of science
+df_social = df[df['course'] == 'Social Sciences']
+df_bio = df[df['course'] == 'Biological Sciences']
+df_exact = df[df['course'] == 'Exact Sciences']
+
+social_manova = sm.MANOVA.from_formula("semester ~ H + E + X + A + C + O", data=df_social).mv_test()
+print(social_manova)
+bio_manova = sm.MANOVA.from_formula("semester ~ H + E + X + A + C + O", data=df_bio).mv_test()
+print(bio_manova)
+exact_manova = sm.MANOVA.from_formula("semester ~ H + E + X + A + C + O", data=df_exact).mv_test()
+print(exact_manova)
+
+# plot social
+x = df_social[["H", "E", 'X', 'A', 'C', 'O']]
+y = df_social["semester"]
+post_hoc_social = lda().fit(X=x, y=y)
+print(post_hoc_social.means_, '\n')
+print(post_hoc_social.explained_variance_ratio_, '\n')
+
+X_new = pd.DataFrame(lda().fit(X=x, y=y).transform(x), columns=["lda1", "lda2"])
+X_new["semester"] = df_social["semester"]
+social = sns.scatterplot(data=X_new, x="lda1", y="lda2", hue=df_social.semester.tolist())
+plt.show()
+
+# plot bio
+w = df_bio[["H", "E", 'X', 'A', 'C', 'O']]
+z = df_bio["semester"]
+post_hoc_bio = lda().fit(X=w, y=z)
+print(post_hoc_bio.means_, '\n')
+print(post_hoc_bio.explained_variance_ratio_, '\n')
+
+w_new = pd.DataFrame(lda().fit(X=w, y=z).transform(w), columns=["lda1", "lda2"])
+w_new["semester"] = df_bio["semester"]
+bio = sns.scatterplot(data=w_new, x="lda1", y="lda2", hue=df_bio.semester.tolist())
+plt.show()
+
+# plot exact
+r = df_exact[["H", "E", 'X', 'A', 'C', 'O']]
+t = df_exact["semester"]
+post_hoc_exact = lda().fit(X=r, y=t)
+print(post_hoc_exact.means_, '\n')
+print(post_hoc_exact.explained_variance_ratio_, '\n')
+
+r_new = pd.DataFrame(lda().fit(X=r, y=t).transform(r), columns=["lda1", "lda2"])
+r_new["semester"] = df_exact["semester"]
+exact = sns.scatterplot(data=r_new, x="lda1", y="lda2", hue=df_exact.semester.tolist())
+plt.show()
 
 # Saving dfs
 # df.to_csv('analysis.csv')
