@@ -708,6 +708,19 @@ fa2.fit(df2)
 # print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
 # print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 
+# FA with 3 factors, promax rotation
+fa3 = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
+fa3.fit(df2)
+# print(f"Factor loadings matrix \n{fa3.loadings_}\n")
+factor_loadings3 = fa3.loadings_
+# print(f"Communalities \n{fa3.get_communalities()}\n")
+# print(f"Correlation matrix \n{fa3.corr_}\n")
+# fvar = ['F1', 'F2', 'F3']
+# print(f"Factor variance \n{lzip(fvar, fa3.get_factor_variance())}")
+# print("Factor variance order = Variance, Poportional var, Cumulative var\n")
+# print(f"Rotation matrix \n{fa3.rotation_matrix_}\n")
+# print(f"Uniqueness \n{fa3.get_uniquenesses()}\n")
+
 # Correlation matrix
 """correlation_matrix = df2.corr(method='pearson').round(2)
 matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
