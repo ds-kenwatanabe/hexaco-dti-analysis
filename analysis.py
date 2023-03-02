@@ -695,7 +695,7 @@ def horn_parallel_analysis(data, k=1000, print_eigenvalues=False):
 
 # print(horn_parallel_analysis(df2))
 
-# FA with 3 factors, promax rotation
+# FA with 4 factors, promax rotation
 fa2 = FactorAnalyzer(n_factors=4, method='ml', rotation='promax')
 fa2.fit(df2)
 # print(f"Factor loadings matrix \n{fa2.loadings_}\n")
@@ -893,9 +893,9 @@ post_hoc_social = lda().fit(X=x, y=y)
 # print(post_hoc_social.means_, '\n')
 # print(post_hoc_social.explained_variance_ratio_, '\n')
 
-X_new = pd.DataFrame(lda().fit(X=x, y=y).transform(x), columns=["lda1", "lda2"])
-X_new["semester"] = df_social["semester"]
-social = sns.scatterplot(data=X_new, x="lda1", y="lda2", hue=df_social.semester.tolist())
+# X_new = pd.DataFrame(lda().fit(X=x, y=y).transform(x), columns=["lda1", "lda2"])
+# X_new["semester"] = df_social["semester"]
+# social = sns.scatterplot(data=X_new, x="lda1", y="lda2", hue=df_social.semester.tolist())
 # plt.show()
 
 # plot bio
@@ -905,9 +905,9 @@ post_hoc_bio = lda().fit(X=w, y=z)
 # print(post_hoc_bio.means_, '\n')
 # print(post_hoc_bio.explained_variance_ratio_, '\n')
 
-w_new = pd.DataFrame(lda().fit(X=w, y=z).transform(w), columns=["lda1", "lda2"])
-w_new["semester"] = df_bio["semester"]
-bio = sns.scatterplot(data=w_new, x="lda1", y="lda2", hue=df_bio.semester.tolist())
+# w_new = pd.DataFrame(lda().fit(X=w, y=z).transform(w), columns=["lda1", "lda2"])
+# w_new["semester"] = df_bio["semester"]
+# bio = sns.scatterplot(data=w_new, x="lda1", y="lda2", hue=df_bio.semester.tolist())
 # plt.show()
 
 # plot exact
@@ -917,9 +917,9 @@ post_hoc_exact = lda().fit(X=r, y=t)
 # print(post_hoc_exact.means_, '\n')
 # print(post_hoc_exact.explained_variance_ratio_, '\n')
 
-r_new = pd.DataFrame(lda().fit(X=r, y=t).transform(r), columns=["lda1", "lda2"])
-r_new["semester"] = df_exact["semester"]
-exact = sns.scatterplot(data=r_new, x="lda1", y="lda2", hue=df_exact.semester.tolist())
+# r_new = pd.DataFrame(lda().fit(X=r, y=t).transform(r), columns=["lda1", "lda2"])
+# r_new["semester"] = df_exact["semester"]
+# exact = sns.scatterplot(data=r_new, x="lda1", y="lda2", hue=df_exact.semester.tolist())
 # plt.show()
 
 # Saving dfs
