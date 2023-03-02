@@ -164,7 +164,7 @@ df['kinsey'] = df['kinsey'].replace({'0 - Exclusivamente heterossexual': 'Hetero
                                      'mas incidentalmente heterossexual': 'Homosexual',
                                      '6 - Exclusivamente homossexual': 'Homosexual'})
 
-# Indicator/Dummy coded variables
+# Numerical coded variables
 df['sex_num'] = df.sex.replace({'Male': 1, 'Female': 2})
 df['course_num'] = df.course.replace({'Social Sciences': 1,
                                       'Biological Sciences': 2,
