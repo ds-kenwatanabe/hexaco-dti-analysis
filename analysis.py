@@ -699,7 +699,7 @@ def horn_parallel_analysis(data, k=1000, print_eigenvalues=False):
 fa2 = FactorAnalyzer(n_factors=4, method='ml', rotation='promax')
 fa2.fit(df2)
 # print(f"Factor loadings matrix \n{fa2.loadings_}\n")
-# factor_loadings = fa2.loadings_
+factor_loadings = fa2.loadings_
 # print(f"Communalities \n{fa2.get_communalities()}\n")
 # print(f"Correlation matrix \n{fa2.corr_}\n")
 # fvar = ['F1', 'F2', 'F3', 'F4']
@@ -715,8 +715,8 @@ fa3.fit(df2)
 factor_loadings3 = fa3.loadings_
 # print(f"Communalities \n{fa3.get_communalities()}\n")
 # print(f"Correlation matrix \n{fa3.corr_}\n")
-# fvar = ['F1', 'F2', 'F3']
-# print(f"Factor variance \n{lzip(fvar, fa3.get_factor_variance())}")
+fvar3 = ['F1', 'F2', 'F3']
+# print(f"Factor variance \n{lzip(fvar3, fa3.get_factor_variance())}")
 # print("Factor variance order = Variance, Poportional var, Cumulative var\n")
 # print(f"Rotation matrix \n{fa3.rotation_matrix_}\n")
 # print(f"Uniqueness \n{fa3.get_uniquenesses()}\n")
