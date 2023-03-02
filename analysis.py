@@ -846,7 +846,7 @@ result_ols_f2 = model_ols_f2.summary()
 result_ols_f3 = model_ols_f3.summary()
 # print(result_ols_f3)
 results_ols_f4 = model_ols_f4.summary()
-#print(results_ols_f4)
+# print(results_ols_f4)
 
 # Testing for outliers (Studentized Residuals)
 """
@@ -880,47 +880,47 @@ df_bio = df[df['course'] == 'Biological Sciences']
 df_exact = df[df['course'] == 'Exact Sciences']
 
 social_manova = sm.MANOVA.from_formula("semester ~ H + E + X + A + C + O", data=df_social).mv_test()
-print(social_manova)
+# print(social_manova)
 bio_manova = sm.MANOVA.from_formula("semester ~ H + E + X + A + C + O", data=df_bio).mv_test()
-print(bio_manova)
+# print(bio_manova)
 exact_manova = sm.MANOVA.from_formula("semester ~ H + E + X + A + C + O", data=df_exact).mv_test()
-print(exact_manova)
+# print(exact_manova)
 
 # plot social
 x = df_social[["H", "E", 'X', 'A', 'C', 'O']]
 y = df_social["semester"]
 post_hoc_social = lda().fit(X=x, y=y)
-print(post_hoc_social.means_, '\n')
-print(post_hoc_social.explained_variance_ratio_, '\n')
+# print(post_hoc_social.means_, '\n')
+# print(post_hoc_social.explained_variance_ratio_, '\n')
 
 X_new = pd.DataFrame(lda().fit(X=x, y=y).transform(x), columns=["lda1", "lda2"])
 X_new["semester"] = df_social["semester"]
 social = sns.scatterplot(data=X_new, x="lda1", y="lda2", hue=df_social.semester.tolist())
-plt.show()
+# plt.show()
 
 # plot bio
 w = df_bio[["H", "E", 'X', 'A', 'C', 'O']]
 z = df_bio["semester"]
 post_hoc_bio = lda().fit(X=w, y=z)
-print(post_hoc_bio.means_, '\n')
-print(post_hoc_bio.explained_variance_ratio_, '\n')
+# print(post_hoc_bio.means_, '\n')
+# print(post_hoc_bio.explained_variance_ratio_, '\n')
 
 w_new = pd.DataFrame(lda().fit(X=w, y=z).transform(w), columns=["lda1", "lda2"])
 w_new["semester"] = df_bio["semester"]
 bio = sns.scatterplot(data=w_new, x="lda1", y="lda2", hue=df_bio.semester.tolist())
-plt.show()
+# plt.show()
 
 # plot exact
 r = df_exact[["H", "E", 'X', 'A', 'C', 'O']]
 t = df_exact["semester"]
 post_hoc_exact = lda().fit(X=r, y=t)
-print(post_hoc_exact.means_, '\n')
-print(post_hoc_exact.explained_variance_ratio_, '\n')
+# print(post_hoc_exact.means_, '\n')
+# print(post_hoc_exact.explained_variance_ratio_, '\n')
 
 r_new = pd.DataFrame(lda().fit(X=r, y=t).transform(r), columns=["lda1", "lda2"])
 r_new["semester"] = df_exact["semester"]
 exact = sns.scatterplot(data=r_new, x="lda1", y="lda2", hue=df_exact.semester.tolist())
-plt.show()
+# plt.show()
 
 # Saving dfs
 # df.to_csv('analysis.csv')
