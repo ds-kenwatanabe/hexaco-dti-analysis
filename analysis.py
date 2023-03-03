@@ -780,20 +780,9 @@ df = pd.concat([df, df_fact], axis=1, join='inner')
 # Testing new reliability for the factors
 print(reliability_test(factor_1, factor_2))
 
-spearman = stats.spearmanr(df_hex, df_fact)
-"""
-fig, axes = plt.subplots(2, 2, figsize=(4, 4))
-fig.tight_layout(h_pad=2)
-pg.qqplot(df3['factor_1'], dist='norm', ax=axes[0, 0],
-          confidence=0.95).set_title('Factor 1', size=10)
-pg.qqplot(df3['factor_2'], dist='norm', ax=axes[0, 1],
-          confidence=0.95).set_title('Factor 2', size=10)
-pg.qqplot(df3['factor_3'], dist='norm', ax=axes[1, 0],
-          confidence=0.95).set_title('Factor 3', size=10)
-pg.qqplot(df3['factor_4'], dist='norm', ax=axes[1, 1],
-          confidence=0.95).set_title('Factor 4', size=10)
-plt.show()
-"""
+# Correlation between 2 factors
+spearman = stats.spearmanr(df_fact)
+print(spearman)
 
 # Correlations matrix for DTI, factors and HEXACO
 
