@@ -726,7 +726,7 @@ fvar3 = ['F1', 'F2', 'F3']
 # FA with 2 factors, promax rotation, following MAP
 fa2 = FactorAnalyzer(n_factors=2, method='ml', rotation='oblimin')
 fa2.fit(df2)
-# print(f"Factor loadings matrix \n{fa3.loadings_}\n")
+print(f"Factor loadings matrix \n{fa2.loadings_}\n")
 factor_loadings2 = fa2.loadings_
 # print(f"Communalities \n{fa2.get_communalities()}\n")
 # print(f"Correlation matrix \n{fa2.corr_}\n")
