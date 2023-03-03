@@ -523,7 +523,7 @@ def reliability_test(*variables):
     return None
 
 
-# print(reliability_test(H, E, X, A, C, O, dti))
+#
 
 # Pearson correlations
 def pearsonr_all():
@@ -616,19 +616,21 @@ kmo_all, kmo_model = calculate_kmo(df2)
 print(f"KMO test {kmo_model}\n")
 
 # Exploratory factor analysis
-fa = FactorAnalyzer(n_factors=5, method='ml', rotation=None)
+fa = FactorAnalyzer(n_factors=5, method='ml', rotation='oblimin')
 fa.fit(df2)
 ev, v = fa.get_eigenvalues()
 # print(f"Eigenvalues \n{ev}\n")
 
 # Plotting Number of factors
-"""plt.scatter(range(1,df2.shape[1]+1), ev)
+"""
+plt.scatter(range(1,df2.shape[1]+1), ev)
 plt.plot(range(1,df2.shape[1]+1), ev)
 plt.title('Scree Plot')
 plt.xlabel('Factors')
 plt.ylabel('Eigenvalue')
 plt.grid()
-plt.show()"""
+plt.show()
+"""
 
 
 def horn_parallel_analysis(data, k=1000, print_eigenvalues=False):
@@ -642,7 +644,7 @@ def horn_parallel_analysis(data, k=1000, print_eigenvalues=False):
     # Create a random matrix to match the dataset
     n, m = data.shape
     # Set the factor analysis parameters
-    fa = FactorAnalyzer(n_factors=1, method='ml', rotation=None, use_smc=True)
+    fa = FactorAnalyzer(n_factors=4, method='ml', rotation='oblimin', use_smc=True)
     # Create arrays to store the values
     sum_component_eigens = np.empty(m)
     sum_factor_eigens = np.empty(m)
@@ -695,21 +697,21 @@ def horn_parallel_analysis(data, k=1000, print_eigenvalues=False):
 
 # print(horn_parallel_analysis(df2))
 
-# FA with 4 factors, promax rotation
-fa2 = FactorAnalyzer(n_factors=4, method='ml', rotation='promax')
-fa2.fit(df2)
-# print(f"Factor loadings matrix \n{fa2.loadings_}\n")
-factor_loadings = fa2.loadings_
-# print(f"Communalities \n{fa2.get_communalities()}\n")
-# print(f"Correlation matrix \n{fa2.corr_}\n")
+# FA with 4 factors, promax rotation, following parallel analysis
+fa4 = FactorAnalyzer(n_factors=4, method='ml', rotation='oblimin')
+fa4.fit(df2)
+# print(f"Factor loadings matrix \n{fa4.loadings_}\n")
+factor_loadings4 = fa4.loadings_
+# print(f"Communalities \n{fa4.get_communalities()}\n")
+# print(f"Correlation matrix \n{fa4.corr_}\n")
 # fvar = ['F1', 'F2', 'F3', 'F4']
-# print(f"Factor variance \n{lzip(fvar, fa2.get_factor_variance())}")
+# print(f"Factor variance \n{lzip(fvar, fa4.get_factor_variance())}")
 # print("Factor variance order = Variance, Poportional var, Cumulative var\n")
-# print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
-# print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
+# print(f"Rotation matrix \n{fa4.rotation_matrix_}\n")
+# print(f"Uniqueness \n{fa4.get_uniquenesses()}\n")
 
 # FA with 3 factors, promax rotation
-fa3 = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
+fa3 = FactorAnalyzer(n_factors=3, method='ml', rotation='oblimin')
 fa3.fit(df2)
 # print(f"Factor loadings matrix \n{fa3.loadings_}\n")
 factor_loadings3 = fa3.loadings_
@@ -721,20 +723,34 @@ fvar3 = ['F1', 'F2', 'F3']
 # print(f"Rotation matrix \n{fa3.rotation_matrix_}\n")
 # print(f"Uniqueness \n{fa3.get_uniquenesses()}\n")
 
+# FA with 2 factors, promax rotation, following MAP
+fa2 = FactorAnalyzer(n_factors=2, method='ml', rotation='oblimin')
+fa2.fit(df2)
+# print(f"Factor loadings matrix \n{fa3.loadings_}\n")
+factor_loadings2 = fa2.loadings_
+# print(f"Communalities \n{fa2.get_communalities()}\n")
+# print(f"Correlation matrix \n{fa2.corr_}\n")
+fvar2 = ['Variance', 'Proportional variance', 'Cumulative variance']
+print(f"Factor variance \n{lzip(fvar2, fa2.get_factor_variance())}")
+# print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
+# print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
+
 # Correlation matrix
-"""correlation_matrix = df2.corr(method='pearson').round(2)
+"""
+correlation_matrix = df2.corr(method='pearson').round(2)
 matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
 sns.set(rc={'figure.figsize': (13, 10)})
 sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-plt.show()"""
+plt.show()
+"""
 
 # Factor loadings Heatmap
 """
-x_labels = ['Factor 1', 'Factor 2', 'Factor 3', 'Factor 4']
+x_labels = ['Factor 1', 'Factor 2']
 y_labels = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
             'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10',
             'dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
-sns.heatmap(factor_loadings, xticklabels=x_labels,
+sns.heatmap(factor_loadings2, xticklabels=x_labels,
             yticklabels=y_labels, cmap="YlOrBr", annot=True)
 plt.title('Factor loading matrix')
 plt.show()
@@ -742,23 +758,27 @@ plt.show()
 
 # Saving new factors
 df3 = df2.copy()
-factor_1 = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5']
+factor_1 = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
+            'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10']
 df3['factor_1'] = df3[factor_1].sum(axis=1)
-factor_2 = ['dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10']
+factor_2 = ['dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
 df3['factor_2'] = df3[factor_2].sum(axis=1)
-factor_3 = ['dti_13', 'dti_14', 'dti_15']
-df3['factor_3'] = df3[factor_3].sum(axis=1)
-factor_4 = ['dti_11', 'dti_12']
-df3['factor_4'] = df3[factor_4].sum(axis=1)
-
-# Testing new reliability for the factors
-print(reliability_test(factor_1, factor_2, factor_3, factor_4))
+# factor_3 = ['dti_13', 'dti_14', 'dti_15']
+# df3['factor_3'] = df3[factor_3].sum(axis=1)
+# factor_4 = ['dti_11', 'dti_12']
+# df3['factor_4'] = df3[factor_4].sum(axis=1)
 
 # Joining HEXACO with new DTI factors
 df_hex = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti']]
-df_fact = df3[['factor_1', 'factor_2', 'factor_3', 'factor_4']]
+df_fact = df3[['factor_1', 'factor_2']]
 
-df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
+# df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
+
+# Dataframe with new factors
+df = pd.concat([df, df_fact], axis=1, join='inner')
+
+# Testing new reliability for the factors
+print(reliability_test(factor_1, factor_2))
 
 spearman = stats.spearmanr(df_hex, df_fact)
 """
@@ -774,8 +794,6 @@ pg.qqplot(df3['factor_4'], dist='norm', ax=axes[1, 1],
           confidence=0.95).set_title('Factor 4', size=10)
 plt.show()
 """
-# Dataframe with new factors
-df = pd.concat([df, df_fact], axis=1, join='inner')
 
 # Correlations matrix for DTI, factors and HEXACO
 
@@ -794,7 +812,7 @@ def spearman_dti_hexaco():
 
 # Multiple t-tests - sex differences
 # random sampling given greater ratio of women
-df_sex_fact = df[['sex', 'dti', 'factor_1', 'factor_2', 'factor_3', 'factor_4']]
+df_sex_fact = df[['sex', 'dti', 'factor_1', 'factor_2']]
 df_sex_fact = df_sex_fact.groupby('sex', group_keys=False).apply(lambda x: x.sample(272))
 
 tests_dti = ttest(df_sex_fact['dti'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
@@ -809,13 +827,6 @@ tests_f2 = ttest(df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Male'], group1_n
                  group2=df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
 # print(tests_f2)
 
-tests_f3 = ttest(df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-                 group2=df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
-# print(tests_f3)
-
-tests_f4 = ttest(df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-                 group2=df_sex_fact['factor_3'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
-# print(tests_f4)
 
 # Assumptions check
 dti_diff = stats.levene(df['dti'][df['sex'] == 'Male'],
@@ -830,12 +841,6 @@ f2_diff = stats.levene(df['factor_2'][df['sex'] == 'Male'],
                        df['factor_2'][df['sex'] == 'Female'], center='mean')
 # print(f2_diff)
 
-f3_diff = stats.levene(df['factor_3'][df['sex'] == 'Male'],
-                       df['factor_3'][df['sex'] == 'Female'], center='mean')
-# print(f3_diff)
-
-f4_diff = stats.levene(df['factor_3'][df['sex'] == 'Male'],
-                       df['factor_3'][df['sex'] == 'Female'], center='mean')
 # print(f4_diff)
 
 # OLS
@@ -846,9 +851,6 @@ model_ols_f1 = sm.OLS.from_formula("factor_1 ~ H + E + X + A + C + O", data=df).
 
 model_ols_f2 = sm.OLS.from_formula("factor_2 ~ H + E + X + A + C + O", data=df).fit()
 
-model_ols_f3 = sm.OLS.from_formula("factor_3 ~ H + E + X + A + C + O", data=df).fit()
-
-model_ols_f4 = sm.OLS.from_formula("factor_3 ~ H + E + X + A + C + O", data=df).fit()
 # OLS results
 result_ols = model_ols.summary()
 # print(result_ols)
@@ -856,10 +858,6 @@ result_ols_f1 = model_ols_f1.summary()
 # print(result_ols_f1)
 result_ols_f2 = model_ols_f2.summary()
 # print(result_ols_f2)
-result_ols_f3 = model_ols_f3.summary()
-# print(result_ols_f3)
-results_ols_f4 = model_ols_f4.summary()
-# print(results_ols_f4)
 
 # Testing for outliers (Studentized Residuals)
 """
