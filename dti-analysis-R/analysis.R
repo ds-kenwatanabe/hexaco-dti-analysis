@@ -27,11 +27,77 @@ vss(df, n=4, fm="mle", rotate="oblimin")
 FACTORS2.model <- ' factor_1 =~ dti_1 + dti_2 + dti_3 + 
               dti_4 + dti_5 + dti_6 + dti_7 + dti_8 + 
               dti_9 + dti_10
-              factor_2 =~ dti_11 + dti_12 + dti_13 + 
-              dti_14 + dti_15'
+              factor_2 =~ dti_11 + dti_12 + 
+              dti_13 + dti_14 + dti_15'
 
-fit2 <- cfa(FACTORS2.model, data = df)
+fit2 <- cfa(FACTORS2.model, data = df, std.lv=TRUE, estimator='WLSMV')
 summary(fit2, fit.measures=TRUE)
+
+# Calculating reliability
+semTools::reliability(fit2)
+
+# Residuals
+residuals(fit2, type='cor')
+
+# new model accounting for residual correlation
+mod2.model =  'factor_1 =~ dti_1 + dti_2 + dti_3 + 
+              dti_4 + dti_5 + dti_6 + dti_7 + dti_8 + 
+              dti_9 + dti_10
+              factor_2 =~ dti_11 + dti_12 + 
+              dti_13 + dti_14 + dti_15
+              dti_2 ~~ dti_1
+              dti_3 ~~ dti_1
+              dti_5 ~~ dti_1
+              dti_15 ~~ dti_1
+              dti_3 ~~ dti_2
+              dti_5 ~~ dti_2
+              dti_12 ~~ dti_2
+              dti_8 ~~ dti_6
+              dti_12 ~~ dti_6
+              dti_14 ~~ dti_7
+              dti_11 ~~ dti_9
+              dti_12 ~~ dti_9
+              dti_13 ~~ dti_9
+              dti_12 ~~ dti_11
+              dti_15 ~~ dti_11
+              dti_15 ~~ dti_12'
+fitmod <- cfa(mod2.model, data = df, std.lv=TRUE, estimator='WLSMV')
+summary(fitmod, fit.measures=TRUE)
+
+# Residuals
+residuals(fitmod, type='cor')
+
+# Calculating reliability
+semTools::reliability(fitmod)
+
+# Bi-factor model with general factor
+modgen.model =  'gen =~ dti_1 + dti_2 + dti_3 + 
+              dti_4 + dti_5 + dti_6 + dti_7 + dti_8 + 
+              dti_9 + dti_10 + dti_11 + dti_12 + 
+              dti_13 + dti_14 + dti_15
+              factor_1 =~ dti_1 + dti_2 + dti_3 + 
+              dti_4 + dti_5 + dti_6 + dti_7 + dti_8 + 
+              dti_9 + dti_10
+              factor_2 =~ dti_11 + dti_12 + 
+              dti_13 + dti_14 + dti_15'
+fitmodgen <- cfa(modgen.model, data = df, std.lv=TRUE, orthogonal=TRUE, 
+                 estimator='WLSMV')
+summary(fitmodgen, fit.measures=TRUE)
+
+# Calculating reliability
+semTools::reliability(fitmodgen)
+
+# Omega
+omega(df, nfactors = 2, fm = "ml")
+
+# 1 factor
+FACTORS1.model <- ' factor_1 =~ dti_1 + dti_2 + dti_3 + 
+              dti_4 + dti_5 + dti_6 + dti_7 + dti_8 + 
+              dti_9 + dti_10 + dti_11 + dti_12 + 
+              dti_13 + dti_14 + dti_15'
+
+fit1 <- cfa(FACTORS1.model, data = df, std.lv=TRUE)
+summary(fit1, fit.measures=TRUE)
 
 # 3 new factors
 FACTORS3.model <- ' factor_1 =~ dti_1 + dti_2 + dti_3 + 
