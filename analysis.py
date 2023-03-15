@@ -828,8 +828,6 @@ df = df[df.A > 1.2]
 df = df[df.A < 4.9]
 df = df[df.C > 2]
 df = df[df.O > 2.1]
-df = df[df.dti > 28]
-df = df[df.dti < 86]
 
 # OLS
 
