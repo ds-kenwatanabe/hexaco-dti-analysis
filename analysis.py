@@ -773,8 +773,8 @@ df_fact = df3[['factor_1', 'factor_2']]
 # spearman = stats.spearmanr(df_fact)
 # print(spearman)
 scores = pd.read_csv("scores.csv")
-df = pd.concat([df, scores])
-print(df.describe())
+df = pd.concat([df, scores], axis=1)
+
 # Correlations matrix for DTI, factors and HEXACO
 
 
@@ -801,9 +801,9 @@ df = df[df.O > 2.1]
 # Multinomial Logistic Regression
 
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "dti + sex + kinsey + sex:kinsey", data=df).fit()
+                                    "gen + factor_1 + factor_2 + sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
-# print(result_mnl)
+print(result_mnl)
 
 # MANOVA
 # New dataframes by branches of science
