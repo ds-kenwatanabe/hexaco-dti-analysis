@@ -790,39 +790,6 @@ def spearman_dti_hexaco():
     return plt.show()
 
 
-# Multiple t-tests - sex differences
-# random sampling given greater ratio of women
-df_sex_fact = df[['sex', 'dti', 'factor_1', 'factor_2']]
-df_sex_fact = df_sex_fact.groupby('sex', group_keys=False).apply(lambda x: x.sample(272))
-
-tests_dti = ttest(df_sex_fact['dti'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-                  group2=df_sex_fact['dti'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
-# print(tests_dti)
-
-tests_f1 = ttest(df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-                 group2=df_sex_fact['factor_1'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
-# print(tests_f1)
-
-tests_f2 = ttest(df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Male'], group1_name='Male',
-                 group2=df_sex_fact['factor_2'][df_sex_fact['sex'] == 'Female'], group2_name='Female')
-# print(tests_f2)
-
-
-# Assumptions check
-dti_diff = stats.levene(df['dti'][df['sex'] == 'Male'],
-                        df['dti'][df['sex'] == 'Female'], center='mean')
-# print(dti_diff)
-
-f1_diff = stats.levene(df['factor_1'][df['sex'] == 'Male'],
-                       df['factor_1'][df['sex'] == 'Female'], center='mean')
-# print(f1_diff)
-
-f2_diff = stats.levene(df['factor_2'][df['sex'] == 'Male'],
-                       df['factor_2'][df['sex'] == 'Female'], center='mean')
-# print(f2_diff)
-
-# print(f4_diff)
-
 # Removing outliers
 df = df[df.H > 1.5]
 df = df[df.E > 1.5]
@@ -830,40 +797,6 @@ df = df[df.A > 1.2]
 df = df[df.A < 4.9]
 df = df[df.C > 2]
 df = df[df.O > 2.1]
-
-# OLS
-
-model_ols = sm.OLS.from_formula("dti ~ H + E + X + A + C + O", data=df).fit()
-
-model_ols_f1 = sm.OLS.from_formula("factor_1 ~ H + E + X + A + C + O", data=df).fit()
-
-model_ols_f2 = sm.OLS.from_formula("factor_2 ~ H + E + X + A + C + O", data=df).fit()
-
-# OLS results
-result_ols = model_ols.summary()
-# print(result_ols)
-result_ols_f1 = model_ols_f1.summary()
-# print(result_ols_f1)
-result_ols_f2 = model_ols_f2.summary()
-# print(result_ols_f2)
-
-# Testing for outliers (Studentized Residuals)
-"""
-stud_res = model_ols.outlier_test()
-x = df['dti']
-y = stud_res['student_resid']
-plt.scatter(x, y)
-plt.axhline(y=0, color='red', linestyle='--')
-plt.xlabel('DTI')
-plt.ylabel('Studentized Residuals')
-plt.show()
-"""
-
-# Alternatively
-# fig = plt.figure(figsize=(12, 8))
-# fig = sm.graphics.plot_regress_exog(model_ols, 'X', fig=fig)
-# plt.show()
-
 
 # Multinomial Logistic Regression
 
