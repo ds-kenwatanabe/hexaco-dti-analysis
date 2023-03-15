@@ -764,15 +764,17 @@ df_fact = df3[['factor_1', 'factor_2']]
 # df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
 
 # Dataframe with new factors
-df = pd.concat([df, df_fact], axis=1, join='inner')
+# df = pd.concat([df, df_fact], axis=1, join='inner')
 
 # Testing new reliability for the factors
-print(reliability_test(factor_1, factor_2))
+# print(reliability_test(factor_1, factor_2))
 
 # Correlation between 2 factors
-spearman = stats.spearmanr(df_fact)
-print(spearman)
-
+# spearman = stats.spearmanr(df_fact)
+# print(spearman)
+scores = pd.read_csv("scores.csv")
+df = pd.concat([df, scores])
+print(df.describe())
 # Correlations matrix for DTI, factors and HEXACO
 
 
