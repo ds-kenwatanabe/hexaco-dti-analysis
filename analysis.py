@@ -16,6 +16,7 @@ df = pd.read_csv('february2023.csv')
 
 # Dropping first two rows (import id)
 df = df.drop(df.index[[0, 1]])
+df = df.drop(['gender'], axis=1)
 
 # Changing courses to major science branches
 df.loc[df["course"] == "Outro", "course"] = df[df["course"] == "Outro"]["course2"]
@@ -772,8 +773,6 @@ df_fact = df3[['factor_1', 'factor_2']]
 # Correlation between 2 factors
 # spearman = stats.spearmanr(df_fact)
 # print(spearman)
-scores = pd.read_csv("scores.csv")
-df = pd.concat([df, scores], axis=1)
 
 # Correlations matrix for DTI, factors and HEXACO
 
@@ -801,7 +800,7 @@ df = df[df.O > 2.1]
 # Multinomial Logistic Regression
 
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "gen + factor_1 + factor_2 + sex + kinsey + sex:kinsey", data=df).fit()
+                                    "sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
 print(result_mnl)
 
