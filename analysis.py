@@ -774,6 +774,9 @@ df_fact = df3[['factor_1', 'factor_2']]
 # spearman = stats.spearmanr(df_fact)
 # print(spearman)
 
+# Dataframe with DTI regression scores (in R)
+df = pd.read_csv('df_scores.csv')
+
 # Correlations matrix for DTI, factors and HEXACO
 
 
@@ -800,7 +803,7 @@ df = df[df.O > 2.1]
 # Multinomial Logistic Regression
 
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "sex + kinsey + sex:kinsey", data=df).fit()
+                                    "gen + factor_1 + factor_2 + sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
 print(result_mnl)
 
