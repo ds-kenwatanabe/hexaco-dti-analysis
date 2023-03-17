@@ -746,33 +746,6 @@ plt.title('Factor loading matrix')
 plt.show()
 """
 
-# Saving new factors
-df3 = df2.copy()
-factor_1 = ['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
-            'dti_6', 'dti_7', 'dti_8', 'dti_9', 'dti_10']
-df3['factor_1'] = df3[factor_1].sum(axis=1)
-factor_2 = ['dti_11', 'dti_12', 'dti_13', 'dti_14', 'dti_15']
-df3['factor_2'] = df3[factor_2].sum(axis=1)
-# factor_3 = ['dti_13', 'dti_14', 'dti_15']
-# df3['factor_3'] = df3[factor_3].sum(axis=1)
-# factor_4 = ['dti_11', 'dti_12']
-# df3['factor_4'] = df3[factor_4].sum(axis=1)
-
-# Joining HEXACO with new DTI factors
-df_fact = df3[['factor_1', 'factor_2']]
-
-# df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
-
-# Dataframe with new factors
-# df = pd.concat([df, df_fact], axis=1, join='inner')
-
-# Testing new reliability for the factors
-# print(reliability_test(factor_1, factor_2))
-
-# Correlation between 2 factors
-# spearman = stats.spearmanr(df_fact)
-# print(spearman)
-
 # Dataframe with DTI regression scores (in R)
 df = pd.read_csv('df_scores.csv')
 
@@ -799,7 +772,6 @@ def spearman_hexaco():
     return plt.show()
 
 
-print(spearman_hexaco())
 # Multinomial Logistic Regression
 
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
@@ -875,7 +847,7 @@ freq_table = pd.crosstab(index=df['sex'], columns=[df['kinsey'], df['course']],
 freq_table = freq_table.round(1)
 freq_table = freq_table.astype(str).applymap(lambda x: x + '%')
 # print(freq_table)
-freq_table.to_excel('kinsey.xlsx')
+
 table_hexaco = pd.pivot_table(df, index=['course'], values=[
                               'H', 'E', 'X', 'A', 'C', 'O'],
                               aggfunc={'H': [np.mean, np.std],
@@ -886,7 +858,7 @@ table_hexaco = pd.pivot_table(df, index=['course'], values=[
                                        'O': [np.mean, np.std]})
 table_hexaco = table_hexaco.round(2)
 # print(table_hexaco)
-table_hexaco.to_excel('table_hexaco.xlsx')
+
 tests_H = ttest(df['H'][df['sex'] == 'Female'], group1_name='Female',
                 group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
 tests_E = ttest(df['E'][df['sex'] == 'Female'], group1_name='Female',
