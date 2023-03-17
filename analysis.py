@@ -759,7 +759,6 @@ df3['factor_2'] = df3[factor_2].sum(axis=1)
 # df3['factor_4'] = df3[factor_4].sum(axis=1)
 
 # Joining HEXACO with new DTI factors
-df_hex = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti']]
 df_fact = df3[['factor_1', 'factor_2']]
 
 # df_hex_fact = pd.DataFrame.join(df_hex, df_fact)
@@ -777,21 +776,6 @@ df_fact = df3[['factor_1', 'factor_2']]
 # Dataframe with DTI regression scores (in R)
 df = pd.read_csv('df_scores.csv')
 
-# Correlations matrix for DTI, factors and HEXACO
-
-
-def spearman_dti_hexaco():
-    """
-    Computes a spearman correlation matrix between DTI and HEXACO values.
-    :return: Correlation matrix
-    """
-    correlation_matrix = df2.corr(method='spearman').round(2)
-    matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-    sns.set(rc={'figure.figsize': (13, 10)})
-    sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-    return plt.show()
-
-
 # Removing outliers
 df = df[df.H > 1.5]
 df = df[df.E > 1.5]
@@ -800,12 +784,28 @@ df = df[df.A < 4.9]
 df = df[df.C > 2]
 df = df[df.O > 2.1]
 
+# Correlations matrix for DTI, factors and HEXACO
+
+
+def spearman_hexaco():
+    """
+    Computes a spearman correlation matrix between DTI and HEXACO values.
+    :return: Correlation matrix
+    """
+    correlation_matrix = df[['H', 'E', 'X', 'A', 'C', 'O']].corr(method='spearman').round(2)
+    matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+    sns.set(rc={'figure.figsize': (13, 10)})
+    sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
+    return plt.show()
+
+
+print(spearman_hexaco())
 # Multinomial Logistic Regression
 
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "gen + factor_1 + factor_2 + sex + kinsey + sex:kinsey", data=df).fit()
+                                    "gen + sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
-print(result_mnl)
+# print(result_mnl)
 
 # MANOVA
 # New dataframes by branches of science
@@ -875,7 +875,7 @@ freq_table = pd.crosstab(index=df['sex'], columns=[df['kinsey'], df['course']],
 freq_table = freq_table.round(1)
 freq_table = freq_table.astype(str).applymap(lambda x: x + '%')
 # print(freq_table)
-
+freq_table.to_excel('kinsey.xlsx')
 table_hexaco = pd.pivot_table(df, index=['course'], values=[
                               'H', 'E', 'X', 'A', 'C', 'O'],
                               aggfunc={'H': [np.mean, np.std],
@@ -886,7 +886,7 @@ table_hexaco = pd.pivot_table(df, index=['course'], values=[
                                        'O': [np.mean, np.std]})
 table_hexaco = table_hexaco.round(2)
 # print(table_hexaco)
-
+table_hexaco.to_excel('table_hexaco.xlsx')
 tests_H = ttest(df['H'][df['sex'] == 'Female'], group1_name='Female',
                 group2=df['H'][df['sex'] == 'Male'], group2_name='Male')
 tests_E = ttest(df['E'][df['sex'] == 'Female'], group1_name='Female',
