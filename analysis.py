@@ -760,12 +760,12 @@ df = df[df.O > 2.1]
 # Correlations matrix for DTI, factors and HEXACO
 
 
-def spearman_hexaco():
+def pearson_hexaco():
     """
-    Computes a spearman correlation matrix between DTI and HEXACO values.
+    Computes a pearson correlation matrix between DTI and HEXACO values.
     :return: Correlation matrix
     """
-    correlation_matrix = df[['H', 'E', 'X', 'A', 'C', 'O']].corr(method='spearman').round(2)
+    correlation_matrix = df[['H', 'E', 'X', 'A', 'C', 'O']].corr(method='pearson').round(2)
     matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
     sns.set(rc={'figure.figsize': (13, 10)})
     sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
