@@ -513,39 +513,6 @@ def reliability_test(*variables):
     return None
 
 
-#
-
-# Pearson correlations
-def pearsonr_all():
-    """
-    Prints the correlation between HEXACO and DTI
-    and a correlation matrix.
-    :return: Correlation matrix.
-    """
-    print(f"{stats.pearsonr(x=df['dti'], y=df['H'])} for H")
-    print(f"{stats.pearsonr(x=df['dti'], y=df['E'])} for E")
-    print(f"{stats.pearsonr(x=df['dti'], y=df['X'])} for X")
-    print(f"{stats.pearsonr(x=df['dti'], y=df['A'])} for A")
-    print(f"{stats.pearsonr(x=df['dti'], y=df['C'])} for C")
-    print(f"{stats.pearsonr(x=df['dti'], y=df['O'])} for O")
-
-    df2 = df[['H', 'E', 'X', 'A', 'C', 'O', 'dti']]
-
-    correlation_matrix = df2.corr(method='pearson').round(2)
-    matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-    sns.set(rc={'figure.figsize': (13, 10)})
-    sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-    return plt.show()
-
-
-# print(pearsonr_all())
-
-# Pairwise correlations table
-pairwise = pg.pairwise_corr(df, columns=['dti', 'H', 'E', 'X', 'A', 'C', 'O'], method='pearson')
-
-
-# pairwise.to_csv('pairwise.csv')
-
 # Regression plot
 
 
@@ -771,6 +738,10 @@ def pearson_hexaco():
     sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
     return plt.show()
 
+
+# Pairwise correlations table
+pairwise = pg.pairwise_corr(df, columns=['H', 'E', 'X', 'A', 'C', 'O'], method='pearson')
+# print(pairwise)
 
 # Multinomial Logistic Regression
 
