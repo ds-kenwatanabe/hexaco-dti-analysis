@@ -566,11 +566,11 @@ df2 = df[['dti_1', 'dti_2', 'dti_3', 'dti_4', 'dti_5',
 # Adequacy tests - Bartlett test
 bartlett = calculate_bartlett_sphericity(df2)
 bart_names = ['chi-square', 'p-value']
-print(f"Bartlett's test {lzip(bart_names, bartlett)}")
+# print(f"Bartlett's test {lzip(bart_names, bartlett)}")
 
 # Adequacy tests - Kaiser-Meyer-Olkin (KMO) Test
 kmo_all, kmo_model = calculate_kmo(df2)
-print(f"KMO test {kmo_model}\n")
+# print(f"KMO test {kmo_model}\n")
 
 # Exploratory factor analysis
 fa = FactorAnalyzer(n_factors=5, method='ml', rotation='oblimin')
