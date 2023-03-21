@@ -633,20 +633,20 @@ def horn_parallel_analysis(data, k=1000, print_eigenvalues=False):
 
     # Plot the eigenvalues against the number of variables
     # Line for eigenvalue 1
-    plt.plot([0, m+1], [1, 1], 'k--', alpha=0.3)
+    plt.plot([0, m + 1], [1, 1], 'k--', alpha=0.3)
     # For the random data - Components
-    plt.plot(range(1, m+1), avg_component_eigens, 'b', label='PC - random', alpha=0.4)
+    plt.plot(range(1, m + 1), avg_component_eigens, 'b', label='PC - random', alpha=0.4)
     # For the Data - Components
-    plt.scatter(range(1, m+1), data_ev[0], c='b', marker='o')
-    plt.plot(range(1, m+1), data_ev[0], 'b', label='PC - data')
+    plt.scatter(range(1, m + 1), data_ev[0], c='b', marker='o')
+    plt.plot(range(1, m + 1), data_ev[0], 'b', label='PC - data')
     # For the random data - Factors
-    plt.plot(range(1, m+1), avg_factor_eigens, 'g', label='FA - random', alpha=0.4)
+    plt.plot(range(1, m + 1), avg_factor_eigens, 'g', label='FA - random', alpha=0.4)
     # For the Data - Factors
-    plt.scatter(range(1, m+1), data_ev[1], c='g', marker='o')
-    plt.plot(range(1, m+1), data_ev[1], 'g', label='FA - data')
+    plt.scatter(range(1, m + 1), data_ev[1], c='g', marker='o')
+    plt.plot(range(1, m + 1), data_ev[1], 'g', label='FA - data')
     plt.title('Parallel Analysis Scree Plots', {'fontsize': 20})
     plt.xlabel('Factors/Components', {'fontsize': 15})
-    plt.xticks(ticks=range(1, m+1), labels=range(1, m+1))
+    plt.xticks(ticks=range(1, m + 1), labels=range(1, m + 1))
     plt.ylabel('Eigenvalue', {'fontsize': 15})
     plt.legend()
     plt.show()
@@ -819,8 +819,8 @@ freq_table = freq_table.round(1)
 freq_table = freq_table.astype(str).applymap(lambda x: x + '%')
 # print(freq_table)
 
-table_hexaco = pd.pivot_table(df, index=['course'], values=[
-                              'H', 'E', 'X', 'A', 'C', 'O'],
+table_hexaco = pd.pivot_table(df, index=['course'],
+                              values=['H', 'E', 'X', 'A', 'C', 'O'],
                               aggfunc={'H': [np.mean, np.std],
                                        'E': [np.mean, np.std],
                                        'X': [np.mean, np.std],
