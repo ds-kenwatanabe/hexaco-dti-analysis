@@ -750,6 +750,11 @@ model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
 result_mnl = model_mnl.summary()
 # print(result_mnl)
 
+model_dti = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
+                                    "dti + sex + kinsey + sex:kinsey", data=df).fit()
+result_dti = model_dti.summary()
+# print(result_dti)
+
 # MANOVA
 # New dataframes by branches of science
 df_social = df[df['course'] == 'Social Sciences']
