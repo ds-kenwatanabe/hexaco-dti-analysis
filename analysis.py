@@ -853,3 +853,17 @@ tests_O = ttest(df['O'][df['sex'] == 'Female'], group1_name='Female',
 # print(tests_A)
 # print(tests_C)
 # print(tests_O)
+
+ttest_H_SB = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+                   group2=df['H'][df['course'] == 'Biological Sciences'], group2_name='Biological Sciences')
+
+ttest_H_SE = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+                   group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
+
+ttest_H_BE = ttest(df['H'][df['course'] == 'Biological Sciences'], group1_name='Biological Sciences',
+                   group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
+
+
+print(ttest_H_SB)
+print(ttest_H_SE)
+print(ttest_H_BE)
