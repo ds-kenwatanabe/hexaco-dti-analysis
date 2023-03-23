@@ -748,12 +748,23 @@ pairwise = pg.pairwise_corr(df, columns=['H', 'E', 'X', 'A', 'C', 'O'], method='
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "gen + sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
-# print(result_mnl)
+print(result_mnl)
 
 model_dti = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "dti + sex + kinsey + sex:kinsey", data=df).fit()
 result_dti = model_dti.summary()
 # print(result_dti)
+
+# t-tests based on signifcant MNLogit results
+ttest_O_SB = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+                   group2=df['O'][df['course'] == 'Biological Sciences'], group2_name='Biological Sciences')
+
+ttest_O_SE = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+                   group2=df['O'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
+
+ttest_H_SE = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+                   group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
+
 
 # MANOVA
 # New dataframes by branches of science
@@ -853,17 +864,3 @@ tests_O = ttest(df['O'][df['sex'] == 'Female'], group1_name='Female',
 # print(tests_A)
 # print(tests_C)
 # print(tests_O)
-
-ttest_H_SB = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
-                   group2=df['H'][df['course'] == 'Biological Sciences'], group2_name='Biological Sciences')
-
-ttest_H_SE = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
-                   group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
-
-ttest_H_BE = ttest(df['H'][df['course'] == 'Biological Sciences'], group1_name='Biological Sciences',
-                   group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
-
-
-print(ttest_H_SB)
-print(ttest_H_SE)
-print(ttest_H_BE)
