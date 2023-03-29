@@ -744,16 +744,30 @@ pairwise = pg.pairwise_corr(df, columns=['H', 'E', 'X', 'A', 'C', 'O'], method='
 # print(pairwise)
 
 # Multinomial Logistic Regression
-
+# Initial model
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "gen + sex + kinsey + sex:kinsey", data=df).fit()
 result_mnl = model_mnl.summary()
-print(result_mnl)
+# print(result_mnl)
 
+# Model without sexual orientation
+model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
+                                     "gen + sex:H + sex:E + sex:X + sex:A + "
+                                     "sex:C + sex:O", data=df).fit()
+result_mnl2 = model_mnl2.summary()
+print(result_mnl2)
+
+# DTI sum model
 model_dti = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "dti + sex + kinsey + sex:kinsey", data=df).fit()
 result_dti = model_dti.summary()
 # print(result_dti)
+
+model_dti2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
+                                     "dti + sex:H + sex:E + sex:X + sex:A + "
+                                     "sex:C + sex:O", data=df).fit()
+result_dti2 = model_dti2.summary()
+print(result_dti2)
 
 # t-tests based on signifcant MNLogit results
 ttest_O_SB = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
@@ -783,8 +797,8 @@ exact_manova = sm.MANOVA.from_formula("semester ~ H + E + X + A + C + O", data=d
 x = df_social[["H", "E", 'X', 'A', 'C', 'O']]
 y = df_social["semester"]
 post_hoc_social = lda().fit(X=x, y=y)
-# print(post_hoc_social.means_, '\n')
-# print(post_hoc_social.explained_variance_ratio_, '\n')
+# print("Group means", '\n', post_hoc_social.means_, '\n')
+# print("Proportion of variance", '\n', post_hoc_social.explained_variance_ratio_, '\n')
 
 # X_new = pd.DataFrame(lda().fit(X=x, y=y).transform(x), columns=["lda1", "lda2"])
 # X_new["semester"] = df_social["semester"]
