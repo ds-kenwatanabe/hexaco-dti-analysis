@@ -746,28 +746,20 @@ pairwise = pg.pairwise_corr(df, columns=['H', 'E', 'X', 'A', 'C', 'O'], method='
 # Multinomial Logistic Regression
 # Initial model
 model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "gen + sex + kinsey + sex:kinsey", data=df).fit()
+                                    "gen + sex + kinsey + sex:kinsey + "
+                                    "sex:H + sex:E + sex:X + sex:A + "
+                                    "sex:C + sex:O", data=df).fit()
 result_mnl = model_mnl.summary()
-# print(result_mnl)
-
-# Model without sexual orientation
-model_mnl2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                     "gen + sex:H + sex:E + sex:X + sex:A + "
-                                     "sex:C + sex:O", data=df).fit()
-result_mnl2 = model_mnl2.summary()
-print(result_mnl2)
+print(result_mnl)
 
 # DTI sum model
 model_dti = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "dti + sex + kinsey + sex:kinsey", data=df).fit()
+                                    "dti + sex + kinsey + sex:kinsey + "
+                                    "sex:H + sex:E + sex:X + sex:A + "
+                                    "sex:C + sex:O", data=df).fit()
 result_dti = model_dti.summary()
-# print(result_dti)
+print(result_dti)
 
-model_dti2 = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                     "dti + sex:H + sex:E + sex:X + sex:A + "
-                                     "sex:C + sex:O", data=df).fit()
-result_dti2 = model_dti2.summary()
-print(result_dti2)
 
 # t-tests based on signifcant MNLogit results
 ttest_O_SB = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
@@ -778,7 +770,6 @@ ttest_O_SE = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Soci
 
 ttest_H_SE = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
                    group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
-
 
 # MANOVA
 # New dataframes by branches of science
