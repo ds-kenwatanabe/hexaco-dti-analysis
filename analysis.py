@@ -749,7 +749,7 @@ model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "gen + sex + kinsey + sex:kinsey + "
                                     "sex:H + sex:E + sex:X + sex:A + "
                                     "sex:C + sex:O", data=df).fit()
-result_mnl = model_mnl.summary()
+result_mnl = model_mnl.get_margeff().summary()
 print(result_mnl)
 
 # DTI sum model
@@ -757,7 +757,7 @@ model_dti = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
                                     "dti + sex + kinsey + sex:kinsey + "
                                     "sex:H + sex:E + sex:X + sex:A + "
                                     "sex:C + sex:O", data=df).fit()
-result_dti = model_dti.summary()
+result_dti = model_dti.get_margeff().summary()
 print(result_dti)
 
 
