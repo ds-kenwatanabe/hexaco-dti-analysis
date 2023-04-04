@@ -745,18 +745,16 @@ pairwise = pg.pairwise_corr(df, columns=['H', 'E', 'X', 'A', 'C', 'O'], method='
 
 # Multinomial Logistic Regression
 # Initial model
-model_mnl = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "gen + sex + kinsey + sex:kinsey + "
-                                    "sex:H + sex:E + sex:X + sex:A + "
-                                    "sex:C + sex:O", data=df).fit()
+model_mnl = sm.MNLogit.from_formula("course_num ~ gen + sex*kinsey*H + "
+                                    "sex*kinsey*E + sex*kinsey*X + sex*kinsey*A + "
+                                    "sex*kinsey*C + sex*kinsey*O", data=df).fit()
 result_mnl = model_mnl.get_margeff().summary()
 print(result_mnl)
 
 # DTI sum model
-model_dti = sm.MNLogit.from_formula("course_num ~ H + E + X + A + C + O + "
-                                    "dti + sex + kinsey + sex:kinsey + "
-                                    "sex:H + sex:E + sex:X + sex:A + "
-                                    "sex:C + sex:O", data=df).fit()
+model_dti = sm.MNLogit.from_formula("course_num ~ dti + sex*kinsey*H + "
+                                    "sex*kinsey*E + sex*kinsey*X + sex*kinsey*A + "
+                                    "sex*kinsey*C + sex*kinsey*O", data=df).fit()
 result_dti = model_dti.get_margeff().summary()
 print(result_dti)
 
