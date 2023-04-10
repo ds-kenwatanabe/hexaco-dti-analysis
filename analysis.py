@@ -748,15 +748,18 @@ pairwise = pg.pairwise_corr(df, columns=['H', 'E', 'X', 'A', 'C', 'O'], method='
 model_mnl = sm.MNLogit.from_formula("course_num ~ gen + sex*kinsey*H + "
                                     "sex*kinsey*E + sex*kinsey*X + sex*kinsey*A + "
                                     "sex*kinsey*C + sex*kinsey*O", data=df).fit()
-result_mnl = model_mnl.get_margeff().summary()
+margeff = model_mnl.get_margeff()
+result_mnl = margeff.summary()
+p_values = margeff.pvalues
 print(result_mnl)
+margeff_table = margeff.summary_frame()
 
 # DTI sum model
 model_dti = sm.MNLogit.from_formula("course_num ~ dti + sex*kinsey*H + "
                                     "sex*kinsey*E + sex*kinsey*X + sex*kinsey*A + "
                                     "sex*kinsey*C + sex*kinsey*O", data=df).fit()
 result_dti = model_dti.get_margeff().summary()
-print(result_dti)
+# print(result_dti)
 
 
 # t-tests based on signifcant MNLogit results
