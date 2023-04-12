@@ -714,8 +714,7 @@ plt.show()
 """
 
 # Dataframe with DTI regression scores (in R)
-df = pd.read_csv('df_scores.csv')
-
+df = pd.read_csv('data_scores.csv')
 # Removing outliers
 df = df[df.H > 1.5]
 df = df[df.E > 1.5]
