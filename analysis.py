@@ -692,14 +692,6 @@ print(f"Factor variance \n{lzip(fvar2, fa2.get_factor_variance())}")
 # print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
 # print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 
-# Correlation matrix
-"""
-correlation_matrix = df2.corr(method='pearson').round(2)
-matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
-sns.set(rc={'figure.figsize': (13, 10)})
-sns.heatmap(data=correlation_matrix, annot=True, mask=matrix_lower)
-plt.show()
-"""
 
 # Factor loadings Heatmap
 """
@@ -722,6 +714,7 @@ df = df[df.A > 1.2]
 df = df[df.A < 4.9]
 df = df[df.C > 2]
 df = df[df.O > 2.1]
+
 
 # Correlations matrix for DTI, factors and HEXACO
 
@@ -752,6 +745,20 @@ result_mnl = margeff.summary()
 p_values = margeff.pvalues
 print(result_mnl)
 margeff_table = margeff.summary_frame()
+
+
+# Correlation matrix
+
+
+def corr_matrix():
+    correlation_matrix = df[['H', 'E', 'X', 'A', 'C', 'O',
+                             'gen', 'dti']].corr(method='pearson').round(2)
+    matrix_lower = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+    sns.set(rc={'figure.figsize': (13, 10)})
+    sns.heatmap(data=correlation_matrix, annot=True,
+                mask=matrix_lower, cmap='rocket_r')
+    return plt.show()
+
 
 # DTI sum model
 model_dti = sm.MNLogit.from_formula("course_num ~ dti + sex*kinsey*H + "
