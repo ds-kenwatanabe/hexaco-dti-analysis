@@ -144,12 +144,14 @@ df['semester'] = df.semester.replace({'1º': 1, '2º': 2, '3º': 3, '4º': 4, '5
                                       '10º': 10, '11º': 11, '12º': 12})
 
 # Excluding sex other than male/female
+# print(len(df[df['sex'] == 'Outro (especifique)']))
 df = df[df['sex'] != 'Outro (especifique)']
 
 # Replacing sex categories to english
 df['sex'] = df['sex'].replace({'Masculino': 'Male', 'Feminino': 'Female'})
 
 # Excluding asexuals
+# print(len(df[df['kinsey'] == 'Não tenho atração por nenhum gênero']))
 df = df[df['kinsey'] != 'Não tenho atração por nenhum gênero']
 
 # Changing Kinsey scale to heterosexual, bi and homo
@@ -708,13 +710,14 @@ plt.show()
 # Dataframe with DTI regression scores (in R)
 df = pd.read_csv('data_scores.csv')
 # Removing outliers
+# print(df.count())
 df = df[df.H > 1.5]
 df = df[df.E > 1.5]
 df = df[df.A > 1.2]
 df = df[df.A < 4.9]
 df = df[df.C > 2]
 df = df[df.O > 2.1]
-
+# print(df.count())
 
 # Correlations matrix for DTI, factors and HEXACO
 
