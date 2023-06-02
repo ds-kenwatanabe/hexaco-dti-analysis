@@ -717,6 +717,8 @@ df = df[df.A > 1.2]
 df = df[df.A < 4.9]
 df = df[df.C > 2]
 df = df[df.O > 2.1]
+
+
 # print(df.count())
 
 # Correlations matrix for DTI, factors and HEXACO
@@ -770,16 +772,23 @@ model_dti = sm.MNLogit.from_formula("course_num ~ dti + sex*kinsey*H + "
 result_dti = model_dti.get_margeff().summary()
 # print(result_dti)
 
-
+# DTI table
+table_dti = pd.pivot_table(df, index=['course'],
+                           values=['gen', 'dti'],
+                           aggfunc={'gen': [np.mean, np.std],
+                                    'dti': [np.mean, np.std]})
+table_dti = table_dti.round(2)
+print(table_dti)
+table_dti.to_excel("dti_freq_table.xlsx")
 # t-tests based on signifcant MNLogit results
-ttest_O_SB = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
-                   group2=df['O'][df['course'] == 'Biological Sciences'], group2_name='Biological Sciences')
+# ttest_O_SB = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+#                   group2=df['O'][df['course'] == 'Biological Sciences'], group2_name='Biological Sciences')
 
-ttest_O_SE = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
-                   group2=df['O'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
+# ttest_O_SE = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+#                   group2=df['O'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
 
-ttest_H_SE = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
-                   group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
+# ttest_H_SE = ttest(df['H'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
+#                   group2=df['H'][df['course'] == 'Exact Sciences'], group2_name='Exact Sciences')
 
 # MANOVA
 # New dataframes by branches of science
