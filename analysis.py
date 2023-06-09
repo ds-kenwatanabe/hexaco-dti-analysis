@@ -263,6 +263,7 @@ H_modesty = ['hexaco_24', 'hexaco_48']
 df['H_modesty'] = df[H_modesty].mean(axis=1)
 
 # E
+df = df.copy()
 E_fearfulness = ['hexaco_5', 'hexaco_29', 'hexaco_53']
 df['E_fearfulness'] = df[E_fearfulness].mean(axis=1)
 
