@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import pingouin as pg
 import scipy.stats as stats
 import statsmodels.api as sm
-from researchpy import ttest
 from statsmodels.compat import lzip
 from factor_analyzer import FactorAnalyzer
 from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity
