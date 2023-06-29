@@ -10,6 +10,8 @@ from factor_analyzer import FactorAnalyzer
 from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity
 from factor_analyzer.factor_analyzer import calculate_kmo
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as lda
+from sklearn.cluster import KMeans
+from kneed import KneeLocator
 
 df = pd.read_csv('february2023.csv')
 
@@ -685,12 +687,12 @@ fvar3 = ['F1', 'F2', 'F3']
 # FA with 2 factors, promax rotation, following MAP
 fa2 = FactorAnalyzer(n_factors=2, method='ml', rotation='oblimin')
 fa2.fit(df2)
-print(f"Factor loadings matrix \n{fa2.loadings_}\n")
+# print(f"Factor loadings matrix \n{fa2.loadings_}\n")
 factor_loadings2 = fa2.loadings_
 # print(f"Communalities \n{fa2.get_communalities()}\n")
 # print(f"Correlation matrix \n{fa2.corr_}\n")
 fvar2 = ['Variance', 'Proportional variance', 'Cumulative variance']
-print(f"Factor variance \n{lzip(fvar2, fa2.get_factor_variance())}")
+# print(f"Factor variance \n{lzip(fvar2, fa2.get_factor_variance())}")
 # print(f"Rotation matrix \n{fa2.rotation_matrix_}\n")
 # print(f"Uniqueness \n{fa2.get_uniquenesses()}\n")
 
@@ -721,6 +723,39 @@ df = df[df.O > 2.1]
 
 # print(df.count())
 
+# K-Means cluster analysis
+# K-Means clustering - finding number of clusters
+data_clusters = df[['H', 'E', 'X', 'A', 'C', 'O']].copy()
+wcss = []
+for i in range(1, 11):
+    kmeans = KMeans(n_clusters=i, random_state=0)
+    kmeans.fit(data_clusters)
+    wcss.append(kmeans.inertia_)
+
+"""
+sns.set()
+plt.plot(range(1, 11), wcss)
+plt.title('Number of Clusters using the Elbow Method')
+plt.xlabel('Clusters')
+plt.ylabel('WCSS')
+plt.show()
+"""
+kl = KneeLocator(range(1, 11), wcss, curve="convex", direction='decreasing')
+# print(kl.elbow)
+
+# Fitting cluster model
+model = KMeans(n_clusters=4, init='k-means++', n_init='auto')
+model.fit(df[['H', 'E', 'X', 'A', 'C', 'O']])
+
+predict = model.predict(df[['H', 'E', 'X', 'A', 'C', 'O']])
+df_predict = pd.DataFrame(predict)
+df_predict.columns=['clusters']
+# print(df_predict[:5])
+# Join df's
+df = df.join(df_predict)
+# print(df['clusters'][:5])
+# print(df['clusters'].dtype)
+
 # Correlations matrix for DTI, factors and HEXACO
 
 
@@ -748,9 +783,15 @@ model_mnl = sm.MNLogit.from_formula("course_num ~ gen + sex*kinsey*H + "
 margeff = model_mnl.get_margeff()
 result_mnl = margeff.summary()
 p_values = margeff.pvalues
-print(result_mnl)
+# print(result_mnl)
 margeff_table = margeff.summary_frame()
 
+# MNLogit cluster model
+model_clusters = sm.MNLogit.from_formula("clusters ~ H + E + X + A + C + O + sex*kinsey", data=df).fit()
+# margeff_clusters = model_clusters.get_margeff()
+# result_clusters = margeff_clusters.summary()
+# print(result_clusters)
+# print(model_clusters.summary())
 
 # Correlation matrix
 
@@ -778,7 +819,7 @@ table_dti = pd.pivot_table(df, index=['course'],
                            aggfunc={'gen': [np.mean, np.std],
                                     'dti': [np.mean, np.std]})
 table_dti = table_dti.round(2)
-print(table_dti)
+# print(table_dti)
 table_dti.to_excel("dti_freq_table.xlsx")
 # t-tests based on signifcant MNLogit results
 # ttest_O_SB = ttest(df['O'][df['course'] == 'Social Sciences'], group1_name='Social Sciences',
