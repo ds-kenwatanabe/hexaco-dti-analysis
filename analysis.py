@@ -793,6 +793,19 @@ result_clusters = margeff_clusters.summary()
 # print(result_clusters)
 # print(model_clusters.summary())
 
+# Model without interactions
+model_no_interactions = sm.MNLogit.from_formula("course_num ~ gen + H + E + X + A + C + O + sex + kinsey + 0", data=df).fit()
+margeff_no_interact = model_no_interactions.get_margeff()
+result_no_interact = margeff_no_interact.summary()
+print(result_no_interact)
+
+# Model without interactions - DTI sum
+model_no_interactions_sum = sm.MNLogit.from_formula("course_num ~ dti + H + E + X + A + C + O + sex + kinsey + 0", data=df).fit()
+margeff_no_interact_sum = model_no_interactions_sum.get_margeff()
+result_no_interact_sum = margeff_no_interact_sum.summary()
+print(result_no_interact_sum)
+
+
 # Correlation matrix
 
 
