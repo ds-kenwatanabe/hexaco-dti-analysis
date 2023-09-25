@@ -787,9 +787,9 @@ p_values = margeff.pvalues
 margeff_table = margeff.summary_frame()
 
 # MNLogit cluster model
-model_clusters = sm.MNLogit.from_formula("clusters ~ H + E + X + A + C + O + sex*kinsey", data=df).fit()
-# margeff_clusters = model_clusters.get_margeff()
-# result_clusters = margeff_clusters.summary()
+model_clusters = sm.MNLogit.from_formula("clusters ~ course + sex + kinsey", data=df).fit()
+margeff_clusters = model_clusters.get_margeff()
+result_clusters = margeff_clusters.summary()
 # print(result_clusters)
 # print(model_clusters.summary())
 
